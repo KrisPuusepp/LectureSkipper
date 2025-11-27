@@ -24,6 +24,7 @@ export type Lecture = {
 export type Item = {
   id: string;
   name: string;
+  rarity: number;
   level: number;
   startingLevel: number;
   description: string;
