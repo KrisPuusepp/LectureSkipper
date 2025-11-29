@@ -121,7 +121,7 @@ export default function CalendarView({ game, setGame }: Props)
 
               <p className="text-sm">
                 <ul className="list-disc pl-4 pt-2">
-                  <li><span className="font-bold">Attend</span>: Attending a lecture has a chance of giving you units of Understanding for a course. Attending takes time, which reduces your energy. <span className="italic text-red-500">You cannot attend if you don't have enough energy. You restore energy half as fast if you have less than 50% of your maximum.</span></li>
+                  <li><span className="font-bold">Attend</span>: Attending a lecture has a chance of giving you Understanding (U) for a course. Attending takes time, which reduces your energy. <span className="italic text-red-500">You cannot attend if you don't have enough energy. You restore energy half as fast if you have less than 50% of your maximum.</span></li>
                   <li><span className="font-bold">Skip</span>: Skipping gives you Procrastinations (P) and restores energy.</li>
                 </ul>
               </p>
@@ -144,7 +144,7 @@ export default function CalendarView({ game, setGame }: Props)
 
               return (
                 <Card
-                  className="w-72 h-90 p-4 mt-4 flex flex-col justify-between border-2"
+                  className="w-80 h-90 p-4 pl-0 pr-0 mt-4 flex flex-col justify-between border-2"
                   style={{
                     backgroundColor: bg,
                     borderColor: border,
@@ -169,7 +169,7 @@ export default function CalendarView({ game, setGame }: Props)
                     {/* Potential Understandings */}
                     <div>
                       <div className="text-sm mb-1">
-                        Potential Understandings: <span className="font-bold">{game.nextLecture.potentialUnderstandings}</span>
+                        Potential Understanding (U): <span className="font-bold">{game.nextLecture.potentialUnderstandings} U</span>
                       </div>
                       <Progress
                         value={game.nextLecture.potentialUnderstandings}
@@ -190,18 +190,18 @@ export default function CalendarView({ game, setGame }: Props)
                       />
                     </div>
 
-                    {/* Time Cost */}
+                    {/* Energy Cost */}
                     <div>
-                      <div className="text-sm mb-1">Time Cost: <span className="font-bold">{game.nextLecture.timeCost}</span></div>
+                      <div className="text-sm mb-1">Energy Cost: <span className="font-bold">{game.nextLecture.energyCost} E</span></div>
                       <Progress
-                        value={Math.min((game.nextLecture.timeCost / game.energy) * 100, 100)}
+                        value={Math.min((game.nextLecture.energyCost / game.energy) * 100, 100)}
                         className="h-3 rounded-full [&>div]:bg-red-300"
                       />
                     </div>
 
                     {/* Procrastination Value */}
                     <div>
-                      <div className="text-sm mb-1">Procrastination (P) Value: <span className="font-bold">{game.nextLecture.procrastinationValue}</span></div>
+                      <div className="text-sm mb-1">Procrastination (P) Value: <span className="font-bold">{game.nextLecture.procrastinationValue} P</span></div>
                       <Progress
                         value={game.nextLecture.procrastinationValue}
                         max={10} // placeholder max
@@ -219,7 +219,7 @@ export default function CalendarView({ game, setGame }: Props)
             <div className="flex gap-2 m-2">
               <Button
                 onClick={() => setGame(g => attendLecture(g))}
-                className={`${game.energy < game.nextLecture.timeCost ? "bg-neutral-500 hover:bg-neutral-500" : "bg-green-500 hover:bg-green-600"} text-white px-4 py-2 rounded`}
+                className={`${game.energy < game.nextLecture.energyCost ? "bg-neutral-500 hover:bg-neutral-500" : "bg-green-500 hover:bg-green-600"} text-white px-4 py-2 rounded`}
               >
                 Attend
               </Button>
@@ -245,7 +245,6 @@ export default function CalendarView({ game, setGame }: Props)
                 className="h-3 rounded-full"
               />
             </div>
-
           </div>
         ) : null}
 
@@ -311,29 +310,37 @@ export default function CalendarView({ game, setGame }: Props)
         ) : null}
       </div>
 
+      {/* Log */}
+      <div className="bg-card p-2 rounded flex flex-col max-w-[400px] w-full h-content">
+        <h2 className="font-bold m-1 flex items-center gap-2"> <Scroll className="w-5 h-5" /> Log</h2>
+        <div
+          className="flex flex-col-reverse overflow-y-auto flex-1"
+          ref={logContainerRef}
+        >
+          {game.log.slice().map((entry, i) =>
+          {
+            const Icon = entry.icon;
+            return (
+              <div key={i} className="flex items-center gap-2">
+                <Icon
+                  className="w-4 h-4"
+                  style={{ color: entry.color }}   // entry.color = "#00ff88" or "green", etc.
+                  strokeWidth={2}
+                />
+                <span>{entry.message}</span>
+              </div>
+            );
+          })}
+
+        </div>
+      </div>
+
       {/* Inventory */}
       <Inventory
         game={game}
         setGame={setGame}
         mode="calendar"
       />
-
-      {/* Log */}
-      <div className="bg-card p-2 rounded flex flex-col max-w-[400px] w-full h-content max-h-[500px]">
-        <h2 className="font-bold m-1 flex items-center gap-2"> <Scroll className="w-5 h-5" /> Log</h2>
-        <div
-          className="flex flex-col-reverse overflow-y-auto flex-1"
-          ref={logContainerRef}
-        >
-          {game.log.slice().map((msg, i) => (
-            <div key={i} className="flex items-start">
-              <span className="mr-2 text-green-400">•</span>
-              <span>{msg}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
     </div>
   );
 }

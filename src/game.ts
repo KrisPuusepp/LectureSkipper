@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+import { Box, Check, StepForward, X, type LucideIcon, type LucideProps } from "lucide-react";
 import { itemBonuses } from "@/items";
 import Mustache from "mustache";
 import chroma from "chroma-js";
@@ -17,7 +17,7 @@ export type Lecture = {
   endTime: string;
   potentialUnderstandings: number;
   understandChance: number; // 0-1
-  timeCost: number;
+  energyCost: number;
   procrastinationValue: number;
 };
 
@@ -47,6 +47,13 @@ export type Quest = {
   color: string;
 };
 
+export interface LogEntry
+{
+  icon: React.ComponentType<LucideProps>;
+  color: string;
+  message: string;
+}
+
 export type GameState = {
   // General Game
   block: number;
@@ -57,7 +64,7 @@ export type GameState = {
   // Menus
   examsAttended: boolean;
   examResults: boolean[];
-  log: string[];
+  log: LogEntry[];
   quests: Quest[];
   unboxedItem: Item | null;
   forgeItem: Item | null;
@@ -111,7 +118,7 @@ export function generateLecture(game: GameState): Lecture
     endTime: "10:00",
     potentialUnderstandings: Math.floor(Math.random() * 10) + 5 * game.block,
     understandChance: Math.random() * 0.99 + 0.01,
-    timeCost: Math.floor(Math.random() * 10) + 5,
+    energyCost: Math.floor(Math.random() * 10) + 5,
     procrastinationValue: Math.floor(Math.random() * 5) + 1,
   };
   return lecture;
@@ -120,7 +127,7 @@ export function generateLecture(game: GameState): Lecture
 export function attendLecture(state: GameState): GameState
 {
   if (!state.nextLecture) return state;
-  if (state.energy < state.nextLecture.timeCost) return state;
+  if (state.energy < state.nextLecture.energyCost) return state;
 
   const newState: GameState = { ...state };
   let lecture = { ...newState.nextLecture! };
@@ -155,15 +162,23 @@ export function attendLecture(state: GameState): GameState
   // Build log
   const courseTitle = newState.courses[lecture.courseIndex].title;
 
-  const logMessage =
+  const logMessage: LogEntry =
     gainedUnderstandings > 0
-      ? `+${gainedUnderstandings} Understandings in ${courseTitle}.`
-      : `Could not understand ${courseTitle}.`;
+      ? {
+        icon: Check,
+        color: "LawnGreen",
+        message: `+${gainedUnderstandings} Understandings in ${courseTitle}.`,
+      }
+      : {
+        icon: X,
+        color: "red",
+        message: `Could not understand ${courseTitle}.`
+      };
 
-  newState.log = [logMessage, ...newState.log];
+  newState.log = [logMessage];
 
   // Update basic stats
-  newState.energy -= lecture.timeCost;
+  newState.energy -= lecture.energyCost;
   newState.lecturesLeft -= 1;
 
   // Generate next lecture
@@ -192,7 +207,11 @@ export function skipLecture(state: GameState): GameState
   newState.energy = newEnergy;
   newState.procrastinations += lecture.procrastinationValue;
   newState.lecturesLeft--;
-  newState.log = [`Skipped ${newState.courses[lecture.courseIndex].title}.`, ...newState.log];
+  newState.log = [{
+    icon: StepForward,
+    color: "gray",
+    message: `Skipped ${newState.courses[lecture.courseIndex].title}.`,
+  }];
 
   // Generate next lecture
   newState.nextLecture = newState.lecturesLeft > 0 ? generateLecture(newState) : null;
@@ -229,7 +248,11 @@ export function attendExams(state: GameState): GameState
 
   newState.examsAttended = true;
   newState.examResults = results;
-  newState.log = [logMessage, ...newState.log];
+  newState.log = [{
+    icon: Check,
+    color: "LawnGreen",
+    message: logMessage,
+  }];
 
   return newState;
 }
@@ -321,7 +344,8 @@ function generateQuest(state: GameState): Quest
   });
   colors.push(state.courses[randomCourseIndex].color);
 
-  if(Math.random() < 0.25) {
+  if (Math.random() < 0.25)
+  {
     requirements.push({
       type: "procrastinations",
       amount: 5 + state.block * 2
@@ -352,10 +376,12 @@ export function startNewBlock(state: GameState): GameState
 
   const hues: number[] = [];
   const minDistance = 25;
-  while (hues.length < 3) {
+  while (hues.length < 3)
+  {
     const h = Math.floor(Math.random() * 360);
     if (hues.every(existing => Math.abs(existing - h) >= minDistance &&
-                              Math.abs(existing - h) <= 360 - minDistance)) {
+      Math.abs(existing - h) <= 360 - minDistance))
+    {
       hues.push(h);
     }
   }
@@ -392,7 +418,11 @@ export function startNewBlock(state: GameState): GameState
   newState.examsAttended = false;
   newState.examResults = [];
 
-  newState.log = [`Welcome to Block ${newState.block}.`, ...newState.log,];
+  newState.log = [{
+    icon: Box,
+    color: "cyan",
+    message: `Welcome to Block ${newState.block}.`,
+  }];
 
   return newState;
 }
