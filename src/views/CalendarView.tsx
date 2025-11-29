@@ -172,8 +172,7 @@ export default function CalendarView({ game, setGame }: Props)
                         Potential Understanding (U) <span className="font-bold">{game.nextLecture.potentialUnderstandings} U</span>
                       </div>
                       <Progress
-                        value={game.nextLecture.potentialUnderstandings}
-                        max={game.block * 10 + 5}
+                        value={game.nextLecture.potentialUnderstandings / game.courses[game.nextLecture.courseIndex].maxUnderstandingsPerLecture * 100}
                         className="h-3 rounded-full [&>div]:bg-purple-300"
                       />
                     </div>
@@ -185,7 +184,6 @@ export default function CalendarView({ game, setGame }: Props)
                       </div>
                       <Progress
                         value={game.nextLecture.understandChance * 100}
-                        max={100}
                         className="h-3 rounded-full [&>div]:bg-green-300"
                       />
                     </div>
@@ -196,7 +194,7 @@ export default function CalendarView({ game, setGame }: Props)
                         Energy Cost: <span className="font-bold">{game.nextLecture.energyCost} E</span>
                       </div>
                       <Progress
-                        value={Math.min((game.nextLecture.energyCost / game.energy) * 100, 100)}
+                        value={game.nextLecture.energyCost / game.courses[game.nextLecture.courseIndex].maxEnergyCostPerLecture * 100}
                         className="h-3 rounded-full [&>div]:bg-red-300"
                       />
                     </div>
@@ -207,8 +205,7 @@ export default function CalendarView({ game, setGame }: Props)
                         Procrastination (P) Value: <span className="font-bold">{game.nextLecture.procrastinationValue} P</span>
                       </div>
                       <Progress
-                        value={game.nextLecture.procrastinationValue}
-                        max={10} // placeholder max
+                        value={game.nextLecture.procrastinationValue / game.courses[game.nextLecture.courseIndex].maxProcrastinationsPerLecture * 100}
                         className="h-3 rounded-full [&>div]:bg-blue-300"
                       />
                     </div>

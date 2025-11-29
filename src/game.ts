@@ -9,6 +9,10 @@ export type Course = {
   understandings: number;
   goal: number;
   effects: { name: string; count: number }[];
+
+  maxUnderstandingsPerLecture: number;
+  maxProcrastinationsPerLecture: number;
+  maxEnergyCostPerLecture: number;
 };
 
 export type Lecture = {
@@ -116,10 +120,10 @@ export function generateLecture(game: GameState): Lecture
     courseIndex: courseIndex,
     startTime: "09:00",
     endTime: "10:00",
-    potentialUnderstandings: Math.floor(Math.random() * 10) + 5 * game.block,
+    potentialUnderstandings: Math.ceil(Math.random() * game.courses[courseIndex].maxUnderstandingsPerLecture),
     understandChance: Math.random() * 0.99 + 0.01,
-    energyCost: Math.floor(Math.random() * 10) + 5,
-    procrastinationValue: Math.floor(Math.random() * 5) + 1,
+    energyCost: Math.ceil(Math.random() * game.courses[courseIndex].maxEnergyCostPerLecture),
+    procrastinationValue: Math.ceil(Math.random() * game.courses[courseIndex].maxProcrastinationsPerLecture),
   };
   return lecture;
 }
@@ -326,6 +330,9 @@ export function generateCourse(state: GameState, hue: number): Course
       0.25                 // value/brightness (0–1)
     ).hex(),
     effects: [],
+    maxUnderstandingsPerLecture: 5,
+    maxProcrastinationsPerLecture: 5,
+    maxEnergyCostPerLecture: 5
   };
 }
 
@@ -411,7 +418,7 @@ export function startNewBlock(state: GameState): GameState
   ];
   newState.quests = newQuests;
 
-  const nextLecture: Lecture = generateLecture(state);
+  const nextLecture: Lecture = generateLecture(newState);
   newState.nextLecture = nextLecture;
 
   newState.lecturesLeft = 12;
