@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
-
-import type { GameState } from "@/game";
+import type { GameState, Run } from "@/game";
 import { loadGame } from "@/game";
-
 import CalendarView from "@/views/CalendarView";
 import MarketView from "@/views/MarketView";
 import ChatView from "@/views/ChatView";
@@ -18,6 +16,17 @@ export default function App()
 {
   const [game, setGame] = useState<GameState>(loadGame());
   const [view, setView] = useState<View>("Calendar");
+  const [topRuns, setTopRuns] = useState<Run[]>(() =>
+  {
+    try
+    {
+      const saved = localStorage.getItem("topRuns");
+      return saved ? JSON.parse(saved) as Run[] : [];
+    } catch
+    {
+      return [];
+    }
+  });
 
   return (
     <SidebarProvider>
@@ -37,11 +46,11 @@ export default function App()
           {/* scrollable content area */}
           <div className="flex-1 overflow-auto min-h-0">
             <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 p-0">
-              {view === "Calendar" && <CalendarView game={game} setGame={setGame} />}
+              {view === "Calendar" && <CalendarView game={game} setGame={setGame} setTopRuns={setTopRuns} />}
               {view === "Market" && <MarketView game={game} setGame={setGame} />}
               {view === "Chat" && <ChatView game={game} setGame={setGame} />}
               {view === "Forge" && <ForgeView game={game} setGame={setGame} />}
-              {view === "Settings" && <SettingsView game={game} setGame={setGame} />}
+              {view === "Settings" && <SettingsView game={game} setGame={setGame} topRuns={topRuns} />}
             </div>
           </div>
         </main>

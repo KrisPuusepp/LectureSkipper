@@ -1,19 +1,20 @@
 import type { Dispatch, SetStateAction } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Settings, RefreshCcw, PenOff, ScrollText, Box } from "lucide-react";
-import type { GameState } from "@/game";
+import { Settings, RefreshCcw, PenOff, ScrollText, Box, Trophy } from "lucide-react";
+import type { GameState, Run } from "@/game";
 import { initGame } from "@/game";
-import { itemRegistry, itemsByRarity } from "@/itemRegistry";
+import { itemMetaRegistry, itemRegistry, itemsByRarity } from "@/itemRegistry";
 import ItemSlot from "@/components/ItemSlot";
 
 interface Props
 {
   game: GameState;
   setGame: Dispatch<SetStateAction<GameState>>;
+  topRuns: Run[];
 }
 
-export default function SettingsView({ setGame }: Props)
+export default function SettingsView({ game, setGame, topRuns }: Props)
 {
   const gameUpdates = [
     {
@@ -38,7 +39,7 @@ export default function SettingsView({ setGame }: Props)
       <div className="flex flex-wrap justify-center p-4">
 
         {/* Game Info */}
-        <div className="p-2 rounded flex flex-col max-w-[500px] w-full h-content max-h-[500px]">
+        <div className="p-2 rounded flex flex-col max-w-[500px] w-full h-content">
           <Card className="gap-4">
             <CardHeader className="gap-0">
               <CardTitle className="flex items-center gap-2">
@@ -54,7 +55,7 @@ export default function SettingsView({ setGame }: Props)
         </div>
 
         {/* Game Settings */}
-        <div className="p-2 rounded flex flex-col max-w-[500px] w-full h-content max-h-[500px]">
+        <div className="p-2 rounded flex flex-col max-w-[500px] w-full h-content">
           <Card className="gap-4">
             <CardHeader className="gap-0">
               <CardTitle className="flex items-center gap-2">
@@ -69,8 +70,64 @@ export default function SettingsView({ setGame }: Props)
           </Card>
         </div>
 
+        {/* Top Runs */}
+        <div className="p-2 rounded flex flex-col max-w-[500px] w-full h-content">
+          <Card className="gap-4">
+            <CardHeader className="gap-0">
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="w-5 h-5" /> Top Runs
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent className="flex flex-col gap-3">
+              {topRuns.length === 0 ? (
+                <div className="italic text-muted-foreground p-2">No top runs yet.</div>
+              ) : (
+                topRuns.map((run, index) => (
+                  <div key={index} className="border-b border-gray-700 pb-2 last:border-b-0">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="font-bold">#{index + 1}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {new Date(run.date).toLocaleDateString()}{" "}
+                        {new Date(run.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      </span>
+                    </div>
+
+                    <div className="mb-1">
+                      <span className="font-semibold">Score:</span> {run.score}
+                    </div>
+
+                    <ul className="pl-4 mb-2 text-sm text-muted-foreground gap-2 list-disc">
+                      <li>Energy: {run.energy}/{run.maxEnergy}</li>
+                      <li>Cash: ${run.cash}</li>
+                      <li>Procrastinations: {run.procrastinations}</li>
+                      <li>Energy gain per Skip: {run.energyPerSkip}</li>
+                      <li>Max Items: {run.maxActivatedItems}</li>
+                    </ul>
+
+                    <div className="flex flex-wrap gap-2">
+                      {run.items.map((item) => (
+                        <ItemSlot
+                          key={`run-${index}-${item.name}`}
+                          item={item} // restore icon if needed
+                          game={{} as GameState}
+                          selected={false}
+                          onClick={() => { }}
+                          size={32}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+
+
         {/* All Items (Preview) */}
-        <div className="p-2 rounded flex flex-col max-w-[500px] w-full h-content max-h-[500px]">
+        <div className="p-2 rounded flex flex-col max-w-[500px] w-full h-content">
           <Card className="gap-4">
             <CardHeader className="gap-0">
               <CardTitle className="flex items-center gap-2">
@@ -99,7 +156,7 @@ export default function SettingsView({ setGame }: Props)
         </div>
 
         {/* Game Updates */}
-        <div className="p-2 rounded flex flex-col max-w-[500px] w-full h-content max-h-[500px]">
+        <div className="p-2 rounded flex flex-col max-w-[500px] w-full h-content">
           <Card className="gap-4">
             <CardHeader className="gap-0">
               <CardTitle className="flex items-center gap-2">

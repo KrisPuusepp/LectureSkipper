@@ -1,5 +1,5 @@
 import Inventory from "@/components/Inventory";
-import type { GameState } from "@/game";
+import type { GameState, Run } from "@/game";
 import { startRound, attendExams, startNewBlock, initGame } from "@/game";
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useRef } from "react";
@@ -15,9 +15,10 @@ interface Props
 {
   game: GameState;
   setGame: Dispatch<SetStateAction<GameState>>;
+  setTopRuns: React.Dispatch<React.SetStateAction<Run[]>>
 }
 
-export default function CalendarView({ game, setGame }: Props)
+export default function CalendarView({ game, setGame, setTopRuns }: Props)
 {
   const logContainerRef = useRef<HTMLDivElement>(null);
 
@@ -271,7 +272,7 @@ export default function CalendarView({ game, setGame }: Props)
           <div className="flex flex-col items-center justify-center gap-4 py-8">
             <h2 className="text-lg font-bold">All lectures completed.</h2>
             <Button
-              onClick={() => setGame(g => attendExams(g))}
+              onClick={() => setGame(g => attendExams(g, setTopRuns))}
               className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded"
             >
               Start Exams

@@ -155,6 +155,59 @@ export function loadGame(): GameState
   }
 }
 
+export type Run = {
+  date: string;
+  score: number;
+
+  energy: number;
+  maxEnergy: number;
+  energyPerSkip: number;
+  cash: number;
+  procrastinations: number;
+  items: ItemData[];
+  maxActivatedItems: number;
+};
+
+function recordRun(game: GameState, setTopRuns: React.Dispatch<React.SetStateAction<Run[]>>)
+{
+  // Create a snapshot of items (omit nulls) and sort by rarity descending
+  const snapshotItems = game.items
+    .filter((item): item is NonNullable<typeof item> => !!item)
+    .sort((a, b) => b.rarity - a.rarity);
+
+  const newRun: Run = {
+    date: new Date().toISOString(),
+    score: game.score,
+    items: snapshotItems,
+    energy: game.energy,
+    maxEnergy: game.maxEnergy,
+    energyPerSkip: game.energyPerSkip,
+    cash: game.cash,
+    procrastinations: game.procrastinations,
+    maxActivatedItems: game.maxActivatedItems,
+  };
+
+  setTopRuns(prev =>
+  {
+    // Insert and sort descending by score
+    const updated = [...prev, newRun].sort((a, b) => b.score - a.score);
+
+    // Keep only top 5
+    const top5 = updated.slice(0, 5);
+
+    // Save to localStorage
+    try
+    {
+      localStorage.setItem("topRuns", JSON.stringify(top5));
+    } catch (err)
+    {
+      console.error("Failed to save top runs:", err);
+    }
+
+    return top5;
+  });
+}
+
 
 /**
  * Mutates the GameState that you give it.
@@ -378,7 +431,7 @@ export function generateUUID(): string
   });
 }
 
-export function attendExams(state: GameState): GameState
+export function attendExams(state: GameState, setTopRuns: React.Dispatch<React.SetStateAction<Run[]>>): GameState
 {
   // Exams may only be attended once
   if (state.examsAttended)
@@ -405,6 +458,12 @@ export function attendExams(state: GameState): GameState
     color: "LawnGreen",
     message: logMessage,
   }];
+
+  if (results.filter(r => r).length < 2)
+  {
+    // Game failed, record run
+    recordRun(newState, setTopRuns);
+  }
 
   saveGame(newState);
 
