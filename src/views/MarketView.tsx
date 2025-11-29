@@ -7,7 +7,7 @@ import ItemSlot from "@/components/ItemSlot";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Item as ShadItem, ItemGroup } from "@/components/ui/item";
 import { itemsByRarity } from "@/itemRegistry";
-import type { ItemData } from "@/item";
+import { itemUtils, type ItemData } from "@/item";
 
 interface Props
 {
@@ -60,11 +60,7 @@ export default function MarketView({ game, setGame }: Props)
     const chosenItem = weightedRandom(itemsByRarity[chosenRarity], itemWeights);
 
     // Create unique instance
-    const newItem: ItemData = {
-      ...chosenItem,
-      id: generateUUID(),
-      memory: {},
-    };
+    const newItem = itemUtils.createItemInstance(chosenItem);
 
     // Update game state
     setGame((prev) => ({
@@ -184,6 +180,7 @@ export default function MarketView({ game, setGame }: Props)
             {game.unboxedItem?.name || "..."}
           </h2>
           <ItemSlot
+            game={game}
             item={game.unboxedItem}
             selected={false}
             onClick={() => { }}

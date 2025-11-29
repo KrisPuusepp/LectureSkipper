@@ -1,15 +1,15 @@
-import { Box, Check, StepForward, X, type LucideProps } from "lucide-react";
+import { Box, Check, DollarSign, StepForward, X, type LucideProps } from "lucide-react";
 import Mustache from "mustache";
 import chroma from "chroma-js";
 import { behaviorRegistry, itemMetaRegistry } from "@/itemRegistry";
-import type { ItemData } from "./item";
+import { itemUtils, type ItemData } from "./item";
 
 export type Course = {
   title: string;
   color: string;
   understandings: number;
   goal: number;
-  effects: { name: string; count: number }[];
+  effects: Record<string, number>;
 
   maxUnderstandingsPerLecture: number;
   maxProcrastinationsPerLecture: number;
@@ -110,18 +110,40 @@ export function initGame(): GameState
   return game;
 };
 
-export function generateLecture(game: GameState): Lecture
+/**
+ * Mutates the GameState that you give it.
+ */
+export function generateLecture(state: GameState): Lecture
 {
-  const courseIndex = Math.floor(Math.random() * 3);
+  let courseIndex = Math.floor(Math.random() * 3);
+
+  // If any course has the effect "Guaranteed", set courseIndex to that course
+  for (let i = 0; i < state.courses.length; i++)
+  {
+    if (itemUtils.getEffectStacks(state, i, "Guaranteed") > 0)
+    {
+      courseIndex = i;
+      itemUtils.addEffectStacksToCourse(state, i, "Guaranteed", -1);
+      break;
+    }
+  }
+
   const lecture: Lecture = {
     courseIndex: courseIndex,
     startTime: "09:00",
     endTime: "10:00",
-    potentialUnderstandings: Math.ceil(Math.random() * game.courses[courseIndex].maxUnderstandingsPerLecture),
+    potentialUnderstandings: Math.ceil(Math.random() * state.courses[courseIndex].maxUnderstandingsPerLecture),
     understandChance: Math.random() * 0.99 + 0.01,
-    energyCost: Math.ceil(Math.random() * game.courses[courseIndex].maxEnergyCostPerLecture),
-    procrastinationValue: Math.ceil(Math.random() * game.courses[courseIndex].maxProcrastinationsPerLecture),
+    energyCost: Math.ceil(Math.random() * state.courses[courseIndex].maxEnergyCostPerLecture),
+    procrastinationValue: Math.ceil(Math.random() * state.courses[courseIndex].maxProcrastinationsPerLecture),
   };
+
+  if (itemUtils.getEffectStacks(state, lecture.courseIndex, "Cash") > 0)
+  {
+    state.cash += itemUtils.getEffectStacks(state, lecture.courseIndex, "Cash");
+    state.log.push({ icon: DollarSign, color: "white", message: `+${itemUtils.getEffectStacks(state, lecture.courseIndex, "Cash")}$` });
+  }
+
   return lecture;
 }
 
@@ -161,7 +183,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       if (itemLogEntry.message !== "")
         newState.log.push(itemLogEntry);
     }
-    if (behaviorRegistry[item.name].beforeSkipLecture !== undefined)
+    if (action == "skip" && behaviorRegistry[item.name].beforeSkipLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {
         icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
@@ -170,7 +192,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       if (itemLogEntry.message !== "")
         newState.log.push(itemLogEntry);
     }
-    if (behaviorRegistry[item.name].beforeAttendLecture !== undefined)
+    if (action == "attend" && behaviorRegistry[item.name].beforeAttendLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {
         icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
@@ -229,9 +251,6 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
   newState.procrastinations += lectureResult.gainedProcrastinations;
   newState.lecturesLeft -= 1;
 
-  // Generate next lecture
-  newState.nextLecture = newState.lecturesLeft > 0 ? generateLecture(newState) : null;
-
   // Log
   const courseTitle = newState.courses[lecture.courseIndex].title;
   if (action == "attend")
@@ -245,6 +264,9 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       ? { icon: StepForward, color: "gray", message: `Skipped ${courseTitle}.` }
       : { icon: X, color: "red", message: `Could not skip ${courseTitle}.` });
   }
+
+  // Generate next lecture
+  newState.nextLecture = newState.lecturesLeft > 0 ? generateLecture(newState) : null;
 
   // AFTER ROUND HOOKS
   for (let i = 0; i < newState.items.length; i++)
@@ -272,7 +294,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       if (itemLogEntry.message !== "")
         newState.log.push(itemLogEntry);
     }
-    if (behaviorRegistry[item.name].afterSkipLecture !== undefined)
+    if (action == "skip" && behaviorRegistry[item.name].afterSkipLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {
         icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
@@ -281,7 +303,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       if (itemLogEntry.message !== "")
         newState.log.push(itemLogEntry);
     }
-    if (behaviorRegistry[item.name].afterAttendLecture !== undefined)
+    if (action == "attend" && behaviorRegistry[item.name].afterAttendLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {
         icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
@@ -406,9 +428,9 @@ export function generateCourse(state: GameState, hue: number): Course
       1,                 // saturation (0–1)
       0.25                 // value/brightness (0–1)
     ).hex(),
-    effects: [],
-    maxUnderstandingsPerLecture: 5,
-    maxProcrastinationsPerLecture: 5,
+    effects: {},
+    maxUnderstandingsPerLecture: 50,
+    maxProcrastinationsPerLecture: 50,
     maxEnergyCostPerLecture: 5
   };
 }

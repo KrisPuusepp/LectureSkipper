@@ -1,9 +1,11 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import type { ItemData } from "@/item";
+import type { GameState } from "@/game";
+import { itemUtils, type ItemData } from "@/item";
 import { itemMetaRegistry } from "@/itemRegistry";
 
 interface ItemSlotProps
 {
+  game: GameState;
   item: ItemData | null;
   selected: boolean;
   onClick: () => void;
@@ -11,6 +13,7 @@ interface ItemSlotProps
 }
 
 export default function ItemSlot({
+  game,
   item,
   selected,
   onClick,
@@ -40,7 +43,7 @@ export default function ItemSlot({
           : undefined, // keeps bg-accent gray
       }}
     >
-      {Icon && <Icon style={{ width: size * 0.6, height: size * 0.6 }} />}
+      {Icon && item && <Icon style={{ width: size * 0.6, height: size * 0.6, color: itemMetaRegistry[item.name].getEnabled(item, game) ? "white" : "crimson" }} />}
 
       {item && (
         <div
@@ -80,7 +83,7 @@ export default function ItemSlot({
         sideOffset={75}
       >
         <div className="flex gap-3 items-center">
-          {Icon && <Icon className="w-8 h-8 shrink-0 inline-block" />}
+          {Icon && <Icon className={`w-8 h-8 shrink-0 inline-block`} />}
           <div>
             <h4 className="font-bold p-1 text-lg">/ {item.name} - Level {item.level} /</h4>
             <p className="text-sm">

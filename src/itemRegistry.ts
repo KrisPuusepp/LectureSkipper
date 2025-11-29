@@ -10,9 +10,9 @@ export const itemsByRarity: Record<number, ItemData[]> = { 1: [], 2: [], 3: [] }
 for (const path in modules) {
   const mod = modules[path] as any;
 
-  const data: ItemData = mod.item;
-  const meta: ItemMeta = mod.meta; // must export meta for icon/getDescription
-  const behavior: ItemBehavior = mod.behavior || {};
+  const data: ItemData = mod.itemData;
+  const meta: ItemMeta = mod.itemMeta; // must export meta for icon/getDescription
+  const behavior: ItemBehavior = mod.itemBehavior || {};
 
   // Save to registries
   itemRegistry[data.name] = data;

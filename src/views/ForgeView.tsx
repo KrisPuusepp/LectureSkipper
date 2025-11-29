@@ -1,9 +1,10 @@
 import Inventory from "@/components/Inventory";
 import { Anvil, CirclePlus, HelpCircle } from "lucide-react";
-import type { GameState, Item } from "@/game";
+import type { GameState } from "@/game";
 import type { Dispatch, SetStateAction } from "react";
 import ItemSlot from "@/components/ItemSlot";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import type { ItemData } from "@/item";
 
 interface Props
 {
@@ -13,7 +14,7 @@ interface Props
 
 export default function ForgeView({ game, setGame }: Props)
 {
-  const calculateUpgradeCost = (item: Item) =>
+  const calculateUpgradeCost = (item: ItemData) =>
   {
     return Math.floor(Math.pow(20, 1 + (item.level - item.startingLevel) / 3.14159));
   };
@@ -87,6 +88,7 @@ export default function ForgeView({ game, setGame }: Props)
         <div className="flex flex-col items-center justify-center p-3">
           <div className="w-32 h-32 flex items-center justify-center mb-2">
             <ItemSlot
+              game={game}
               item={game.forgeItem}
               selected={false}
               onClick={() => putItemIntoForge()}

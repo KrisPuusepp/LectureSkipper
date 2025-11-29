@@ -128,7 +128,7 @@ export default function Inventory({
 
           {mode === "calendar" && (
             <h2 className="font-bold m-1 flex items-center gap-2 p-2">
-              <Check className="w-5 h-5" /> Activated {game.selectedItemSlots.length} / {game.maxActivatedItems}
+              <Check className={`w-5 h-5 ${game.selectedItemSlots.length === game.maxActivatedItems ? "text-green-500" : ""}`} /> Activated {game.selectedItemSlots.length} / {game.maxActivatedItems}
             </h2>
           )}
 
@@ -136,6 +136,7 @@ export default function Inventory({
             {game.items.map((item, i) => (
               <ItemSlot
                 key={i}
+                game={game}
                 item={item ?? null} // explicitly null if empty
                 selected={game.selectedItemSlots.includes(i)}
                 onClick={() =>
