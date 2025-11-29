@@ -1,5 +1,5 @@
 import Inventory from "@/components/Inventory";
-import type { GameState, Quest } from "../game";
+import { saveGame, type GameState, type Quest } from "../game";
 import type { Dispatch, SetStateAction } from "react";
 import { HelpCircle, MessageCircle, MessagesSquare } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -68,7 +68,11 @@ export default function ChatView({ game, setGame }: Props)
       const newQuests = state.quests.map((q) => ({ ...q }));
       newQuests.splice(state.quests.indexOf(quest), 1);
 
-      return { ...state, courses: newCourses, cash: newCash, procrastinations: newProcrastinations, quests: newQuests };
+      const newState = { ...state, courses: newCourses, cash: newCash, procrastinations: newProcrastinations, quests: newQuests };
+
+      saveGame(newState);
+
+      return newState;
     });
   };
 

@@ -1,6 +1,6 @@
 import Inventory from "@/components/Inventory";
 import type { GameState } from "@/game";
-import { generateUUID } from "@/game";
+import { generateUUID, saveGame } from "@/game";
 import type { Dispatch, SetStateAction } from "react";
 import { HelpCircle, PackageOpen, Store, Gift } from "lucide-react";
 import ItemSlot from "@/components/ItemSlot";
@@ -62,12 +62,18 @@ export default function MarketView({ game, setGame }: Props)
     // Create unique instance
     const newItem = itemUtils.createItemInstance(chosenItem);
 
-    // Update game state
-    setGame((prev) => ({
-      ...prev,
-      unboxedItem: newItem,
-      procrastinations: prev.procrastinations - box.cost,
-    }));
+    setGame((prev) =>
+    {
+      const newState = {
+        ...prev,
+        unboxedItem: newItem,
+        procrastinations: prev.procrastinations - box.cost,
+      };
+
+      saveGame(newState);
+
+      return newState;
+    });
   };
 
 
@@ -86,11 +92,15 @@ export default function MarketView({ game, setGame }: Props)
         newItems[emptyIndex] = prev.unboxedItem;
       }
 
-      return {
+      const newState = {
         ...prev,
         items: newItems,
         unboxedItem: null,
       };
+
+      saveGame(newState);
+
+      return newState;
     });
   };
 
@@ -98,10 +108,14 @@ export default function MarketView({ game, setGame }: Props)
   // Trash the unboxed item
   const handleTrash = () =>
   {
-    setGame((prev) => ({
-      ...prev,
-      unboxedItem: null,
-    }));
+    setGame((prev) => {
+      const newState = {
+        ...prev,
+        unboxedItem: null,
+      };
+      saveGame(newState);
+      return newState;
+    });
   };
 
   return (

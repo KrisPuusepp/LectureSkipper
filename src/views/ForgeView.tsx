@@ -1,6 +1,6 @@
 import Inventory from "@/components/Inventory";
 import { Anvil, CirclePlus, HelpCircle } from "lucide-react";
-import type { GameState } from "@/game";
+import { saveGame, type GameState } from "@/game";
 import type { Dispatch, SetStateAction } from "react";
 import ItemSlot from "@/components/ItemSlot";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -39,6 +39,8 @@ export default function ForgeView({ game, setGame }: Props)
 
       newState.selectedItemSlots = [];
 
+      saveGame(newState);
+
       return newState;
     });
   };
@@ -54,11 +56,15 @@ export default function ForgeView({ game, setGame }: Props)
 
       const upgradedItem = { ...state.forgeItem, level: state.forgeItem.level + 1 };
 
-      return {
+      const newState = {
         ...state,
         forgeItem: upgradedItem,
         cash: state.cash - cost,
       };
+
+      saveGame(newState);
+
+      return newState;
     });
 
   };

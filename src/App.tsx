@@ -3,7 +3,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 
 import type { GameState } from "@/game";
-import { initGame } from "@/game";
+import { loadGame } from "@/game";
 
 import CalendarView from "@/views/CalendarView";
 import MarketView from "@/views/MarketView";
@@ -16,7 +16,7 @@ type View = "Calendar" | "Market" | "Chat" | "Forge" | "Settings";
 
 export default function App()
 {
-  const [game, setGame] = useState<GameState>(initGame());
+  const [game, setGame] = useState<GameState>(loadGame());
   const [view, setView] = useState<View>("Calendar");
 
   return (

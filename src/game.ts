@@ -110,6 +110,45 @@ export function initGame(): GameState
   return game;
 };
 
+const LOCAL_STORAGE_KEY = "myGameState";
+
+export function saveGame(game: GameState)
+{
+  try
+  {
+    // Create a copy of game with an empty log
+    const toSave = { ...game, log: [] };
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(toSave));
+  } catch (err)
+  {
+    console.error("Failed to save game:", err);
+  }
+}
+
+/**
+ * Load the GameState from localStorage.
+ * If nothing exists or parsing fails, return a fresh game state.
+ */
+export function loadGame(): GameState
+{
+  try
+  {
+    const data = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!data) return initGame();
+
+    const parsed: GameState = JSON.parse(data);
+
+    parsed.log = [];
+
+    return parsed;
+  } catch (err)
+  {
+    console.error("Failed to load game from localStorage:", err);
+    return initGame();
+  }
+}
+
+
 /**
  * Mutates the GameState that you give it.
  */
@@ -316,6 +355,8 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
 
   newState.log.reverse();
 
+  saveGame(newState);
+
   return newState;
 }
 
@@ -356,6 +397,8 @@ export function attendExams(state: GameState): GameState
     color: "LawnGreen",
     message: logMessage,
   }];
+
+  saveGame(newState);
 
   return newState;
 }
@@ -529,6 +572,8 @@ export function startNewBlock(state: GameState): GameState
     color: "cyan",
     message: `Welcome to Block ${newState.block}.`,
   }];
+
+  saveGame(newState);
 
   return newState;
 }

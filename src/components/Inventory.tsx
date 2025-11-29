@@ -1,6 +1,6 @@
 import { Box, Check, HelpCircle, LayoutGrid, Package } from "lucide-react";
 import ItemSlot from "@/components/ItemSlot";
-import type { GameState } from "@/game";
+import { saveGame, type GameState } from "@/game";
 import type { Dispatch, SetStateAction } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
@@ -31,7 +31,12 @@ export default function Inventory({
         if (mode === "calendar" && prev.selectedItemSlots.length >= prev.maxActivatedItems) return prev;
         selected.push(itemSlotID);
       }
-      return { ...prev, selectedItemSlots: selected };
+
+      const newState = { ...prev, selectedItemSlots: selected };
+
+      saveGame(newState);
+
+      return newState;
     });
   };
 
@@ -64,13 +69,17 @@ export default function Inventory({
         forgeItem = null;
       }
 
-      return {
+      const newState = {
         ...prev,
         items,
         selectedItemSlots: [],
         unboxedItem,
         forgeItem,
       };
+
+      saveGame(newState);
+
+      return newState;
     });
   };
 
@@ -86,7 +95,11 @@ export default function Inventory({
         items[slotID] = null;
       });
 
-      return { ...prev, items, selectedItemSlots: [] };
+      const newState = { ...prev, items, selectedItemSlots: [] };
+
+      saveGame(newState);
+
+      return newState;
     });
   };
 
