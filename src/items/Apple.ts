@@ -16,7 +16,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: increase your max energy by **${item.level} E**`,
+    `**On Attend**: increase your max energy by **${item.level} E**.`,
   getEnabled: (item, state) => true,
 };
 

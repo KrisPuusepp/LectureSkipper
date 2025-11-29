@@ -1,9 +1,11 @@
 import type { Dispatch, SetStateAction } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Settings, RefreshCcw, PenOff, ScrollText } from "lucide-react";
+import { Settings, RefreshCcw, PenOff, ScrollText, Box } from "lucide-react";
 import type { GameState } from "@/game";
 import { initGame } from "@/game";
+import { itemRegistry, itemsByRarity } from "@/itemRegistry";
+import ItemSlot from "@/components/ItemSlot";
 
 interface Props
 {
@@ -64,6 +66,35 @@ export default function SettingsView({ setGame }: Props)
                 <RefreshCcw className="w-4 h-4" /> Reset Run
               </Button>
             </CardContent>
+          </Card>
+        </div>
+
+        {/* All Items (Preview) */}
+        <div className="p-2 rounded flex flex-col max-w-[500px] w-full h-content max-h-[500px]">
+          <Card className="gap-4">
+            <CardHeader className="gap-0">
+              <CardTitle className="flex items-center gap-2">
+                <Box className="w-5 h-5" /> All Items
+              </CardTitle>
+            </CardHeader>
+
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {[1, 2, 3].flatMap(rarity =>
+                  itemsByRarity[rarity].map(item => (
+                    <ItemSlot
+                      key={`preview-${item.name}`}
+                      item={item}
+                      game={{} as GameState} // ; )
+                      selected={false}
+                      onClick={() => { }}
+                      size={40}
+                    />
+                  ))
+                )}
+              </div>
+            </CardContent>
+
           </Card>
         </div>
 
