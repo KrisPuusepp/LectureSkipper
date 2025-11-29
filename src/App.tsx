@@ -27,22 +27,22 @@ export default function App()
         <main className="flex-1 flex flex-col min-h-0">
           <SidebarTrigger />
 
+          {/* Footer  */}
+          <div className="bg-background p-2 flex justify-around items-center z-50 flex-shrink-0">
+            <div className="flex items-center gap-2"><CircleDollarSign /> Cash: {game.cash}$</div>
+            <div className="flex items-center gap-2"><Sparkles /> Procrastinations: {game.procrastinations} P</div>
+            <div className="flex items-center gap-2"><Zap /> Energy: {game.energy} E / {game.maxEnergy} E</div>
+          </div>
+
           {/* scrollable content area */}
           <div className="flex-1 overflow-auto min-h-0">
-            <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 p-0">
               {view === "Calendar" && <CalendarView game={game} setGame={setGame} />}
               {view === "Market" && <MarketView game={game} setGame={setGame} />}
               {view === "Chat" && <ChatView game={game} setGame={setGame} />}
               {view === "Forge" && <ForgeView game={game} setGame={setGame} />}
               {view === "Settings" && <SettingsView game={game} setGame={setGame} />}
             </div>
-          </div>
-
-          {/* Footer — no fixed positioning, sits to the right of the sidebar automatically */}
-          <div className="bg-sidebar p-2 flex justify-around items-center z-50 flex-shrink-0">
-            <div className="flex items-center gap-2"><CircleDollarSign /> Cash: {game.cash}$</div>
-            <div className="flex items-center gap-2"><Sparkles /> Procrastinations: {game.procrastinations} P</div>
-            <div className="flex items-center gap-2"><Zap /> Energy: {game.energy} E / {game.maxEnergy} E</div>
           </div>
         </main>
 

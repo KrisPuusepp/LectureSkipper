@@ -107,7 +107,7 @@ export default function CalendarView({ game, setGame }: Props)
       </div>
 
       {/* Next Event */}
-      <div className="bg-card p-2 rounded flex flex-col max-w-[400px] w-full h-content">
+      <div className="bg-card p-2 rounded flex flex-col max-w-[400px] h-[580px] w-full">
         <h2 className="font-bold m-1 flex items-center gap-2">
           <BookOpen className="w-5 h-5" /> Next Event
           <Popover>
@@ -168,8 +168,8 @@ export default function CalendarView({ game, setGame }: Props)
                   <CardContent className="flex flex-col gap-1">
                     {/* Potential Understandings */}
                     <div>
-                      <div className="text-sm mb-1">
-                        Potential Understanding (U): <span className="font-bold">{game.nextLecture.potentialUnderstandings} U</span>
+                      <div className="text-sm mb-1 flex justify-between">
+                        Potential Understanding (U) <span className="font-bold">{game.nextLecture.potentialUnderstandings} U</span>
                       </div>
                       <Progress
                         value={game.nextLecture.potentialUnderstandings}
@@ -180,8 +180,8 @@ export default function CalendarView({ game, setGame }: Props)
 
                     {/* Understand Chance */}
                     <div>
-                      <div className="text-sm mb-1">
-                        Understand Chance: <span className="font-bold">{(game.nextLecture.understandChance * 100).toFixed(1)}%</span>
+                      <div className="text-sm mb-1 flex justify-between">
+                        Understand Chance <span className="font-bold">{(game.nextLecture.understandChance * 100).toFixed(1)}%</span>
                       </div>
                       <Progress
                         value={game.nextLecture.understandChance * 100}
@@ -192,7 +192,9 @@ export default function CalendarView({ game, setGame }: Props)
 
                     {/* Energy Cost */}
                     <div>
-                      <div className="text-sm mb-1">Energy Cost: <span className="font-bold">{game.nextLecture.energyCost} E</span></div>
+                      <div className="text-sm mb-1 flex justify-between">
+                        Energy Cost: <span className="font-bold">{game.nextLecture.energyCost} E</span>
+                      </div>
                       <Progress
                         value={Math.min((game.nextLecture.energyCost / game.energy) * 100, 100)}
                         className="h-3 rounded-full [&>div]:bg-red-300"
@@ -201,7 +203,9 @@ export default function CalendarView({ game, setGame }: Props)
 
                     {/* Procrastination Value */}
                     <div>
-                      <div className="text-sm mb-1">Procrastination (P) Value: <span className="font-bold">{game.nextLecture.procrastinationValue} P</span></div>
+                      <div className="text-sm mb-1 flex justify-between">
+                        Procrastination (P) Value: <span className="font-bold">{game.nextLecture.procrastinationValue} P</span>
+                      </div>
                       <Progress
                         value={game.nextLecture.procrastinationValue}
                         max={10} // placeholder max
@@ -323,8 +327,8 @@ export default function CalendarView({ game, setGame }: Props)
             return (
               <div key={i} className="flex items-center gap-2">
                 <Icon
-                  className="w-4 h-4"
-                  style={{ color: entry.color }}   // entry.color = "#00ff88" or "green", etc.
+                  className="w-4 h-4 shrink-0 inline-block"
+                  style={{ color: entry.color }}
                   strokeWidth={2}
                 />
                 <span>{entry.message}</span>
