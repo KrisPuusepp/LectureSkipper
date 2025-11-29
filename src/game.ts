@@ -56,11 +56,14 @@ export interface LogEntry
 }
 
 export type GameState = {
+  saveVersion: number;
+
   // General Game
   block: number;
   lecturesLeft: number;
   courses: Course[];
   nextLecture: Lecture | null;
+  score: number;
 
   // Menus
   examsAttended: boolean;
@@ -85,6 +88,8 @@ export type GameState = {
 export function initGame(): GameState
 {
   let game: GameState = {
+    saveVersion: CURRENT_SAVE_VERSION,
+
     block: 0,
     lecturesLeft: 0,
     courses: [],
@@ -103,6 +108,7 @@ export function initGame(): GameState
     log: [],
     examsAttended: true,
     examResults: [],
+    score: 0,
   };
 
   game = startNewBlock(game);
@@ -111,6 +117,7 @@ export function initGame(): GameState
 };
 
 const LOCAL_STORAGE_KEY = "myGameState";
+const CURRENT_SAVE_VERSION = 1;
 
 export function saveGame(game: GameState)
 {
@@ -289,6 +296,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
   newState.energy = Math.min(Math.max(newState.energy + lectureResult.energyChange, 0), newState.maxEnergy);
   newState.procrastinations += lectureResult.gainedProcrastinations;
   newState.lecturesLeft -= 1;
+  newState.score += lectureResult.gainedUnderstandings;
 
   // Log
   const courseTitle = newState.courses[lecture.courseIndex].title;
