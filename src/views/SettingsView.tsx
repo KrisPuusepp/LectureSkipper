@@ -47,7 +47,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
-              <p className="text-sm">A 90% vibe-coded game made while skipping lectures. Made by Kris Puusepp.</p>
+              <p className="text-sm">A 75% vibe-coded game made in 4 days while skipping lectures. Made by Kris Puusepp.</p>
               <p className="text-sm">On a real note, unless you have good reasons, don't skip lectures. It doesn't give you bragging rights, you are just refraining from going to lectures which you paid for.</p>
               <h2 className="font-bold text-lg">Current Game Version: {gameUpdates[0].version}</h2>
             </CardContent>
@@ -98,6 +98,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
                     </div>
 
                     <ul className="pl-4 mb-2 text-sm text-muted-foreground gap-2 list-disc">
+                      <li>Block: {run.block}</li>
                       <li>Energy: {run.energy}/{run.maxEnergy}</li>
                       <li>Cash: ${run.cash}</li>
                       <li>Procrastinations: {run.procrastinations}</li>

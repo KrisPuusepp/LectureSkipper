@@ -37,7 +37,7 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
       <div className="bg-card p-2 rounded flex flex-col max-w-[400px] w-full h-content">
         <div className="col-span-1 flex flex-col h-full">
           <h2 className="font-bold m-1 flex items-center gap-2">
-            <GraduationCap className="w-5 h-5" /> Courses
+            <GraduationCap className="w-5 h-5" /> Courses - Block {game.block}
 
             <Popover>
               <PopoverTrigger asChild>
@@ -118,7 +118,6 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
           </div>
 
           <div className="font-bold m-1 flex flex-col gap-2">
-            <p>Block: {game.block}</p>
             <p>Score: {game.score}</p>
           </div>
         </div>

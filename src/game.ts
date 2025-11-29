@@ -158,6 +158,7 @@ export function loadGame(): GameState
 export type Run = {
   date: string;
   score: number;
+  block: number;
 
   energy: number;
   maxEnergy: number;
@@ -178,6 +179,7 @@ function recordRun(game: GameState, setTopRuns: React.Dispatch<React.SetStateAct
   const newRun: Run = {
     date: new Date().toISOString(),
     score: game.score,
+    block: game.block,
     items: snapshotItems,
     energy: game.energy,
     maxEnergy: game.maxEnergy,
@@ -540,7 +542,7 @@ const courseTopics = [
   "Politics",
   "Philosophy",
   "Religion",
-  "Arts",    
+  "Arts",
 ];
 
 export function generateCourse(state: GameState, hue: number): Course
