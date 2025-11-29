@@ -477,6 +477,17 @@ const courseTemplates = [
   "Applied {{topic}}",
   "Principles of {{topic}}",
   "Modern {{topic}}",
+  "{{topic}}, but 2 times harder",
+  "Destroying {{topic}}",
+  "Daily {{topic}}",
+  "Forgetting {{topic}}",
+  "Paying for {{topic}} lectures",
+  "Blowing up {{topic}}",
+  "{{topic}} Speedrunning",
+  "Counting in {{topic}}",
+  "Experimenting with {{topic}}",
+  "History of {{topic}}",
+  "96.4% of {{topic}}",
 ];
 
 const courseTopics = [
@@ -501,6 +512,21 @@ const courseTopics = [
   "Segmentation fault (core dumped)",
   "Market Pliers",
   "Deleting System32",
+  "Uncaught Error at course:67",
+  "Bugs",
+  "Programming",
+  "Noodles",
+  "The Universe",
+  "Sunlight",
+  "Grass",
+  "Phones",
+  "Eating",
+  "TypeScript",
+  "Planet Earth",
+  "Installing Virus",
+  "Calculators",
+  "Magic",
+  "Dark Magic",
 
   "Math",
   "Physics",
@@ -514,6 +540,7 @@ const courseTopics = [
   "Politics",
   "Philosophy",
   "Religion",
+  "Arts",    
 ];
 
 export function generateCourse(state: GameState, hue: number): Course
