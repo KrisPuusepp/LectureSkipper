@@ -16,7 +16,8 @@ export default function ForgeView({ game, setGame }: Props)
 {
   const calculateUpgradeCost = (item: ItemData) =>
   {
-    return Math.floor(Math.pow(20, 1 + (item.level - item.startingLevel) / 3.14159));
+    let n = item.level - item.startingLevel + 1;
+    return (n / 2) * (50 + 50 * n);
   };
 
   const putItemIntoForge = () =>
