@@ -99,7 +99,7 @@ export function initGame(): GameState
     energyPerSkip: 5,
     nextLecture: null,
     items: Array(36).fill(null),
-    maxActivatedItems: 3,
+    maxActivatedItems: 2,
     unboxedItem: null,
     selectedItemSlots: [],
     quests: [],
@@ -664,6 +664,8 @@ export function startNewBlock(state: GameState): GameState
   newState.lecturesLeft = 28 + state.block * 2;
   newState.examsAttended = false;
   newState.examResults = [];
+
+  newState.maxActivatedItems += 1;
 
   newState.log = [{
     icon: Box,

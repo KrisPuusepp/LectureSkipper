@@ -24,6 +24,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       title: "Second Test Version",
       majorChanges: [
         "Reduced P gain in the later blocks",
+        "You can now activate one extra item per block",
       ],
       smallChanges: [
         "Improved UI on mobile",
