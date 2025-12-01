@@ -258,8 +258,7 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
                 <Zap className="w-4 h-4" /> Energy: {game.energy} E / {game.maxEnergy} E
               </div>
               <Progress
-                value={game.energy}
-                max={game.maxEnergy}
+                value={game.energy / game.maxEnergy * 100}
                 className="h-3 rounded-full"
               />
             </div>
