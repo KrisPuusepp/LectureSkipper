@@ -31,6 +31,7 @@ The main components of a good build.
 
 - [x] Cart - After Attend: whenever this lecture appears, gain +x$. Can only be used once per block.
 - [x] Video - On Attend: If the Understand Chance is above x%, it becomes 100%.
+- [x] Notes - On Attend: Increases the Potential Understanding by x%, but increases Energy Cost by x%.
 - [ ] Cat - On Round: Eats the item in the slot directly above it in the Inventory. If an item is eaten, gives you x P and x$. 
 - [ ] GPS - On Attend: You have a +x% chance of understanding this lecture.
 - [ ] Hacking - On Attend: this lecture cannot appear the next x times. Can only be used once per block.
