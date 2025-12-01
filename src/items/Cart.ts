@@ -16,7 +16,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**After Attend**: Whenever this lecture appears, gain **+${item.level * 30}$**. Can only be used once per block`,
+    `**After Attend**: Whenever this lecture appears, gain **+${item.level * 30}$**. Can only be used once per block.`,
   getEnabled: (item, state) => !itemUtils.getItemUsedThisBlock(item, state),
 };
 
