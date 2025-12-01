@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import type { GameState, Run } from "@/game";
@@ -16,6 +16,79 @@ export default function App()
 {
   const [game, setGame] = useState<GameState>(loadGame());
   const [view, setView] = useState<View>("Calendar");
+  useEffect(() =>
+  {
+    // Setting Calendar View selected items
+    if (view == "Calendar")
+    {
+      setGame((prev) =>
+      {
+        let slots: number[] = [];
+
+        for (let i = 0; i < prev.items.length; i++)
+        {
+          const item = prev.items[i];
+          if (item && prev.calendarViewSelectedItemIDs.includes(item.id))
+          {
+            slots.push(i);
+          }
+        }
+
+        const newState: GameState = {
+          ...prev,
+          selectedItemSlots: slots,
+        };
+
+        // Recreate calendarViewSelectedItemIDs because deleted items may be in the list
+        newState.calendarViewSelectedItemIDs = newState.selectedItemSlots.map(slotID => newState.items[slotID]?.id || "");
+
+        console.log(newState.calendarViewSelectedItemIDs);
+
+        return newState;
+      });
+    } else
+    {
+      setGame((prev) =>
+      {
+        const newState: GameState = {
+          ...prev,
+          selectedItemSlots: [],
+        };
+        return newState;
+      });
+    }
+
+
+
+    // Keyboard buttons to switch between tabs
+
+    const handleKeyDown = (e: KeyboardEvent) =>
+    {
+      // Map number keys to views
+      const keyToView: Record<string, View> = {
+        "1": "Calendar",
+        "2": "Market",
+        "3": "Forge",
+        "4": "Chat",
+        "5": "Settings",
+      };
+
+      const view = keyToView[e.key];
+      if (view)
+      {
+        setView(view);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup listener on unmount
+    return () =>
+    {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [setView]);
+
   const [topRuns, setTopRuns] = useState<Run[]>(() =>
   {
     try
@@ -31,7 +104,7 @@ export default function App()
   return (
     <SidebarProvider>
       <div className="flex h-screen w-screen">
-        <AppSidebar setGame={setGame} currentView={view} setView={setView} />
+        <AppSidebar currentView={view} setView={setView} />
 
         <main className="flex-1 flex flex-col min-h-0">
           <SidebarTrigger className="w-10 h-10 sm:fixed z-20" />

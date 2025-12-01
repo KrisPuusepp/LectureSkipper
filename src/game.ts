@@ -73,6 +73,7 @@ export type GameState = {
   quests: Quest[];
   unboxedItem: ItemData | null;
   selectedItemSlots: number[];
+  calendarViewSelectedItemIDs: string[];
 
   // Player Stats
   energy: number;
@@ -103,6 +104,7 @@ export function initGame(): GameState
     maxActivatedItems: 3,
     unboxedItem: null,
     selectedItemSlots: [],
+    calendarViewSelectedItemIDs: [],
     quests: [],
     log: [],
     examsAttended: true,

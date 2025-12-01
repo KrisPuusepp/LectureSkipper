@@ -23,13 +23,30 @@ export default function Inventory({
     setGame(prev =>
     {
       const selected = [...prev.selectedItemSlots];
+      const item = prev.items[itemSlotID];
       if (selected.includes(itemSlotID))
       {
         selected.splice(selected.indexOf(itemSlotID), 1);
+
+        // Calendar View selected items
+        if (mode === "calendar" && item && prev.calendarViewSelectedItemIDs.includes(item.id))
+        {
+          prev.calendarViewSelectedItemIDs.splice(prev.calendarViewSelectedItemIDs.indexOf(item.id), 1);
+        }
       } else
       {
-        if (mode === "calendar" && prev.selectedItemSlots.length >= prev.maxActivatedItems) return prev;
         selected.push(itemSlotID);
+
+        // Calendar View selected items
+        if (mode === "calendar")
+        {
+          if (prev.selectedItemSlots.length >= prev.maxActivatedItems) return prev;
+
+          if (item && !prev.calendarViewSelectedItemIDs.includes(item.id))
+          {
+            prev.calendarViewSelectedItemIDs.push(item.id);
+          }
+        }
       }
 
       const newState = { ...prev, selectedItemSlots: selected };

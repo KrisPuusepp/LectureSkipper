@@ -42,12 +42,11 @@ const items = [
 
 interface Props
 {
-  setGame: Dispatch<SetStateAction<GameState>>
   currentView: View;
   setView: Dispatch<SetStateAction<View>>;
 }
 
-export function AppSidebar({ setGame, currentView, setView }: Props)
+export function AppSidebar({ currentView, setView }: Props)
 {
   return (
     <Sidebar collapsible="icon">
@@ -59,11 +58,7 @@ export function AppSidebar({ setGame, currentView, setView }: Props)
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <button onClick={() =>
-                    {
-                      setView(item.title as View);
-                      setGame((g) => ({ ...g, selectedItemSlots: [] }));
-                    }} className={`flex items-center gap-2 p-1 ${currentView === item.title ? "ring-1 ring-gray-500" : ""}`}>
+                    <button onClick={() => {setView(item.title as View);}} className={`flex items-center gap-2 p-1 ${currentView === item.title ? "ring-1 ring-gray-500" : ""}`}>
                       <item.icon />
                       <span className={currentView === item.title ? "font-bold" : ""}>{item.title}</span>
                     </button>

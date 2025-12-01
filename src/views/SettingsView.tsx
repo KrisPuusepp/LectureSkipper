@@ -31,6 +31,8 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       smallChanges: [
         "Improved UI on mobile",
         "Renamed Top Runs to My Top Runs for clarity",
+        "On desktop: press 1, 2, 3, 4 and 5 to switch tabs",
+        "Calendar View selected items are now tracked separately from the rest of the views",
       ],
       bugFixes: [
         "Energy bar now correctly shows the percentage of energy remaining",
