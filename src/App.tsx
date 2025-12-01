@@ -19,7 +19,7 @@ export default function App()
   useEffect(() =>
   {
     // Setting Calendar View selected items
-    if (view == "Calendar")
+    if (view === "Calendar")
     {
       setGame((prev) =>
       {
@@ -87,7 +87,7 @@ export default function App()
     {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [setView]);
+  }, [view]);
 
   const [topRuns, setTopRuns] = useState<Run[]>(() =>
   {
