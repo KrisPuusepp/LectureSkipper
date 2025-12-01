@@ -25,6 +25,7 @@ export const itemBehavior: ItemBehavior = {
   {
     if (params.lecture.understandChance > itemUtils.exponentialPercentage(params.item.level, 0.03, 0.9, 0))
     {
+      params.lecture.understandChance = 1;
       params.logEntry.message = `Understand Chance Maximized`;
     }
   },

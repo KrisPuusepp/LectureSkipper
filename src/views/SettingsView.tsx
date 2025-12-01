@@ -19,7 +19,25 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
 {
   const gameUpdates = [
     {
-      version: "0.1.0a",
+      version: "0.2.0",
+      date: "December 2, 2025",
+      title: "Second Test Version",
+      majorChanges: [
+        "Reduced P gain in the later blocks",
+        "You can now activate one extra item per block",
+      ],
+      smallChanges: [
+        "Improved UI on mobile",
+        "Renamed Top Runs to My Top Runs for clarity",
+      ],
+      bugFixes: [
+        "Energy bar now correctly shows the percentage of energy remaining",
+        "Items now get deselected when they are no longer enabled",
+        "Video item now works",
+      ],
+    },
+    {
+      version: "0.1.0",
       date: "December 1, 2025",
       title: "First Test Version",
       description: "The first public release of Lecture Skipper.",
@@ -80,12 +98,12 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
           </Card>
         </div>
 
-        {/* Top Runs */}
+        {/* My Top Runs */}
         <div className="p-2 rounded flex flex-col max-w-[500px] w-full h-content">
           <Card className="gap-4">
             <CardHeader className="gap-0">
               <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-5 h-5" /> Top Runs
+                <Trophy className="w-5 h-5" /> My Top Runs
               </CardTitle>
             </CardHeader>
 

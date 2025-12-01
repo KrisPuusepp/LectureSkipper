@@ -99,7 +99,7 @@ export function initGame(): GameState
     energyPerSkip: 5,
     nextLecture: null,
     items: Array(36).fill(null),
-    maxActivatedItems: 3,
+    maxActivatedItems: 2,
     unboxedItem: null,
     selectedItemSlots: [],
     quests: [],
@@ -378,6 +378,9 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
 
   newState.log.reverse();
 
+  // Deselect items that were disabled during the round
+  newState.selectedItemSlots = newState.selectedItemSlots.filter(slotID => newState.items[slotID] !== null && itemMetaRegistry[newState.items[slotID].name].getEnabled(newState.items[slotID], newState));
+
   saveGame(newState);
 
   return newState;
@@ -527,7 +530,7 @@ export function generateCourse(state: GameState, hue: number): Course
     color: chroma.hsv(hue, 1, 0.25).hex(),
     effects: {},
     maxUnderstandingsPerLecture: 10 * state.block + Math.round(courseDifficulty * (2 ** state.block)),
-    maxProcrastinationsPerLecture: 10 * state.block + Math.round(courseDifficulty * (2 ** state.block)),
+    maxProcrastinationsPerLecture: 10 * state.block + Math.round(courseDifficulty * state.block * 20),
     maxEnergyCostPerLecture: 10 * state.block
   };
 }
@@ -661,6 +664,8 @@ export function startNewBlock(state: GameState): GameState
   newState.lecturesLeft = 28 + state.block * 2;
   newState.examsAttended = false;
   newState.examResults = [];
+
+  newState.maxActivatedItems += 1;
 
   newState.log = [{
     icon: Box,
