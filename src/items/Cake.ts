@@ -1,8 +1,8 @@
-import { Apple as ItemIcon } from "lucide-react";
+import { CakeSlice as ItemIcon } from "lucide-react";
 import { type ItemData, type ItemMeta, type ItemBehavior, itemUtils } from "@/item";
 
 export const itemData: ItemData = {
-  name: "Apple",
+  name: "Cake",
   rarity: 1,
   dropWeight: 100,
   
@@ -16,13 +16,13 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: Increase your max energy by **${item.level} E**.`,
+    `**On Use**: Increase your current energy by **${item.level} E**.`,
   getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
-  beforeAttendLecture: (params) => {
-    params.state.maxEnergy += params.item.level;
-    params.logEntry.message = `Max energy +${params.item.level} E`;
+  beforeUse: (params) => {
+    params.state.energy += params.item.level;
+    params.logEntry.message = `Energy +${params.item.level} E`;
   },
 };

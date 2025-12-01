@@ -66,7 +66,6 @@ export default function ItemSlot({
     );
   }
 
-
   return (
     <Popover>
       <PopoverTrigger asChild>{slot}</PopoverTrigger>

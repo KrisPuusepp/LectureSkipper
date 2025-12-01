@@ -19,9 +19,10 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
 {
   const gameUpdates = [
     {
-      version: "1.0.0",
-      date: "...",
-      title: "Initial Release",
+      version: "0.1.0a",
+      date: "December 1, 2025",
+      title: "First Test Version",
+      description: "The first public release of Lecture Skipper Simulator.",
       majorChanges: [
 
       ],
@@ -117,9 +118,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
                     </ul>
 
                     <div className="flex flex-wrap gap-2">
-                      {run.items.map((item) => (
+                      {run.items.map((item, idx) => (
                         <ItemSlot
-                          key={`run-${index}-${item.name}`}
+                          key={`run-${index}-${idx}`}
                           item={item} // restore icon if needed
                           game={{} as GameState}
                           selected={false}
@@ -174,15 +175,27 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
                 <ScrollText className="w-5 h-5" /> Game Updates
               </CardTitle>
             </CardHeader>
+
             <CardContent className="flex flex-col gap-4">
               {gameUpdates.map((update, i) => (
-                <div key={i} className="border-b border-gray-700 pb-2 last:border-b-0">
+                <div
+                  key={i}
+                  className="border-b border-gray-700 pb-2 last:border-b-0"
+                >
                   <h4 className="font-bold">
                     {update.title} - v{update.version} ({update.date})
                   </h4>
 
+                  {/* Description */}
+                  {update.description && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {update.description}
+                    </p>
+                  )}
+
+                  {/* Major Changes */}
                   {update.majorChanges.length > 0 && (
-                    <div className="ml-4 mt-1">
+                    <div className="ml-4 mt-2">
                       <span className="font-semibold">Major Changes:</span>
                       <ul className="list-disc list-inside">
                         {update.majorChanges.map((item, j) => (
@@ -192,8 +205,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
                     </div>
                   )}
 
+                  {/* Small Changes */}
                   {update.smallChanges.length > 0 && (
-                    <div className="ml-4 mt-1">
+                    <div className="ml-4 mt-2">
                       <span className="font-semibold">Small Changes:</span>
                       <ul className="list-disc list-inside">
                         {update.smallChanges.map((item, j) => (
@@ -203,8 +217,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
                     </div>
                   )}
 
+                  {/* Bug Fixes */}
                   {update.bugFixes.length > 0 && (
-                    <div className="ml-4 mt-1">
+                    <div className="ml-4 mt-2">
                       <span className="font-semibold">Bug Fixes:</span>
                       <ul className="list-disc list-inside">
                         {update.bugFixes.map((item, j) => (
@@ -216,9 +231,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
                 </div>
               ))}
             </CardContent>
-
           </Card>
         </div>
+
       </div>
     </div>
   );

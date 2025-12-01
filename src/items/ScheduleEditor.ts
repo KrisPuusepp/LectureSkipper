@@ -16,7 +16,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: guarantees that the next **${item.level}** lectures will be about this course. Can only be used once per block.`,
+    `**On Attend**: Guarantees that the next **${item.level}** lectures will be about this course. Can only be used once per block.`,
   getEnabled: (item, state) => !itemUtils.getItemUsedThisBlock(item, state),
 };
 

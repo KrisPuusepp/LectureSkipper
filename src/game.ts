@@ -71,7 +71,6 @@ export type GameState = {
   log: LogEntry[];
   quests: Quest[];
   unboxedItem: ItemData | null;
-  forgeItem: ItemData | null;
   selectedItemSlots: number[];
 
   // Player Stats
@@ -102,7 +101,6 @@ export function initGame(): GameState
     items: Array(36).fill(null),
     maxActivatedItems: 3,
     unboxedItem: null,
-    forgeItem: null,
     selectedItemSlots: [],
     quests: [],
     log: [],
@@ -210,47 +208,6 @@ function recordRun(game: GameState, setTopRuns: React.Dispatch<React.SetStateAct
   });
 }
 
-
-/**
- * Mutates the GameState that you give it.
- */
-export function generateLecture(state: GameState): Lecture
-{
-  let courseIndex = Math.floor(Math.random() * 3);
-
-  // If any course has the effect "Guaranteed", set courseIndex to that course
-  for (let i = 0; i < state.courses.length; i++)
-  {
-    if (itemUtils.getEffectStacks(state, i, "Guaranteed") > 0)
-    {
-      courseIndex = i;
-      itemUtils.addEffectStacksToCourse(state, i, "Guaranteed", -1);
-      break;
-    }
-  }
-
-  let startHour = Math.floor(Math.random() * 12 + state.block);
-  let endHour = startHour + Math.min(2 ** state.block, 1000);
-
-  const lecture: Lecture = {
-    courseIndex: courseIndex,
-    startTime: `${startHour}:00`,
-    endTime: `${endHour}:00`,
-    potentialUnderstandings: Math.ceil(Math.random() * state.courses[courseIndex].maxUnderstandingsPerLecture),
-    understandChance: Math.random(),
-    energyCost: Math.ceil(Math.random() * state.courses[courseIndex].maxEnergyCostPerLecture),
-    procrastinationValue: Math.ceil(Math.random() * state.courses[courseIndex].maxProcrastinationsPerLecture),
-  };
-
-  if (itemUtils.getEffectStacks(state, lecture.courseIndex, "Cash") > 0)
-  {
-    state.cash += itemUtils.getEffectStacks(state, lecture.courseIndex, "Cash");
-    state.log.push({ icon: DollarSign, color: "white", message: `+${itemUtils.getEffectStacks(state, lecture.courseIndex, "Cash")}$` });
-  }
-
-  return lecture;
-}
-
 export function startRound(state: GameState, action: "attend" | "skip"): GameState
 {
   if (!state.nextLecture) return state;
@@ -328,8 +285,8 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     const gainedProcrastinations = lecture.procrastinationValue;
     const energyChange =
       newState.energy / newState.maxEnergy < 0.5
-        ? newState.energyPerSkip
-        : Math.round(newState.energyPerSkip / 2);
+        ? Math.round(newState.energyPerSkip / 2)
+        : newState.energyPerSkip;
 
     lectureResult = {
       action: action,
@@ -565,12 +522,12 @@ export function generateCourse(state: GameState, hue: number): Course
 
   return {
     title,
-    goal: 10 * state.block + Math.floor(courseDifficulty * (3 ** state.block)),
+    goal: 10 * state.block + Math.round(courseDifficulty * (3 ** state.block)),
     understandings: 0,
     color: chroma.hsv(hue, 1, 0.25).hex(),
     effects: {},
-    maxUnderstandingsPerLecture: 2 * state.block + Math.floor(courseDifficulty * (2 ** state.block)),
-    maxProcrastinationsPerLecture: 5 * state.block + Math.floor(courseDifficulty * (2 ** state.block)),
+    maxUnderstandingsPerLecture: 10 * state.block + Math.round(courseDifficulty * (2 ** state.block)),
+    maxProcrastinationsPerLecture: 10 * state.block + Math.round(courseDifficulty * (2 ** state.block)),
     maxEnergyCostPerLecture: 10 * state.block
   };
 }
@@ -580,13 +537,18 @@ function generateQuest(state: GameState): Quest
   let requirements: Currency[] = [];
   let rewards: Currency[] = [];
   let colors = [];
-  
-  let questDifficulty = Math.random() + 0.5;
-  
+
+  // U requirement comes from questDifficulty * targetCourse.goal
+  // effectively "how many courses worth of U is required to complete this quest?"
+  let x = Math.random();
+  let questDifficulty = 4 ** x - 0.9;
+  // min - 0.30679
+  // max - 4
+
   // Generating requirements
   let randomCourseIndex = Math.floor(Math.random() * state.courses.length);
   let targetCourse = state.courses[randomCourseIndex];
-  
+
   requirements.push({
     type: "understandings",
     amount: Math.round(questDifficulty * targetCourse.goal),
@@ -605,7 +567,7 @@ function generateQuest(state: GameState): Quest
   // Generating rewards
   rewards.push({
     type: "cash",
-    amount: Math.round(10 * state.block + 5 * questDifficulty * (2 ** state.block))
+    amount: Math.round(50 + 20 * state.block + (10 * state.block) ** questDifficulty)
   });
 
   return {
@@ -614,6 +576,46 @@ function generateQuest(state: GameState): Quest
     rewards: rewards,
     color: chroma.average(colors).hex(),
   };
+}
+
+/**
+ * Mutates the GameState that you give it.
+ */
+export function generateLecture(state: GameState): Lecture
+{
+  let courseIndex = Math.floor(Math.random() * 3);
+
+  // If any course has the effect "Guaranteed", set courseIndex to that course
+  for (let i = 0; i < state.courses.length; i++)
+  {
+    if (itemUtils.getEffectStacks(state, i, "Guaranteed") > 0)
+    {
+      courseIndex = i;
+      itemUtils.addEffectStacksToCourse(state, i, "Guaranteed", -1);
+      break;
+    }
+  }
+
+  let startHour = Math.floor(9 + Math.random() * 12 + state.block);
+  let endHour = startHour + Math.min(2 ** state.block, 1000);
+
+  const lecture: Lecture = {
+    courseIndex: courseIndex,
+    startTime: `${startHour}:00`,
+    endTime: `${endHour}:00`,
+    potentialUnderstandings: Math.ceil(Math.random() * state.courses[courseIndex].maxUnderstandingsPerLecture),
+    understandChance: Math.random(),
+    energyCost: Math.ceil(Math.random() * state.courses[courseIndex].maxEnergyCostPerLecture),
+    procrastinationValue: Math.ceil(Math.random() * state.courses[courseIndex].maxProcrastinationsPerLecture),
+  };
+
+  if (itemUtils.getEffectStacks(state, lecture.courseIndex, "Cash") > 0)
+  {
+    state.cash += itemUtils.getEffectStacks(state, lecture.courseIndex, "Cash");
+    state.log.push({ icon: DollarSign, color: "white", message: `+${itemUtils.getEffectStacks(state, lecture.courseIndex, "Cash")}$` });
+  }
+
+  return lecture;
 }
 
 export function startNewBlock(state: GameState): GameState
@@ -656,7 +658,7 @@ export function startNewBlock(state: GameState): GameState
   const nextLecture: Lecture = generateLecture(newState);
   newState.nextLecture = nextLecture;
 
-  newState.lecturesLeft = 12 + state.block * 2;
+  newState.lecturesLeft = 28 + state.block * 2;
   newState.examsAttended = false;
   newState.examResults = [];
 

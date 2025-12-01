@@ -4,7 +4,7 @@ import { type ItemData, type ItemMeta, type ItemBehavior, itemUtils } from "@/it
 export const itemData: ItemData = {
   name: "Cookie",
   rarity: 1,
-  dropWeight: 1,
+  dropWeight: 100,
 
   // Don't change
   level: 1,
@@ -16,14 +16,14 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Use**: has a **${Math.min(item.level * 10, 100)}%** chance of giving you a Cookie. Going over 100% can give you more cookies per use.`,
+    `**On Use**: Has a **${Math.min(item.level * 10, 100)}%** chance of giving you a Level **${item.level}** Cookie. Going over 100% can give you more cookies per use.`,
   getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
   beforeUse: (params) =>
   {
-    let chanceLeft = params.item.level * 1000 / 100;
+    let chanceLeft = params.item.level * 10 / 100;
     while (true)
     {
       let cookie = Math.random() < chanceLeft;
@@ -31,7 +31,7 @@ export const itemBehavior: ItemBehavior = {
       {
         chanceLeft -= 1;
 
-        if (!itemUtils.createItemInstanceAndAddToInventory(itemData, params.state))
+        if (!itemUtils.createItemInstanceAndAddToInventory(params.item, params.state))
           return;
       }
       else break;

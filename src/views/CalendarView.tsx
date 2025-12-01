@@ -43,7 +43,7 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
               <PopoverTrigger asChild>
                 <HelpCircle className="w-4 h-4 cursor-pointer" />
               </PopoverTrigger>
-              <PopoverContent className="w-64" side="top">
+              <PopoverContent className="w-96" side="top">
                 <h2 className="font-bold m-1 flex items-center gap-2">
                   <GraduationCap className="w-5 h-5" /> Courses
                 </h2>
@@ -61,7 +61,7 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
                 <p className="text-sm">
                   Your chance of passing a course depends on the amount of Understanding (U) acquired during the block. <span className="italic text-red-500">Failing 2 or more exams in a block results in a game over.</span>
                   <br></br><br></br>
-                  You can gain Understanding (U) past the goal of the course: the chance to pass will be capped at 100%.
+                  You can gain more Understanding (U) than the course requires. The chance to pass will be capped at 100%.
                 </p>
               </PopoverContent>
             </Popover>
@@ -131,15 +131,15 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
             <PopoverTrigger asChild>
               <HelpCircle className="w-4 h-4 cursor-pointer" />
             </PopoverTrigger>
-            <PopoverContent className="w-64" side="top">
+            <PopoverContent className="w-96" side="top">
               <h2 className="font-bold m-1 flex items-center gap-2">
                 <BookOpen className="w-5 h-5" /> Lectures
               </h2>
 
               <p className="text-sm">
                 <ul className="list-disc pl-4 pt-2">
-                  <li><span className="font-bold">Attend</span>: Attending a lecture has a chance of giving you Understanding (U) for a course. Attending takes time, which reduces your energy. <span className="italic text-red-500">You cannot attend if you don't have enough energy. You restore energy half as fast if you have less than 50% of your maximum.</span></li>
-                  <li><span className="font-bold">Skip</span>: Skipping gives you Procrastinations (P) and restores energy.</li>
+                  <li><span className="font-bold">Attend</span>: Attending a lecture has a chance of giving you Understanding (U) for a course. Attending takes time, which reduces your energy. <span className="italic text-red-500">You cannot attend if you don't have enough energy.</span></li>
+                  <li><span className="font-bold">Skip</span>: Skipping gives you Procrastinations (P) and restores energy. <span className="italic text-red-500">You restore energy half as fast if you have less than 50% of your maximum.</span></li>
                 </ul>
               </p>
             </PopoverContent>

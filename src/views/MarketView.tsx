@@ -129,7 +129,7 @@ export default function MarketView({ game, setGame }: Props)
             <PopoverTrigger asChild>
               <HelpCircle className="w-4 h-4 cursor-pointer" />
             </PopoverTrigger>
-            <PopoverContent className="w-64" side="top">
+            <PopoverContent className="w-96" side="top">
               <h2 className="font-bold m-1 flex items-center gap-2">
                 <Store className="w-5 h-5" /> Store
               </h2>
@@ -178,7 +178,7 @@ export default function MarketView({ game, setGame }: Props)
             <PopoverTrigger asChild>
               <HelpCircle className="w-4 h-4 cursor-pointer" />
             </PopoverTrigger>
-            <PopoverContent className="w-64" side="top">
+            <PopoverContent className="w-96" side="top">
               <h2 className="font-bold m-1 flex items-center gap-2">
                 <PackageOpen className="w-5 h-5" /> Unboxing
               </h2>

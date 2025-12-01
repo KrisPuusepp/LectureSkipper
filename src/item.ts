@@ -109,4 +109,43 @@ export const itemUtils = {
       return 0;
     return state.courses[courseIndex].effects[effect];
   },
+
+  /**
+   * Exponential decay function.
+   *
+   * @param x Input number, preferrably from 1 → infinity (e.g., item.level).
+   * @param k Slope of decay. `0.1` = slow decay, `1.0` = fast decay.
+   * @param startValue Value when x = 1.
+   * @param endValue Asymptotic minimum value as x → infinity.
+   * @returns A value between startValue and endValue.
+   */
+  exponentialPercentage(x: number, k: number, startValue: number, endValue: number): number
+  {
+    // f(x) = end + (start - end) * e^(-k*(x-1))
+    return endValue + (startValue - endValue) * Math.exp(-k * (x - 1));
+  },
+
+  /**
+   * A generalized geometric-series easing function.
+   *
+   * The classic form:
+   *   f(step) = max * (1 - ratio^step)
+   *
+   * Behavior:
+   *   - step = 0 → startValue
+   *   - step increases → value approaches endValue
+   *   - Smaller ratio → faster convergence
+   *
+   * @param step A non-negative number representing iterative steps.
+   * @param ratio The geometric decay ratio. Example: `0.5` = halves each step, `0.9` = slow decay.
+   * @param startValue The value at step = 0.
+   * @param endValue The asymptotic value as step → ∞.
+   * @returns A value between startValue and endValue.
+   */
+  geometricSeries(step: number, ratio: number, startValue: number, endValue: number): number
+  {
+    // f(step) = endValue + (startValue - endValue) * (ratio^step)
+    return endValue + (startValue - endValue) * Math.pow(ratio, step);
+  },
+
 };

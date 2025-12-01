@@ -1,4 +1,4 @@
-import { Box, Check, HelpCircle, LayoutGrid, Package } from "lucide-react";
+import { Box, Boxes, Check, HelpCircle, LayoutGrid, Package } from "lucide-react";
 import ItemSlot from "@/components/ItemSlot";
 import { saveGame, type GameState } from "@/game";
 import type { Dispatch, SetStateAction } from "react";
@@ -48,7 +48,6 @@ export default function Inventory({
       const selected = [...prev.selectedItemSlots];
 
       let unboxedItem = prev.unboxedItem;
-      let forgeItem = prev.forgeItem;
 
       if (selected.length === 1)
       {
@@ -63,10 +62,6 @@ export default function Inventory({
       {
         items[itemSlotID] = unboxedItem;
         unboxedItem = null;
-      } else if (forgeItem)
-      {
-        items[itemSlotID] = forgeItem;
-        forgeItem = null;
       }
 
       const newState = {
@@ -74,7 +69,6 @@ export default function Inventory({
         items,
         selectedItemSlots: [],
         unboxedItem,
-        forgeItem,
       };
 
       saveGame(newState);
@@ -112,15 +106,31 @@ export default function Inventory({
           <PopoverTrigger asChild>
             <HelpCircle className="w-4 h-4 cursor-pointer" />
           </PopoverTrigger>
-          <PopoverContent className="w-64" side="top">
+          <PopoverContent className="w-96" side="top">
             <h2 className="font-bold m-1 flex items-center gap-2">
               <Box className="w-5 h-5" /> Items
             </h2>
 
             <p className="text-sm">
-              Before you attend/skip a lecture or start your exams, you can activate items to apply bonuses and special effects.
+              Before you attend/skip a lecture, you can activate items to apply bonuses and special effects.
               <br></br>
-              Unless otherwise stated, items have no usage limits.
+              Unless stated otherwise, <strong>items have no usage limits</strong>.
+            </p>
+
+            <br></br>
+
+            <h2 className="font-bold m-1 flex items-center gap-2">
+              <Boxes className="w-5 h-5" /> Types
+            </h2>
+
+            <p className="text-sm">
+              <ul className="list-disc pl-4 pt-2">
+                <li>On <strong>Attend</strong>: activates when attending a lecture </li>
+                <li>On <strong>Skip</strong>: activates when skipping a lecture </li>
+                <li>On <strong>Use</strong>: activates when attending or skipping a lecture </li>
+                <li>On <strong>Round</strong>: always activates, even if the item is not selected </li>
+                <li><strong>Consumable</strong>: used up after attending or skipping a lecture </li>
+              </ul>
             </p>
 
             <br></br>
@@ -130,7 +140,7 @@ export default function Inventory({
             </h2>
 
             <p className="text-sm">
-              Click on an item to select/activate it. Click on an empty slot to move items there. While in the Forge or Market, click on the Trash button to remove them.
+              Click on an item to select/activate it. Click on an empty slot to move items there. Outside of the Calendar view, click on the Trash button to remove items.
             </p>
           </PopoverContent>
         </Popover>
