@@ -2,9 +2,9 @@ import { NotebookPen as ItemIcon } from "lucide-react";
 import { type ItemData, type ItemMeta, type ItemBehavior, itemUtils } from "@/item";
 
 export const itemData: ItemData = {
-  name: "Taking Notes",
+  name: "Notes",
   rarity: 2,
-  dropWeight: 50,
+  dropWeight: 100,
 
   // Don't change
   level: 1,
@@ -16,18 +16,17 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: Makes the lecture give **${item.level*10}%** more understanding, but the energy cost will increase by **${(item.level+1)*10}%**.`,
+    `**On Attend**: Increases the Potential Understanding by **${item.level*10}%**, but increases Energy Cost by **${item.level*20}%**.`,
   getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
   beforeAttendLecture: (params) =>
   {
-    
     let lastEnergy = params.lecture.energyCost;
-    params.lecture.energyCost += Math.floor(params.lecture.energyCost * (params.item.level+1)/10);
+    params.lecture.energyCost += Math.round(params.lecture.energyCost * params.item.level*20/100);
     let lastUnderstandings = params.lecture.potentialUnderstandings;
-    params.lecture.potentialUnderstandings += Math.floor(params.lecture.potentialUnderstandings * params.item.level/10);
-    params.logEntry.message = `Lecture ${lastUnderstandings} U → ${params.lecture.potentialUnderstandings} U and ${lastEnergy} E → ${params.lecture.energyCost} E`;
+    params.lecture.potentialUnderstandings += Math.round(params.lecture.potentialUnderstandings * params.item.level*10/100);
+    params.logEntry.message = `Potential ${lastUnderstandings} U → ${params.lecture.potentialUnderstandings} U and ${lastEnergy} E → ${params.lecture.energyCost} E`;
   },
 };
