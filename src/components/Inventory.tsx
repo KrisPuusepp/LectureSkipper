@@ -1,4 +1,4 @@
-import { Box, Boxes, Check, HelpCircle, LayoutGrid, Package } from "lucide-react";
+import { Box, Boxes, Check, HelpCircle, LayoutGrid, ListOrdered, Package } from "lucide-react";
 import ItemSlot from "@/components/ItemSlot";
 import { saveGame, type GameState } from "@/game";
 import type { Dispatch, SetStateAction } from "react";
@@ -36,7 +36,7 @@ export default function Inventory({
         }
       } else
       {
-        if(mode !== "calendar" || selected.length < prev.maxActivatedItems)
+        if (mode !== "calendar" || selected.length < prev.maxActivatedItems)
           selected.push(itemSlotID);
 
         // Calendar View selected items
@@ -158,6 +158,16 @@ export default function Inventory({
 
             <p className="text-sm">
               Click on an item to select/activate it. Click on an empty slot to move items there. Outside of the Calendar view, click on the Trash button to remove items.
+            </p>
+
+            <br></br>
+
+            <h2 className="font-bold m-1 flex items-center gap-2">
+              <ListOrdered className="w-5 h-5" /> Item Activation Order
+            </h2>
+
+            <p className="text-sm">
+              Items activate from left to right, top to bottom in the Inventory.
             </p>
           </PopoverContent>
         </Popover>
