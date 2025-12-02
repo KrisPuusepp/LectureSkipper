@@ -471,6 +471,7 @@ const courseTemplates = [
   "Experimenting with {{topic}}",
   "History of {{topic}}",
   "96.4% of {{topic}}",
+  "Philosophy of {{topic}}",
 ];
 
 const courseTopics = [
@@ -479,6 +480,7 @@ const courseTopics = [
   "Applications",
   "Principles",
   "Modernity",
+  "Philosophy",
 
   "Doomscrolling",
   "Skipping Lectures",
@@ -510,6 +512,8 @@ const courseTopics = [
   "Calculators",
   "Magic",
   "Dark Magic",
+  "Breakdowns",
+  "Ragebaiting",
 
   "Math",
   "Physics",
