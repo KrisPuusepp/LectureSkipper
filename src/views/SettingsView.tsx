@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button";
 import { Settings, RefreshCcw, PenOff, ScrollText, Box, Trophy } from "lucide-react";
 import type { GameState, Run } from "@/game";
@@ -18,6 +19,21 @@ interface Props
 export default function SettingsView({ game, setGame, topRuns }: Props)
 {
   const gameUpdates = [
+    {
+      version: "0.3.0",
+      date: "December ?????, 2025",
+      title: "Third Test Version",
+      description: "Difficulty overhaul, new items, lots of tweaks",
+      majorChanges: [
+        "...",
+      ],
+      smallChanges: [
+        "Dozens of UI changes",
+      ],
+      bugFixes: [
+        "...",
+      ],
+    },
     {
       version: "0.2.0",
       date: "December 2, 2025",
@@ -199,59 +215,62 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
             </CardHeader>
 
             <CardContent className="flex flex-col gap-4">
-              {gameUpdates.map((update, i) => (
-                <div
-                  key={i}
-                  className="border-b border-gray-700 pb-2 last:border-b-0"
-                >
-                  <h4 className="font-bold">
-                    {update.title} - v{update.version} ({update.date})
-                  </h4>
+              <Accordion type="single" collapsible className="w-full">
+                {gameUpdates.map((update, i) => (
+                  <AccordionItem key={i} value={`item-${i}`}>
+                    <AccordionTrigger className="text-left">
+                      <h4 className="font-bold">
+                        {update.title} — v{update.version} ({update.date})
+                      </h4>
+                    </AccordionTrigger>
 
-                  {/* Description */}
-                  {update.description && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {update.description}
-                    </p>
-                  )}
+                    <AccordionContent>
+                      {/* Description */}
+                      {update.description && (
+                        <p className="text-sm mt-1">
+                          {update.description}
+                        </p>
+                      )}
 
-                  {/* Major Changes */}
-                  {update.majorChanges.length > 0 && (
-                    <div className="ml-4 mt-2">
-                      <span className="font-semibold">Major Changes:</span>
-                      <ul className="list-disc list-inside">
-                        {update.majorChanges.map((item, j) => (
-                          <li key={j}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                      {/* Major Changes */}
+                      {update.majorChanges?.length > 0 && (
+                        <div className="ml-4 mt-3">
+                          <span className="font-semibold">Major Changes:</span>
+                          <ul className="list-disc list-inside text-sm">
+                            {update.majorChanges.map((item, j) => (
+                              <li key={j}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
-                  {/* Small Changes */}
-                  {update.smallChanges.length > 0 && (
-                    <div className="ml-4 mt-2">
-                      <span className="font-semibold">Small Changes:</span>
-                      <ul className="list-disc list-inside">
-                        {update.smallChanges.map((item, j) => (
-                          <li key={j}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                      {/* Small Changes */}
+                      {update.smallChanges?.length > 0 && (
+                        <div className="ml-4 mt-3">
+                          <span className="font-semibold">Small Changes:</span>
+                          <ul className="list-disc list-inside text-sm">
+                            {update.smallChanges.map((item, j) => (
+                              <li key={j}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
-                  {/* Bug Fixes */}
-                  {update.bugFixes.length > 0 && (
-                    <div className="ml-4 mt-2">
-                      <span className="font-semibold">Bug Fixes:</span>
-                      <ul className="list-disc list-inside">
-                        {update.bugFixes.map((item, j) => (
-                          <li key={j}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              ))}
+                      {/* Bug Fixes */}
+                      {update.bugFixes?.length > 0 && (
+                        <div className="ml-4 mt-3">
+                          <span className="font-semibold">Bug Fixes:</span>
+                          <ul className="list-disc list-inside text-sm">
+                            {update.bugFixes.map((item, j) => (
+                              <li key={j}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </CardContent>
           </Card>
         </div>
