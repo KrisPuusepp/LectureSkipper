@@ -2,14 +2,15 @@ import Inventory from "@/components/Inventory";
 import type { GameState } from "@/game";
 import { saveGame } from "@/game";
 import type { Dispatch, SetStateAction } from "react";
-import { HelpCircle, PackageOpen, Store, Gift } from "lucide-react";
+import { HelpCircle, PackageOpen, Store, Gift, Box } from "lucide-react";
 import ItemSlot from "@/components/ItemSlot";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Item as ShadItem, ItemGroup } from "@/components/ui/item";
-import { itemsByRarity } from "@/itemRegistry";
+import { itemMetaRegistry, itemsByRarity } from "@/itemRegistry";
 import { itemUtils } from "@/item";
 import { CustomButton } from "@/components/CustomButton";
 import { CustomInfoCard } from "@/components/CustomInfoCard";
+import { renderDescription } from "@/stringUtils";
 
 interface Props
 {
@@ -72,8 +73,6 @@ export default function MarketView({ game, setGame }: Props)
         procrastinations: prev.procrastinations - box.cost,
       };
 
-      saveGame(newState);
-
       return newState;
     });
   };
@@ -100,8 +99,6 @@ export default function MarketView({ game, setGame }: Props)
         unboxedItem: null,
       };
 
-      saveGame(newState);
-
       return newState;
     });
   };
@@ -116,10 +113,15 @@ export default function MarketView({ game, setGame }: Props)
         ...prev,
         unboxedItem: null,
       };
-      saveGame(newState);
       return newState;
     });
   };
+
+  let Icon = null;
+  if (game.unboxedItem)
+  {
+    Icon = itemMetaRegistry[game.unboxedItem.name].icon;
+  }
 
   return (
     <div className="flex flex-wrap justify-center p-4">
@@ -128,7 +130,6 @@ export default function MarketView({ game, setGame }: Props)
       <CustomInfoCard
         icon={Store}
         title="Store"
-        className="max-w-[400px] w-full h-content max-h-[500px]"
         help={
           <>
             <h2 className="font-bold m-1 flex items-center gap-2">
@@ -147,7 +148,7 @@ export default function MarketView({ game, setGame }: Props)
               key={i}
               className={`flex justify-between items-center rounded p-2 border ${box.border} ${box.bg}`}
             >
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-3 items-center flex-1 min-w-0">
                 <Gift className="w-8 h-8 shrink-0 inline-block text-yellow-400" />
                 <div className="flex flex-col">
                   <h4 className="font-bold">{box.name} (Cost: {box.cost} P)</h4>
@@ -158,8 +159,9 @@ export default function MarketView({ game, setGame }: Props)
               </div>
 
               <CustomButton
-                color={game.procrastinations < box.cost ? "gray" : "Green"}
+                color={game.procrastinations < box.cost ? "gray" : "MediumSeaGreen"}
                 onClick={() => handleBuy(box)}
+                className="h-full"
               >
                 Buy
               </CustomButton>
@@ -185,11 +187,7 @@ export default function MarketView({ game, setGame }: Props)
           </>
         }
       >
-        <div className="flex flex-col items-center justify-center p-3">
-          <h2 className={`font-bold m-1 flex items-center gap-2 ${game.unboxedItem ? "" : "invisible"}`}>
-            {game.unboxedItem?.name || "..."}
-          </h2>
-
+        <div className="flex flex-col items-center justify-center p-3 gap-4">
           <ItemSlot
             game={game}
             item={game.unboxedItem}
@@ -198,7 +196,7 @@ export default function MarketView({ game, setGame }: Props)
             size={120}
           />
 
-          <div className="flex gap-2 mt-2">
+          <div className="flex gap-4">
             <CustomButton
               color="FireBrick"
               className={`${game.unboxedItem ? "" : "invisible"}`}
@@ -215,10 +213,60 @@ export default function MarketView({ game, setGame }: Props)
               Take
             </CustomButton>
           </div>
+          
+          {game.unboxedItem &&
+            <div
+              className={`
+                w-96 p-4 rounded-md 
+                bg-popover shadow-lg z-10 ring-2
+                ${game.unboxedItem.rarity === 1
+                  ? "ring-green-600"
+                  : game.unboxedItem.rarity === 2
+                    ? "ring-blue-600"
+                    : "ring-yellow-600"
+                }
+                          `}
+            >
+              <div className="flex gap-3 items-center">
+                {Icon && <Icon className="w-8 h-8 shrink-0 inline-block" />}
+
+                <div>
+                  <h4 className="font-bold p-1 text-lg">
+                    / {game.unboxedItem.name} - Level {game.unboxedItem.level} /
+                  </h4>
+
+                  <p className="text-sm">
+                    {renderDescription(itemMetaRegistry[game.unboxedItem.name].getDescription(game.unboxedItem))}
+                  </p>
+                </div>
+              </div>
+            </div>
+          }
+          {!game.unboxedItem &&
+            <div
+              className={`
+                  w-96 p-4 rounded-md 
+                  bg-popover shadow-lg z-10 ring-2
+                  ring-neutral-600
+                `}
+            >
+              <div className="flex gap-3 items-center">
+                <Box className="w-8 h-8 shrink-0 inline-block" />
+
+                <div>
+                  <h4 className="font-bold p-1 text-lg">
+                    / ... - Level ... /
+                  </h4>
+
+                  <p className="text-sm">
+                    ...
+                  </p>
+                </div>
+              </div>
+            </div>
+          }
         </div>
       </CustomInfoCard>
-
-
 
       {/* Inventory */}
       <Inventory

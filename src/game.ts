@@ -56,11 +56,13 @@ export interface LogEntry
   message: string;
 }
 
+export type View = "Calendar" | "Market" | "Chat" | "Forge" | "Settings";
+
 export type GameState = {
   saveVersion: number;
 
   // Settings
-  view: string;
+  view: View;
   showOnlyCompletableQuests: boolean;
 
   // General Game
@@ -410,8 +412,6 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     return keepItem;
   });
 
-  saveGame(newState);
-
   return newState;
 }
 
@@ -458,8 +458,6 @@ export function attendExams(state: GameState, setTopRuns: React.Dispatch<React.S
     // Game failed, record run
     recordRun(newState, setTopRuns);
   }
-
-  saveGame(newState);
 
   return newState;
 }
@@ -719,8 +717,6 @@ export function startNewBlock(state: GameState): GameState
       message: "First time playing? Click the ?s to read about the game mechanics.",
     })
   }
-
-  saveGame(newState);
 
   return newState;
 }

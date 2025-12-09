@@ -1,8 +1,5 @@
 import { CalendarDays, BadgeDollarSign, MessageCircleMore, Anvil, Settings } from "lucide-react"
 
-import type { Dispatch, SetStateAction } from "react";
-type View = "Calendar" | "Market" | "Chat" | "Forge" | "Settings";
-
 import
 {
   Sidebar,
@@ -14,10 +11,12 @@ import
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import type { GameState } from "@/game";
+import type { GameState, View } from "@/game";
+import type { Dispatch, SetStateAction } from "react";
+import { Kbd } from "./ui/kbd";
 
-// Menu items.
-const items = [
+// Menu items
+const items: { title: View; icon: any }[] = [
   {
     title: "Calendar",
     icon: CalendarDays,
@@ -42,11 +41,11 @@ const items = [
 
 interface Props
 {
-  currentView: View;
-  setView: Dispatch<SetStateAction<View>>;
+  game: GameState;
+  setGame: Dispatch<SetStateAction<GameState>>
 }
 
-export function AppSidebar({ currentView, setView }: Props)
+export function AppSidebar({ game, setGame }: Props)
 {
   return (
     <Sidebar collapsible="icon">
@@ -55,12 +54,13 @@ export function AppSidebar({ currentView, setView }: Props)
           <SidebarGroupLabel>Lecture Skipper</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {items.map((item, i) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <button onClick={() => {setView(item.title as View);}} className={`flex items-center gap-2 p-1 ${currentView === item.title ? "ring-1 ring-gray-500" : ""}`}>
+                    <button onClick={() => {setGame((prev) => ({ ...prev, view: item.title }))}} className={`flex items-center gap-2 p-1 ${game.view === item.title ? "ring-1 ring-gray-500" : ""}`}>
                       <item.icon />
-                      <span className={currentView === item.title ? "font-bold" : ""}>{item.title}</span>
+                      <span className={game.view === item.title ? "font-bold" : ""}>{item.title}</span>
+                      <Kbd className="ml-auto sm:visible invisible">{i + 1}</Kbd>
                     </button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

@@ -52,8 +52,8 @@ export function CoursesCard({ game }: CoursesCardProps)
       }
     >
       <div className="col-span-1 flex flex-col h-full">
-        <div className="flex-1 space-y-1">
-          {game.courses.map((c) =>
+        <div className="flex-1 space-y-2">
+          {game.courses.map((c, i) =>
           {
             const progress = Math.min((c.understandings / c.goal) * 100, 100);
 
@@ -64,7 +64,7 @@ export function CoursesCard({ game }: CoursesCardProps)
             return (
               <Card
                 key={c.title}
-                className="w-full border-2 gap-2"
+                className={`w-full gap-2 border-2 ${game.nextLecture?.courseIndex === i ? "outline-2 outline-neutral-100" : ""}`}
                 style={{
                   backgroundColor: bg,
                   borderColor: border,

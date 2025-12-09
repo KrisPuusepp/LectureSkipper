@@ -1,5 +1,5 @@
 import Inventory from "@/components/Inventory";
-import { saveGame, type GameState, type Quest } from "../game";
+import { type GameState, type Quest } from "../game";
 import type { Dispatch, SetStateAction } from "react";
 import { MessageCircle, MessagesSquare } from "lucide-react";
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
@@ -79,8 +79,6 @@ export default function ChatView({ game, setGame }: Props)
       newQuests.splice(state.quests.indexOf(quest), 1);
 
       const newState = { ...state, courses: newCourses, cash: newCash, procrastinations: newProcrastinations, maxActivatedItems: newMaxActivatedItems, quests: newQuests };
-
-      saveGame(newState);
 
       return newState;
     });
@@ -167,7 +165,7 @@ export default function ChatView({ game, setGame }: Props)
                       <ul className="list-disc">
                         {quest.costs.map((cost, i) => (
                           <li key={i}>
-                            {cost.type === "understandings" && `${cost.amount} U in ${game.courses[cost.courseIndex].title}`}
+                            {cost.type === "understandings" && `${cost.amount} U in ${game.courses[cost.courseIndex].title.slice(0, 30)}${game.courses[cost.courseIndex].title.length > 30 ? "…" : ""}`}
                             {cost.type === "procrastinations" && `${cost.amount} P`}
                             {cost.type === "cash" && `$${cost.amount}`}
                             {cost.type === "maxActivatedItems" && `${cost.amount} Max Active Items`}

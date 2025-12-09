@@ -1,6 +1,6 @@
 import Inventory from "@/components/Inventory";
-import { CirclePlus, MoveDown } from "lucide-react";
-import { saveGame, type GameState } from "@/game";
+import { Box, CirclePlus, MoveDown } from "lucide-react";
+import { type GameState } from "@/game";
 import type { Dispatch, SetStateAction } from "react";
 import type { ItemData } from "@/item";
 import { itemMetaRegistry } from "@/itemRegistry";
@@ -47,8 +47,6 @@ export default function ForgeView({ game, setGame }: Props)
         cash: state.cash - cost,
       };
 
-      saveGame(newState);
-
       return newState;
     });
   };
@@ -68,7 +66,7 @@ export default function ForgeView({ game, setGame }: Props)
           </>
         }
       >
-        <div className="flex flex-col items-center justify-center p-3">
+        <div className="flex flex-col items-center justify-center p-3 min-h-[400px]">
           {item && upgradedItemData ? (
             <div className="flex flex-col items-center justify-center mb-4 gap-3">
               <div
@@ -112,6 +110,7 @@ export default function ForgeView({ game, setGame }: Props)
                     : "MediumSeaGreen"
                     }`}
                   onClick={handleUpgrade}
+                  className="w-64"
                 >
                   Upgrade for ${item ? calculateUpgradeCost(item) : "..."}
                 </CustomButton>
@@ -124,7 +123,6 @@ export default function ForgeView({ game, setGame }: Props)
                 />
 
               </div>
-
 
               <div
                 className={`
@@ -154,8 +152,65 @@ export default function ForgeView({ game, setGame }: Props)
               </div>
             </div>
           ) : (
-            <div className="flex items-center text-gray-600">
-              Select an item to upgrade.
+            <div className="flex flex-col items-center justify-center mb-4 gap-3">
+              <div
+                className={`
+                  w-96 p-4 rounded-md 
+                  bg-popover shadow-lg z-10 ring-2
+                  ring-neutral-600
+                `}
+              >
+                <div className="flex gap-3 items-center">
+                  <Box className="w-8 h-8 shrink-0 inline-block" />
+
+                  <div>
+                    <h4 className="font-bold p-1 text-lg">
+                      / ... - Level ... /
+                    </h4>
+
+                    <p className="text-sm">
+                      ...
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <MoveDown
+                  className={`w-10 h-10 text-neutral-500`}
+                />
+
+                <span className="text-muted-foreground italic w-64 text-center">
+                  Select an item to upgrade
+                </span>
+
+                <MoveDown
+                  className={`w-10 h-10 text-neutral-500`}
+                />
+
+              </div>
+
+              <div
+                className={`
+                  w-96 p-4 rounded-md 
+                  bg-popover shadow-lg z-10 ring-2
+                  ring-neutral-600
+                `}
+              >
+                <div className="flex gap-3 items-center">
+                  <Box className="w-8 h-8 shrink-0 inline-block" />
+
+                  <div>
+                    <h4 className="font-bold p-1 text-lg">
+                      / ... - Level ... /
+                    </h4>
+
+                    <p className="text-sm">
+                      ...
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 

@@ -153,7 +153,7 @@ export default function Inventory({
           </h2>
 
           <p className="text-sm">
-            Click on an item to select/activate it. Click on an empty slot to move items there. Outside of the Calendar view, click on the Trash button to remove items.
+            Click on an item to select/activate it. Click on an empty slot to move an item there. Outside of the Calendar view, click on the Trash button to remove items. Trashing an item does not give you anything.
           </p>
 
           <br></br>
