@@ -16,7 +16,7 @@ interface CoursesCardProps
 export function CoursesCard({ game }: CoursesCardProps)
 {
   return (
-    < CustomInfoCard
+    <CustomInfoCard
       icon={GraduationCap}
       title={`Courses - Block ${game.block}`
       }

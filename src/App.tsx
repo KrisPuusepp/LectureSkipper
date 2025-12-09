@@ -2,17 +2,47 @@ import { useState, useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import type { GameState, Run, View } from "@/game";
-import { loadGame, saveGame } from "@/game";
+import { initGame, loadGame, saveGame } from "@/game";
 import CalendarView from "@/views/CalendarView";
 import MarketView from "@/views/MarketView";
 import ChatView from "@/views/ChatView";
 import ForgeView from "@/views/ForgeView";
 import SettingsView from "@/views/SettingsView";
-import { CircleDollarSign, Sparkles, Zap } from "lucide-react";
+import { CircleDollarSign, Sparkles, TriangleAlert, Zap } from "lucide-react";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from "@/components/ui/alert-dialog";
+
+function validateGameState(game: any): boolean {
+  const template = initGame(); // A correct GameState shape
+
+  // Basic object check
+  if (!game || typeof game !== "object") return false;
+
+  // Check missing top-level keys
+  for (const key of Object.keys(template)) {
+    if (!(key in game)) {
+      console.warn("Missing key:", key);
+      return false;
+    }
+  }
+
+  // Nested structures aren't checked
+  return true;
+}
 
 export default function App()
 {
   const [game, setGame] = useState<GameState>(loadGame());
+  const [saveCorrupted, setSaveCorrupted] = useState(false);
+
+  // Validate save on mount
+  useEffect(() =>
+  {
+    if (!validateGameState(game))
+    {
+      console.error("Invalid save file detected.");
+      setSaveCorrupted(true);
+    }
+  }, []);
 
   // Keyboard buttons to switch between tabs
   useEffect(() =>
@@ -63,34 +93,64 @@ export default function App()
   });
 
   return (
-    <SidebarProvider defaultOpen={false}>
-      <div className="flex h-screen w-screen">
-        <AppSidebar game={game} setGame={setGame} />
+    <>
+      {/* Save Corrupted Popup */}
+      <AlertDialog open={saveCorrupted}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2 text-red-500 font-bold"> <TriangleAlert className="w-5 h-5" /> Save File Corrupted</AlertDialogTitle>
+            <AlertDialogDescription>
+              Your save data is missing required fields. The save data must be fixed manually or the game must be reset to continue.
+              <br />
+              <br />
+              This can happen when loading a save file from an unsupported version of the game.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
 
-        <main className="flex-1 flex flex-col min-h-0">
-          <SidebarTrigger className="w-10 h-10 sm:fixed z-20" />
+          <AlertDialogFooter>
+            <AlertDialogAction
+              onClick={() =>
+              {
+                setSaveCorrupted(false);
+                setGame(initGame());
+              }}
+              className="bg-red-500 hover:bg-red-600 font-bold py-2 px-4 rounded"
+            >
+              Reset Save File
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
-          {/* Footer  */}
-          <div className="bg-background p-2 flex justify-around items-center z-10 flex-shrink-0">
-            <div className="flex items-center gap-2"><CircleDollarSign /> Cash: ${game.cash}</div>
-            <div className="flex items-center gap-2"><Sparkles /> Procrastinations: {game.procrastinations} P</div>
-            <div className="flex items-center gap-2"><Zap /> Energy: {game.energy} E / {game.maxEnergy} E</div>
-          </div>
+      <SidebarProvider defaultOpen={false}>
+        <div className="flex h-screen w-screen">
+          <AppSidebar game={game} setGame={setGame} />
 
-          {/* scrollable content area */}
-          <div className="flex-1 overflow-auto min-h-0 pb-50">
-            <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 p-0">
-              {game.view === "Calendar" && <CalendarView game={game} setGame={setGame} setTopRuns={setTopRuns} />}
-              {game.view === "Market" && <MarketView game={game} setGame={setGame} />}
-              {game.view === "Chat" && <ChatView game={game} setGame={setGame} />}
-              {game.view === "Forge" && <ForgeView game={game} setGame={setGame} />}
-              {game.view === "Settings" && <SettingsView game={game} setGame={setGame} topRuns={topRuns} />}
+          <main className="flex-1 flex flex-col min-h-0">
+            <SidebarTrigger className="w-10 h-10 sm:fixed z-20" />
+
+            {/* Footer  */}
+            <div className="bg-background p-2 flex justify-around items-center z-10 flex-shrink-0">
+              <div className="flex items-center gap-2"><CircleDollarSign /> Cash: ${game.cash}</div>
+              <div className="flex items-center gap-2"><Sparkles /> Procrastinations: {game.procrastinations} P</div>
+              <div className="flex items-center gap-2"><Zap /> Energy: {game.energy} E / {game.maxEnergy} E</div>
             </div>
-          </div>
-        </main>
 
-      </div>
-    </SidebarProvider>
+            {/* scrollable content area */}
+            <div className="flex-1 overflow-auto min-h-0 pb-50">
+              <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 p-0">
+                {game.view === "Calendar" && <CalendarView game={game} setGame={setGame} setTopRuns={setTopRuns} />}
+                {game.view === "Market" && <MarketView game={game} setGame={setGame} />}
+                {game.view === "Chat" && <ChatView game={game} setGame={setGame} />}
+                {game.view === "Forge" && <ForgeView game={game} setGame={setGame} />}
+                {game.view === "Settings" && <SettingsView game={game} setGame={setGame} topRuns={topRuns} />}
+              </div>
+            </div>
+          </main>
+
+        </div>
+      </SidebarProvider>
+    </>
   );
 
 }
