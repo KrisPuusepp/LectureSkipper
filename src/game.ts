@@ -59,6 +59,10 @@ export interface LogEntry
 export type GameState = {
   saveVersion: number;
 
+  // Settings
+  view: string;
+  showOnlyCompletableQuests: boolean;
+
   // General Game
   block: number;
   lecturesLeft: number;
@@ -91,6 +95,8 @@ export function initGame(): GameState
   let game: GameState = {
     saveVersion: CURRENT_SAVE_VERSION,
 
+    view: "Calendar",
+    showOnlyCompletableQuests: false,
     block: 0,
     lecturesLeft: 0,
     courses: [],
