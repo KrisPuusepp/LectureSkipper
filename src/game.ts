@@ -1,4 +1,4 @@
-import { Box, Check, DollarSign, StepForward, X, type LucideProps } from "lucide-react";
+import { Box, Check, DollarSign, PenOff, StepForward, X, type LucideProps } from "lucide-react";
 import Mustache from "mustache";
 import chroma from "chroma-js";
 import { behaviorRegistry, itemMetaRegistry } from "@/itemRegistry";
@@ -711,6 +711,14 @@ export function startNewBlock(state: GameState): GameState
     color: "cyan",
     message: `Welcome to Block ${newState.block}.`,
   }];
+
+  if(newState.block == 1) {
+    newState.log.push({
+      icon: PenOff,
+      color: "white",
+      message: "First time playing? Click the ?s to read about the game mechanics.",
+    })
+  }
 
   saveGame(newState);
 
