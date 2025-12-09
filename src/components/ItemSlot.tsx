@@ -3,8 +3,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import type { GameState } from "@/game";
 import { type ItemData } from "@/item";
 import { itemMetaRegistry } from "@/itemRegistry";
+import chroma from "chroma-js";
 
-interface ItemSlotProps {
+interface ItemSlotProps
+{
   game: GameState;
   item: ItemData | null;
   selected: boolean;
@@ -18,21 +20,23 @@ export default function ItemSlot({
   selected,
   onClick,
   size = 40,
-}: ItemSlotProps) {
+}: ItemSlotProps)
+{
   const [isTouch, setIsTouch] = useState(false);
   const [open, setOpen] = useState(false);
 
   // Detect touch devices
-  useEffect(() => {
+  useEffect(() =>
+  {
     setIsTouch("ontouchstart" in window || navigator.maxTouchPoints > 0);
   }, []);
 
-  if (!item) {
+  if (!item)
+  {
     return (
       <div
-        className={`relative flex items-center justify-center rounded bg-accent cursor-pointer ${
-          selected ? "ring-2 ring-green-500" : ""
-        }`}
+        className={`relative flex items-center justify-center rounded bg-accent cursor-pointer
+        ${selected ? "ring-2 ring-green-500" : ""}`}
         onClick={onClick}
         style={{ width: size, height: size }}
       />
@@ -40,34 +44,65 @@ export default function ItemSlot({
   }
 
   const Icon = itemMetaRegistry[item.name].icon;
+
+  const isEnabled = itemMetaRegistry[item.name].getEnabled(item, game);
+
+  const bg =
+    item.rarity === 1
+      ? "rgba(40, 93, 40, 1)"
+      : item.rarity === 2
+        ? "rgba(40, 77, 132, 1)"
+        : "rgba(134, 116, 28, 1)";
+
+  const outline = chroma(bg).darken(1.5).hex();
+
   const slot = (
     <div
-      className={`relative flex items-center justify-center rounded cursor-pointer ${
-        selected ? "ring-2 ring-green-500" : ""
-      }`}
+      className="relative rounded cursor-pointer flex items-center justify-center select-none"
       onClick={onClick}
       style={{
         width: size,
         height: size,
-        background:
-          item.rarity === 1
-            ? "rgba(40, 93, 40, 1)"
-            : item.rarity === 2
-            ? "rgba(40, 77, 132, 1)"
-            : "rgba(134, 116, 28, 1)",
+        background: bg,
+        boxShadow: `0 2px 0 1px ${outline}`, // 3D effect only
+        transform: "translateY(0px)",
+        position: "relative",
+        transition: "box-shadow 0.05s, transform 0.05s",
+      }}
+      onMouseDown={(e) =>
+      {
+        e.currentTarget.style.boxShadow = `0 0 0 1px ${outline}`;
+        e.currentTarget.style.transform = "translateY(2px)";
+      }}
+      onMouseUp={(e) =>
+      {
+        e.currentTarget.style.boxShadow = `0 2px 0 1px ${outline}`;
+        e.currentTarget.style.transform = "translateY(0px)";
+      }}
+      onMouseLeave={(e) =>
+      {
+        e.currentTarget.style.boxShadow = `0 2px 0 1px ${outline}`;
+        e.currentTarget.style.transform = "translateY(0px)";
       }}
     >
+      {/* Selected outline as a separate div */}
+      {selected && (
+        <div
+          className="absolute inset-0 rounded pointer-events-none"
+          style={{ border: "2px solid rgba(0,255,0,0.8)", boxSizing: "border-box" }}
+        />
+      )}
+
       {Icon && (
         <Icon
           style={{
             width: size * 0.6,
             height: size * 0.6,
-            color: itemMetaRegistry[item.name].getEnabled(item, game)
-              ? "white"
-              : "crimson",
+            color: isEnabled ? "white" : "crimson",
           }}
         />
       )}
+
       <div
         className="absolute top-0 right-0 bg-black text-white text-xs font-bold rounded-bl px-1"
         style={{ lineHeight: "1rem" }}
@@ -77,7 +112,9 @@ export default function ItemSlot({
     </div>
   );
 
-  function renderDescription(desc: string) {
+
+  function renderDescription(desc: string)
+  {
     const parts = desc.split(/\*\*(.+?)\*\*/);
     return parts.map((part, i) =>
       i % 2 === 1 ? <strong key={i}>{part}</strong> : part
@@ -95,13 +132,12 @@ export default function ItemSlot({
       </PopoverTrigger>
 
       <PopoverContent
-        className={`w-96 p-4 rounded-md bg-popover shadow-lg z-10 ring-2 ${
-          item.rarity === 1
-            ? "ring-green-600"
-            : item.rarity === 2
+        className={`w-96 p-4 rounded-md bg-popover shadow-lg z-10 ring-2 ${item.rarity === 1
+          ? "ring-green-600"
+          : item.rarity === 2
             ? "ring-blue-600"
             : "ring-yellow-600"
-        }`}
+          }`}
         side="bottom"
         sideOffset={75}
       >
@@ -111,7 +147,9 @@ export default function ItemSlot({
             <h4 className="font-bold p-1 text-lg">
               / {item.name} - Level {item.level} /
             </h4>
-            <p className="text-sm">{renderDescription(itemMetaRegistry[item.name].getDescription(item))}</p>
+            <p className="text-sm">
+              {renderDescription(itemMetaRegistry[item.name].getDescription(item))}
+            </p>
           </div>
         </div>
       </PopoverContent>
