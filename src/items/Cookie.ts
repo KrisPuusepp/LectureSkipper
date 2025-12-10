@@ -31,6 +31,8 @@ export const itemBehavior: ItemBehavior = {
       {
         chanceLeft -= 1;
 
+        params.logEntry.message += "You got a cookie! ";
+
         if (!itemUtils.createItemInstanceAndAddToInventory(params.item, params.state))
           return;
       }
