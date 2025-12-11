@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { CustomInfoCard } from "@/components/CustomInfoCard";
 import { CustomButton } from "@/components/CustomButton";
 import { CoursesCard } from "@/components/CoursesCard";
-import { story } from "@/Story";
+import { story } from "@/story";
 
 interface Props
 {
