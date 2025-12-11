@@ -454,14 +454,10 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
   // Deselect items that were disabled during the round
   newState.selectedItemIDs = newState.selectedItemIDs.filter(itemID =>
   {
-    let item = itemUtils.itemIDtoItem(itemID, newState);
-    let keepItem = item !== null && itemMetaRegistry[item.name].getEnabled(item, newState);
-    if (!keepItem && item)
-    {
-      newState.selectedItemIDs.splice(newState.selectedItemIDs.indexOf(item.id), 1);
-    }
-    return keepItem;
+    const item = itemUtils.itemIDtoItem(itemID, newState);
+    return item && itemMetaRegistry[item.name].getEnabled(item, newState);
   });
+
 
   return newState;
 }
@@ -798,7 +794,8 @@ export function startNewBlock(state: GameState): GameState
     })
   }
 
-  if(Object.keys(story).includes(newState.block.toString())) {
+  if (Object.keys(story).includes(newState.block.toString()))
+  {
     // Activate story
     newState.story = newState.block;
   }
