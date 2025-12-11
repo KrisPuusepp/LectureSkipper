@@ -47,7 +47,7 @@
 
 Lecture Skipper is a roguelike game about skipping lectures. It takes inspiration from popular roguelikes where you get to break the game with over-powered items. 
 
-It is 75% vibe-coded and made in 4 days while skipping lectures. The internal game logic is decent because most of it is written by me, but the UI code is a mess.
+It is 75% vibe-coded and made in 4 days while skipping lectures. The internal game logic is decent because most of it is written by me, but the UI code is a mess. AI was not used in the writing of the story.
 
 On a real note, unless you have good reasons, don't skip lectures. It doesn't give you bragging rights, you are just refraining from going to lectures which you paid for.
 

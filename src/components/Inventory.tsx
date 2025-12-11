@@ -167,11 +167,11 @@ export default function Inventory({
             <Box className="w-5 h-5" /> Items
           </h2>
 
-          <p className="text-sm">
+          <div className="text-sm">
             Before you attend/skip a lecture, you can activate items to apply bonuses and special effects.
             <br></br>
             Unless stated otherwise, <strong>items have no usage limits</strong>.
-          </p>
+          </div>
 
           <br></br>
 
@@ -179,7 +179,7 @@ export default function Inventory({
             <Boxes className="w-5 h-5" /> Types
           </h2>
 
-          <p className="text-sm">
+          <div className="text-sm">
             <ul className="list-disc pl-4 pt-2">
               <li>On <strong>Attend</strong>: activates when attending a lecture </li>
               <li>On <strong>Skip</strong>: activates when skipping a lecture </li>
@@ -187,7 +187,7 @@ export default function Inventory({
               <li>On <strong>Round</strong>: always activates, even if the item is not selected </li>
               <li><strong>Consumable</strong>: used up after attending or skipping a lecture </li>
             </ul>
-          </p>
+          </div>
 
           <br></br>
 
@@ -195,9 +195,9 @@ export default function Inventory({
             <LayoutGrid className="w-5 h-5" /> Management
           </h2>
 
-          <p className="text-sm">
+          <div className="text-sm">
             Click on an item to select/activate it. Click on an empty slot to move an item there. Outside of the Calendar view, click on the Trash button to remove items. Trashing an item does not give you anything.
-          </p>
+          </div>
 
           <br></br>
 
@@ -205,9 +205,9 @@ export default function Inventory({
             <ListOrdered className="w-5 h-5" /> Item Activation Order
           </h2>
 
-          <p className="text-sm">
+          <div className="text-sm">
             Items activate from left to right, top to bottom in the Inventory.
-          </p>
+          </div>
         </>
       }
     >

@@ -60,9 +60,9 @@ export default function ForgeView({ game, setGame }: Props)
         title="Upgrade Items"
         help={
           <>
-            <p>
+            <div>
               Spend cash to upgrade your items. Each level costs more than the last.
-            </p>
+            </div>
           </>
         }
       >
@@ -89,9 +89,9 @@ export default function ForgeView({ game, setGame }: Props)
                       / {item.name} - Level {item.level} /
                     </h4>
 
-                    <p className="text-sm">
+                    <div className="text-sm">
                       {renderDescription(itemMetaRegistry[item.name].getDescription(item))}
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -144,9 +144,9 @@ export default function ForgeView({ game, setGame }: Props)
                       / {upgradedItemData.name} - Level {upgradedItemData.level} /
                     </h4>
 
-                    <p className="text-sm">
+                    <div className="text-sm">
                       {renderDescription(itemMetaRegistry[upgradedItemData.name].getDescription(upgradedItemData))}
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -168,9 +168,9 @@ export default function ForgeView({ game, setGame }: Props)
                       / ... - Level ... /
                     </h4>
 
-                    <p className="text-sm">
+                    <div className="text-sm">
                       ...
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -205,9 +205,9 @@ export default function ForgeView({ game, setGame }: Props)
                       / ... - Level ... /
                     </h4>
 
-                    <p className="text-sm">
+                    <div className="text-sm">
                       ...
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>

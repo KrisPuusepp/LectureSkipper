@@ -86,8 +86,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
             </CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <p className="text-sm">A 75% vibe-coded game made in 4 days while skipping lectures. Made by Kris Puusepp.</p>
-            <p className="text-sm">On a real note, unless you have good reasons, don't skip lectures. It doesn't give you bragging rights, you are just refraining from going to lectures which you paid for.</p>
+            <div className="text-sm">A 75% vibe-coded game made in 4 days while skipping lectures. Made by Kris Puusepp.</div>
+            <div className="text-sm">On a real note, unless you have good reasons, don't skip lectures. It doesn't give you bragging rights, you are just refraining from going to lectures which you paid for.</div>
+            <div className="text-sm">AI was not used in the writing of the story.</div>
             <CustomButton
               color="rgba(30, 30, 30, 1)"
               onClick={() => window.open("https://github.com/KrisPuusepp/LectureSkipper", "_blank")}
@@ -229,9 +230,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
                   <AccordionContent>
                     {/* Description */}
                     {update.description && (
-                      <p className="text-sm mt-1">
+                      <div className="text-sm mt-1">
                         {update.description}
-                      </p>
+                      </div>
                     )}
 
                     {/* Major Changes */}

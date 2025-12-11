@@ -66,7 +66,7 @@ export function EffectBadge({ effect, game }: EffectBadgeProps)
           <span className="font-semibold">{meta.title}</span>
         </div>
 
-        <p>{renderDescription(meta.getDescription(effect, game))}</p>
+        <div>{renderDescription(meta.getDescription(effect, game))}</div>
       </PopoverContent>
     </Popover>
   );

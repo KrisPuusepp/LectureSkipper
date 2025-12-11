@@ -2,8 +2,9 @@ import { Box, Check, DollarSign, PenOff, StepForward, X, type LucideProps } from
 import Mustache from "mustache";
 import chroma from "chroma-js";
 import { behaviorRegistry, itemMetaRegistry } from "@/itemRegistry";
-import { itemUtils, type ItemData } from "./item";
-import type { EffectData } from "./effect";
+import { itemUtils, type ItemData } from "@/item";
+import type { EffectData } from "@/effect";
+import { story } from "@/story";
 
 export type Course = {
   title: string;
@@ -122,6 +123,7 @@ export type GameState = {
   // Menus
   examsAttended: boolean;
   examResults: boolean[];
+  story: number;
   log: LogEntry[];
   quests: Quest[];
   unboxedItem: ItemData | null;
@@ -164,6 +166,7 @@ export function initGame(): GameState
     log: [],
     examsAttended: true,
     examResults: [],
+    story: -1,
     score: 0,
   };
 
@@ -683,9 +686,7 @@ export function generateLecture(state: GameState): Lecture
   for (let i = 0; i < state.courses.length; i++)
   {
     totalMinLecturesLeft += state.courses[i].minimumLecturesLeft;
-    console.log(state.courses[i].minimumLecturesLeft, state.courses[i].title);
   }
-  console.log("TOTAL: ", totalMinLecturesLeft);
   if (totalMinLecturesLeft >= state.lecturesLeft)
   {
     // Choose the course that has the least amount of lecturesAppeared
@@ -795,6 +796,11 @@ export function startNewBlock(state: GameState): GameState
       color: "white",
       message: "First time playing? Click the ?s to read about the game mechanics.",
     })
+  }
+
+  if(Object.keys(story).includes(newState.block.toString())) {
+    // Activate story
+    newState.story = newState.block;
   }
 
   return newState;

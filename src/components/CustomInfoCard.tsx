@@ -57,7 +57,7 @@ export function CustomInfoCard({
 
                 <PopoverContent className="w-96" side="top">
                   <div className="text-sm">
-                    {typeof help === "string" ? <p>{help}</p> : help}
+                    {typeof help === "string" ? <div>{help}</div> : help}
                   </div>
                 </PopoverContent>
               </Popover>

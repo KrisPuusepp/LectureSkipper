@@ -101,13 +101,13 @@ export default function ChatView({ game, setGame }: Props)
               <MessageCircle className="w-5 h-5" /> The GC
             </h2>
 
-            <p className="text-sm">
+            <div className="text-sm">
               Every block, there will be a certain number of trade offers available. Spend Understandings
               to write notes for your fellow students in exchange for cash and other currencies.
               <br />
               <br />
               Trade offers appear at the start of a block and remain until exams have been attended.
-            </p>
+            </div>
           </>
         }
         className="max-w-[1000px]"

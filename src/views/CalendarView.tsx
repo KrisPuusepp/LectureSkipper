@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { CustomInfoCard } from "@/components/CustomInfoCard";
 import { CustomButton } from "@/components/CustomButton";
 import { CoursesCard } from "@/components/CoursesCard";
+import { story } from "@/Story";
 
 interface Props
 {
@@ -46,7 +47,7 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
             <h2 className="font-bold m-1 flex items-center gap-2">
               <BookOpen className="w-5 h-5" /> Lectures
             </h2>
-            <p className="text-sm">
+            <div className="text-sm">
               <ul className="list-disc pl-4 pt-2">
                 <li>
                   <span className="font-bold">Attend</span>: Attending a lecture has
@@ -65,12 +66,27 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
                   </span>
                 </li>
               </ul>
-            </p>
+            </div>
           </>
         }
       >
+        {/* --- CASE 0: Story must be shown --- */}
+        {story[game.story] ? (
+          <>
+            <div className="flex flex-col items-center justify-center gap-4 py-8">
+              {story[game.story]}
+              <CustomButton
+                onClick={() => setGame((g) => ({ ...g, story: -1 }))}
+                color="DarkOrchid"
+              >
+                Continue
+              </CustomButton>
+            </div>
+          </>
+        ) : null}
+
         {/* --- CASE 1: Lectures still remaining --- */}
-        {game.nextLecture && !game.examsAttended ? (
+        {story[game.story] == null && game.nextLecture && !game.examsAttended ? (
           <div className="flex flex-col items-center gap-2">
             {/* Determine course color */}
             {(() =>
@@ -191,12 +207,12 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
         ) : null}
 
         {/* --- CASE 2: No lectures left & Exams not yet attended --- */}
-        {!game.nextLecture && !game.examsAttended ? (
+        {story[game.story] == null && !game.nextLecture && !game.examsAttended ? (
           <div className="flex flex-col items-center justify-center gap-4 py-8">
             <h2 className="text-lg font-bold">All lectures completed.</h2>
             <CustomButton
               onClick={() => setGame((g) => attendExams(g, setTopRuns))}
-              color="purple"
+              color="DarkMagenta"
             >
               Start Exams
             </CustomButton>
@@ -204,7 +220,7 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
         ) : null}
 
         {/* --- CASE 3: Exams attended → Show results --- */}
-        {game.examsAttended ? (
+        {story[game.story] == null && game.examsAttended ? (
           <div className="flex flex-col items-center gap-4 mt-2">
             <h2 className="text-lg font-bold">Exam Results</h2>
 

@@ -135,10 +135,10 @@ export default function MarketView({ game, setGame }: Props)
             <h2 className="font-bold m-1 flex items-center gap-2">
               <Store className="w-5 h-5" /> Store
             </h2>
-            <p className="text-sm">
+            <div className="text-sm">
               Spend units of Procrastination to buy items. The more expensive a box is,
               the higher the chance of getting rare and high-level items.
-            </p>
+            </div>
           </>
         }
       >
@@ -152,9 +152,9 @@ export default function MarketView({ game, setGame }: Props)
                 <Gift className="w-8 h-8 shrink-0 inline-block text-yellow-400" />
                 <div className="flex flex-col">
                   <h4 className="font-bold">{box.name} (Cost: {box.cost} P)</h4>
-                  <p className="text-sm text-muted-foreground">
+                  <div className="text-sm text-muted-foreground">
                     Common: {box.rarityWeights[0]}%, Rare: {box.rarityWeights[1]}%, Legendary: {box.rarityWeights[2]}%
-                  </p>
+                  </div>
                 </div>
               </div>
 
@@ -181,9 +181,9 @@ export default function MarketView({ game, setGame }: Props)
               <PackageOpen className="w-5 h-5" /> Unboxing
             </h2>
 
-            <p className="text-sm">
+            <div className="text-sm">
               After buying an item, click on an empty inventory slot to place the item there, or buy another item (automatically trash the previous one).
-            </p>
+            </div>
           </>
         }
       >
@@ -235,9 +235,9 @@ export default function MarketView({ game, setGame }: Props)
                     / {game.unboxedItem.name} - Level {game.unboxedItem.level} /
                   </h4>
 
-                  <p className="text-sm">
+                  <div className="text-sm">
                     {renderDescription(itemMetaRegistry[game.unboxedItem.name].getDescription(game.unboxedItem))}
-                  </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -258,9 +258,9 @@ export default function MarketView({ game, setGame }: Props)
                     / ... - Level ... /
                   </h4>
 
-                  <p className="text-sm">
+                  <div className="text-sm">
                     ...
-                  </p>
+                  </div>
                 </div>
               </div>
             </div>

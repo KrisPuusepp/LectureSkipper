@@ -147,9 +147,9 @@ export default function ItemSlot({
             <h4 className="font-bold p-1 text-lg">
               / {item.name} - Level {item.level} /
             </h4>
-            <p className="text-sm">
+            <div className="text-sm">
               {renderDescription(itemMetaRegistry[item.name].getDescription(item))}
-            </p>
+            </div>
           </div>
         </div>
       </PopoverContent>
