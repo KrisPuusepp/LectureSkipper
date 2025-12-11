@@ -228,7 +228,7 @@ export default function Inventory({
                 {game.view === "Calendar" &&
                   <CustomButton
                     color="#494949ff"
-                    className="w-9 h-9 mr-1"
+                    className="w-11 h-11 mr-1 rounded-full"
                     onClick={() => handleSelectRow(rowIndex)}
                     icon={ArrowBigRight}
                   ></CustomButton>
@@ -253,7 +253,7 @@ export default function Inventory({
                           handleEmptySlotClick(rowIndex * numCols + colIndex); // empty slot
                         }
                       }}
-                      size={40}
+                      size={50}
                     />
                   ))}
               </div>
