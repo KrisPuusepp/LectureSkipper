@@ -2,7 +2,8 @@ import React from "react";
 import chroma from "chroma-js";
 import { type LucideIcon } from "lucide-react";
 
-interface CustomButtonProps {
+interface CustomButtonProps
+{
   icon?: LucideIcon;
   children?: React.ReactNode;
   color?: string;
@@ -24,7 +25,8 @@ export function CustomButton({
   style = {},
   onClick,
   threeDHeight = 3,
-}: CustomButtonProps) {
+}: CustomButtonProps)
+{
   const computedHoverColor = hoverColor || chroma(color).darken(0.5).hex();
   const text = chroma.contrast(color, "white") > 4.5 ? "white" : "black";
   const computedOutlineColor = outlineColor || chroma(color).darken(1.5).hex();
@@ -53,17 +55,34 @@ export function CustomButton({
         translate: `0 ${restingTranslate}`,
         ...style,
       }}
-      onMouseEnter={(e) => {
+      onMouseEnter={(e) =>
+      {
         e.currentTarget.style.backgroundColor = computedHoverColor;
       }}
-      onMouseLeave={(e) => {
+      onMouseLeave={(e) =>
+      {
         e.currentTarget.style.backgroundColor = color;
       }}
-      onMouseDown={(e) => {
+      onMouseDown={(e) =>
+      {
         e.currentTarget.style.boxShadow = pressedShadow;
         e.currentTarget.style.translate = `0 ${pressedTranslate}`;
       }}
-      onMouseUp={(e) => {
+      onMouseUp={(e) =>
+      {
+        e.currentTarget.style.boxShadow = restingShadow;
+        e.currentTarget.style.translate = `0 ${restingTranslate}`;
+      }}
+
+      onTouchStart={(e) =>
+      {
+        e.currentTarget.style.backgroundColor = computedHoverColor;
+        e.currentTarget.style.boxShadow = pressedShadow;
+        e.currentTarget.style.translate = `0 ${pressedTranslate}`;
+      }}
+      onTouchEnd={(e) =>
+      {
+        e.currentTarget.style.backgroundColor = color;
         e.currentTarget.style.boxShadow = restingShadow;
         e.currentTarget.style.translate = `0 ${restingTranslate}`;
       }}

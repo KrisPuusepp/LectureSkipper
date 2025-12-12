@@ -92,6 +92,17 @@ export default function ItemSlot({
         e.currentTarget.style.boxShadow = restingShadow;
         e.currentTarget.style.transform = `translateY(${translateResting})`;
       }}
+
+      onTouchStart={(e) =>
+      {
+        e.currentTarget.style.boxShadow = pressedShadow;
+        e.currentTarget.style.transform = `translateY(${translatePressed})`;
+      }}
+      onTouchEnd={(e) =>
+      {
+        e.currentTarget.style.boxShadow = restingShadow;
+        e.currentTarget.style.transform = `translateY(${translateResting})`;
+      }}
     >
       {/* Selected outline */}
       {selected && (
