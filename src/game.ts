@@ -694,7 +694,8 @@ export function generateCourse(state: GameState, hue: number): Course
       (100 * ((0.125 + 0.175 * courseDifficulty) * state.block + 1)
         + (1 + 0.5 * courseDifficulty) ** (state.block / 5)
         + Math.random() * 5)
-    ) / 3
+      / 3
+    )
 
   // Block 30 difficulty spike
   if (state.block >= 30)
