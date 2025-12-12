@@ -16,7 +16,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**After Attend**: Whenever this lecture appears, gain **+${item.level * 30}$**. Can only be used once per block.`,
+    `**After Attend**: Whenever this lecture appears, gain **+${item.level * 10}$**. Can only be used once per block.`,
   getEnabled: (item, state) => !itemUtils.getItemUsedThisBlock(item, state),
 };
 
@@ -26,8 +26,8 @@ export const itemBehavior: ItemBehavior = {
     if (itemUtils.getItemUsedThisBlock(params.item, params.state)) return;
     itemUtils.setItemUsedThisBlock(params.item, params.state)
 
-    itemUtils.addEffectStacksToCourse(params.state, params.lecture.courseIndex, "Cash", params.item.level * 30);
+    itemUtils.addEffectStacksToCourse(params.state, params.lecture.courseIndex, "Cash", params.item.level * 10);
 
-    params.logEntry.message = `+${params.item.level * 30}$ whenever ${params.state.courses[params.lecture.courseIndex].title} appears`;
+    params.logEntry.message = `+${params.item.level * 10}$ whenever ${params.state.courses[params.lecture.courseIndex].title} appears`;
   },
 };

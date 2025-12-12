@@ -23,8 +23,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       version: "0.3.0",
       date: "December ?????, 2025",
       title: "Third Test Version",
-      description: "Difficulty overhaul, story, new items, UI rewrite, lots of tweaks.",
+      description: "Difficulty overhaul, story, new items, UI rewrite, lots of tweaks...",
       majorChanges: [
+        "Rebalanced half of the items.",
         "Changed almost all difficulty scaling formulas.",
         "Added a story and an ending.",
         "Dozens of UI changes, rewrites and QoL.",
