@@ -11,7 +11,7 @@ Stat increases and simple boosts. Meant to help in the early game and support so
 - [ ] Video Game - On Skip: Gain +x% extra Procrastination.
 - [x] Headphones - On Attend: Still gain x% of the Procrastination Value, despite not skipping.
 - [x] Wallet - On Attend: Gain +$x.
-- [ ] Clover - On Attend: If the Understand Chance is below x%, double the Potential Understanding.
+- [ ] ..... - On Attend: If the Understand Chance is below x%, double the Potential Understanding.
 - [x] Soda - After Skip: For the rest of the block, skipping this lecture now gives you +x E.
 - [x] Joystick - On Skip: Increases its own level by 1, and has a x % chance of giving you double the Procrastinations from this lecture.
 
@@ -37,10 +37,9 @@ The main components of a good build.
 - [x] Video - On Attend: If the Understand Chance is above x%, it becomes 100%.
 - [x] Notes - On Attend: Increases the Potential Understanding by x%, but increases Energy Cost by x%.
 - [ ] AI Assistant - On Attend: Increase the Understand Chance by x%, but decrease the Potential Understanding by x%.
-- [ ] Snail - On Attend: Increases the Potential Understanding by x %, but it is instead given to you over the course of the next 5 rounds.
-- [ ] Friend - On Attend: Eats the item in the slot directly to the right of it in the Inventory. If an item is eaten, gives you x P and $x, multiplied by the eaten item's level. 
-- [ ] GPS - On Attend: You have a +x% chance of understanding this lecture.
-- [ ] Hacking - On Attend: This lecture cannot appear the next x times. Can only be used once per block.
+- [x] Snail - On Attend: Increases the Potential Understanding by x %, but it is instead given to you over the course of the next 5 rounds, as long as this item is in your Inventory. Failing to understand any lecture from any course within this period will interrupt the process. 
+- [x] Friend - On Attend: Eats the item in the slot directly to the right of it in the Inventory, if that item is not selected. If it gets to eat an item, gives you x P and $x, multiplied by the eaten item's level. 
+- [x] GPS - On Attend: The chance of understanding this lecture is increased by +x%.
 - [ ] Course Material - After Attend: permanently xx the amount of understandings that lectures of this course give, but now they are half as likely to appear. Can be used once per block.
 - [x] Printer - On Attend: Gain +$1 for every level of the x highest level items you have.
 
@@ -52,12 +51,11 @@ The main components of a good build.
 
 Very rare items that can turn around an entire run.
 
-- [x] Schedule Editor - On Attend: Guarantees that the next x lectures will be about this course. Can only be used once per block.
-- [ ] Brain - On Attend: If you understand this lecture, gain x times the U goal of the course. Otherwise, lose all U for this course. Cannot go past the goal understandings of the course. Can only be used once block.
-- [ ] Handbag - After Skip: If the Understand Chance of the next lecture is below the Understand Chance of this one, carry it over and add x%.
-- [ ] Time Machine - On Attend: Lectures for this course now give half as much understanding, but +x lectures are added to the block.
-- [ ] Epic Beer - On Attend: Gives you one Master Professor item. Has a x% chance of applying Alcoholism to the course that you use it on, permanently halving the chance to understand it.
-- [ ] Master Professor - On Attend: Gives you x^n Understandings where n is the amount of active Master Professors.
+- [x] Schedule Editor - On Attend: Guarantees that the next x lectures will be about this course.
+- [x] Clover - After Skip: If the Understand Chance of the next lecture is less than the Understand Chance of this one, carry it over and add x%.
+- [x] Anvil - On Attend: If there are two unselected items directly to the left and right of this item in the Inventory, destroys the item on the right and transfers all the levels to the item on the left. Has a x% chance of breaking on use, disabling it until next block.
+- [x] Brain - After Attend: If you understood this lecture, gain x times the amount of Understanding you need for this course. Otherwise, lose all U for this course. Can only be used once block.
+- [x] Time Machine - After Attend: Lectures for this course now give half as much understanding, but +x lectures are added to the block. Can only be used once block.
 
 
 
@@ -69,4 +67,6 @@ Very rare items that can turn around an entire run.
 - [ ] Grass - On Touch: Adds x Procrastination.
 - [ ] Pot - On Attend: Gives you x items from a Mild Box.
 - [ ] Inverter - On Attend: If your Chance of Understanding is below 50%, set it to x %.
+- [ ] Epic Beer - On Attend: Gives you one Master Professor item. Has a x% chance of applying Alcoholism to the course that you use it on, permanently halving the chance to understand it.
+- [ ] Master Professor - On Attend: Gives you x^n Understandings where n is the amount of active Master Professors.
 

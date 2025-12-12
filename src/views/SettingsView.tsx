@@ -4,7 +4,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import { Settings, RefreshCcw, PenOff, ScrollText, Box, Trophy } from "lucide-react";
 import type { GameState, Run } from "@/game";
 import { initGame } from "@/game";
-import { itemsByRarity } from "@/itemRegistry";
+import { itemRegistry, itemsByRarity } from "@/itemRegistry";
 import ItemSlot from "@/components/ItemSlot";
 import githubIcon from "@/assets/github-mark-white.svg";
 import { CustomButton } from "@/components/CustomButton";
@@ -27,9 +27,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       majorChanges: [
         "Rebalanced half of the items.",
         "Changed almost all difficulty scaling formulas.",
-        "Added 5 items.",
-        "Added a story and an ending.",
-        "Dozens of UI changes, rewrites and QoL.",
+        "Added a lot of items.",
+        "Added a story and an ending (you can still continue the run after the ending).",
+        "Dozens of UI changes, polish, rewrites and QoL.",
         "Each course will now have a minimum amount of lectures that are guaranteed to appear during the course.",
         "Each course may now be created with innate negative effects.",
         "You can no longer gain max active items from quests. Instead, they increase over time automatically.",
@@ -192,7 +192,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
         <Card className="gap-4">
           <CardHeader className="gap-0">
             <CardTitle className="flex items-center gap-2">
-              <Box className="w-5 h-5" /> All Items
+              <Box className="w-5 h-5" /> All Items ({Object.keys(itemRegistry).length})
             </CardTitle>
           </CardHeader>
 

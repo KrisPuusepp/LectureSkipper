@@ -4,6 +4,7 @@ import type { GameState } from "@/game";
 import { type ItemData } from "@/item";
 import { itemMetaRegistry } from "@/itemRegistry";
 import chroma from "chroma-js";
+import { renderDescription } from "@/stringUtils";
 
 interface ItemSlotProps
 {
@@ -134,14 +135,6 @@ export default function ItemSlot({
     </div>
   );
 
-
-  function renderDescription(desc: string)
-  {
-    const parts = desc.split(/\*\*(.+?)\*\*/);
-    return parts.map((part, i) =>
-      i % 2 === 1 ? <strong key={i}>{part}</strong> : part
-    );
-  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

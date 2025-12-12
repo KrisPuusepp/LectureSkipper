@@ -12,6 +12,7 @@ import { CustomInfoCard } from "@/components/CustomInfoCard";
 import { CustomButton } from "@/components/CustomButton";
 import { CoursesCard } from "@/components/CoursesCard";
 import { story } from "@/story";
+import { renderDescription } from "@/stringUtils";
 
 interface Props
 {
@@ -288,7 +289,7 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
                   style={{ color: entry.color }}
                   strokeWidth={2}
                 />}
-                <span>{entry.message}</span>
+                <span>{renderDescription(entry.message)}</span>
               </div>
             );
           })}

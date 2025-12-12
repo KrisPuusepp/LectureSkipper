@@ -185,6 +185,20 @@ export function initGame(): GameState
     score: 0,
   };
 
+  // Debug code for testing
+
+  //game.items[0] = {
+  //  name: "Schedule Editor",
+  //  rarity: 3,
+  //  dropWeight: 100,
+  //
+  //  // Don't change
+  //  level: 1,
+  //  startingLevel: 1,
+  //  memory: {},
+  //  id: "Testing",
+  //}
+
   game = startNewBlock(game);
 
   return game;
@@ -553,7 +567,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
 
   newState.log.reverse();
 
-  // Deselect items that were disabled during the round
+  // Deselect items that were disabled or removed during the round
   newState.selectedItemIDs = newState.selectedItemIDs.filter(itemID =>
   {
     const item = itemUtils.itemIDtoItem(itemID, newState);

@@ -16,16 +16,13 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: Guarantees that the next **${item.level}** lectures will be about this course. Can only be used once per block.`,
-  getEnabled: (item, state) => !itemUtils.getItemUsedThisBlock(item, state),
+    `**On Attend**: Guarantees that the next **${item.level}** lectures will be about this course.`,
+  getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
   beforeAttendLecture: (params) =>
   {
-    if (itemUtils.getItemUsedThisBlock(params.item, params.state)) return;
-    itemUtils.setItemUsedThisBlock(params.item, params.state)
-
     itemUtils.addEffectStacksToCourse(params.state, params.lecture.courseIndex, "Guaranteed", params.item.level);
 
     params.logEntry.message = `Guaranteed ${params.state.courses[params.lecture.courseIndex].title} for ${params.item.level} lectures`;

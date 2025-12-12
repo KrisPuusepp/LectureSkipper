@@ -26,9 +26,10 @@ export const itemBehavior: ItemBehavior = {
     params.item.level += 1;
     params.logEntry.message = `Level ${params.item.level - 1} → ${params.item.level}`;
 
-    if(Math.random() < params.item.level * 0.01) {
+    if (Math.random() < params.item.level * 0.01)
+    {
       params.lecture.procrastinationValue *= 2;
-      params.logEntry.message = `, doubled Procrastinations!`;
+      params.logEntry.message += `, doubled Procrastinations! +${params.lecture.procrastinationValue} P`;
     }
   },
 };

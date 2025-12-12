@@ -23,8 +23,7 @@ export const itemMeta: ItemMeta = {
 export const itemBehavior: ItemBehavior = {
   afterAttendLecture: (params) =>
   {
-    if (itemUtils.getItemUsedThisBlock(params.item, params.state)) return;
-    itemUtils.setItemUsedThisBlock(params.item, params.state)
+    itemUtils.setItemUsedThisBlock(params.item, params.state);
 
     itemUtils.addEffectStacksToCourse(params.state, params.lecture.courseIndex, "Cash", params.item.level * 10);
 
