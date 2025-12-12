@@ -651,31 +651,39 @@ export function generateCourse(state: GameState, hue: number): Course
 
   let courseDifficulty = Math.random();
 
+  // For online graphing calculators:
+  // Max: y\ =\ 100\left(0.35x+1\right)\ +\ 3.5^{\frac{x}{5}}
+  // Min: y\ =\ 100\left(0.15x+1\right)\ +3^{\frac{x}{5}}
+  let goal =
+    Math.round(
+      (100 * ((0.15 + 0.2 * courseDifficulty) * state.block + 1)
+        + (3 + 0.5 * courseDifficulty) ** (state.block / 5)
+        + Math.random() * 5)
+    )
+  // For online graphing calculators:
+  // Max: y\ =\ \frac{\left(100\left(0.30x+1\right)\ +\ 1.5^{\frac{x}{5}}\right)}{3}
+  // Min: y\ =\ \frac{\left(100\left(0.125x+1\right)\ +1^{\frac{x}{5}}\right)}{3}
+  let maxUnderstandingsPerLecture =
+    Math.round(
+      (100 * ((0.125 + 0.175 * courseDifficulty) * state.block + 1)
+        + (1 + 0.5 * courseDifficulty) ** (state.block / 5)
+        + Math.random() * 5)
+    ) / 3
+
+  // Block 30 difficulty spike
+  if (state.block >= 30) {
+    goal *= 5;
+  }
+
   return {
     title,
-    // For online graphing calculators:
-    // Max: y\ =\ 100\left(0.35x+1\right)\ +\ 3.5^{\frac{x}{5}}
-    // Min: y\ =\ 100\left(0.15x+1\right)\ +3^{\frac{x}{5}}
-    goal:
-      Math.round(
-        (100 * ((0.15 + 0.2 * courseDifficulty) * state.block + 1)
-          + (3 + 0.5 * courseDifficulty) ** (state.block / 5)
-          + Math.random() * 5)
-      ),
+    goal: goal,
     understandings: 0,
     color: chroma.hsv(hue, 1, 0.25).hex(),
     effects: [],
     minimumLecturesLeft: 3,
     lecturesAppeared: 0,
-    // For online graphing calculators:
-    // Max: y\ =\ \frac{\left(100\left(0.30x+1\right)\ +\ 1.5^{\frac{x}{5}}\right)}{3}
-    // Min: y\ =\ \frac{\left(100\left(0.125x+1\right)\ +1^{\frac{x}{5}}\right)}{3}
-    maxUnderstandingsPerLecture:
-      Math.round(
-        (100 * ((0.125 + 0.175 * courseDifficulty) * state.block + 1)
-          + (1 + 0.5 * courseDifficulty) ** (state.block / 5)
-          + Math.random() * 5)
-      ) / 3,
+    maxUnderstandingsPerLecture: maxUnderstandingsPerLecture,
     maxProcrastinationsPerLecture: 20 + Math.round((courseDifficulty + 1) * state.block * 10),
     maxEnergyCostPerLecture: 5 + 10 * (state.block - 1)
   };
