@@ -27,6 +27,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       majorChanges: [
         "Rebalanced half of the items.",
         "Changed almost all difficulty scaling formulas.",
+        "Added 5 items.",
         "Added a story and an ending.",
         "Dozens of UI changes, rewrites and QoL.",
         "Each course will now have a minimum amount of lectures that are guaranteed to appear during the course.",

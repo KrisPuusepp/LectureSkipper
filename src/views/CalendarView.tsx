@@ -59,7 +59,7 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
                 </li>
                 <li>
                   <span className="font-bold">Skip</span>: Skipping gives you
-                  Procrastinations (P) and restores energy.{" "}
+                  Procrastinations (P) and restores energy. Currently, you gain {game.energyPerSkip} energy per skip. {" "}
                   <span className="italic text-red-500">
                     You restore energy half as fast if you have less than 50% of your
                     maximum.

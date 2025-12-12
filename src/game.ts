@@ -151,7 +151,7 @@ export type GameState = {
   energyPerSkip: number;
   cash: number;
   procrastinations: number;
-  items: (ItemData | null)[]; // 36 slots
+  items: (ItemData | null)[];
   maxActivatedItems: number;
 };
 
@@ -402,6 +402,11 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     let oldUnderstanding = lecture.potentialUnderstandings;
     lecture.potentialUnderstandings = Math.round(lecture.potentialUnderstandings * (1 - itemUtils.getEffectStacks(newState, lecture.courseIndex, "Unhelpful") * 0.01));
     newState.log.push({ icon: effectMetaRegistry["Unhelpful"].icon, color: "crimson", message: `${oldUnderstanding} U → ${lecture.potentialUnderstandings} U` });
+  }
+  if (listOfAppliedEffects.includes("Soda") && action == "skip")
+  {
+    newState.energy += itemUtils.getEffectStacks(newState, lecture.courseIndex, "Soda");
+    newState.log.push({ icon: effectMetaRegistry["Soda"].icon, color: effectMetaRegistry["Soda"].backgroundColor, message: `+${itemUtils.getEffectStacks(newState, lecture.courseIndex, "Soda")} E` });
   }
 
   let lectureResult: LectureResult;
@@ -671,7 +676,8 @@ export function generateCourse(state: GameState, hue: number): Course
     ) / 3
 
   // Block 30 difficulty spike
-  if (state.block >= 30) {
+  if (state.block >= 30)
+  {
     goal *= 5;
   }
 

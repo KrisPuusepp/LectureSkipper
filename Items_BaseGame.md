@@ -8,12 +8,12 @@ Stat increases and simple boosts. Meant to help in the early game and support so
 - [x] Apple - On Attend: increase your max energy by x E.
 - [x] Cake - On Attend: increase your current energy by x E.
 - [x] Pizza - On Attend: lose x% less energy from that lecture.
-- [ ] Video Game - On Skip: gain +x% extra Procrastination.
-- [ ] Headphones - On Attend: still gain x% of the Procrastinations.
-- [ ] Wallet - On Attend: gain +3$.
+- [ ] Video Game - On Skip: Gain +x% extra Procrastination.
+- [x] Headphones - On Attend: Still gain x% of the Procrastination Value, despite not skipping.
+- [x] Wallet - On Attend: Gain +$x.
 - [ ] Clover - On Attend: If the Understand Chance is below x%, double the Potential Understanding.
-- [ ] Soda - After Skip: For the rest of the block, skipping this lecture now gives you +x E.
-- [ ] Joystick - On Skip: increases its own level by 1, and has a x % chance of giving you double the Procrastinations from this lecture.
+- [x] Soda - After Skip: For the rest of the block, skipping this lecture now gives you +x E.
+- [x] Joystick - On Skip: Increases its own level by 1, and has a x % chance of giving you double the Procrastinations from this lecture.
 
 ###### Consumables
 
@@ -42,7 +42,7 @@ The main components of a good build.
 - [ ] GPS - On Attend: You have a +x% chance of understanding this lecture.
 - [ ] Hacking - On Attend: This lecture cannot appear the next x times. Can only be used once per block.
 - [ ] Course Material - After Attend: permanently xx the amount of understandings that lectures of this course give, but now they are half as likely to appear. Can be used once per block.
-- [ ] Printer - On Attend: Gain +$1 for every level of the x highest level items you have.
+- [x] Printer - On Attend: Gain +$1 for every level of the x highest level items you have.
 
 
 
