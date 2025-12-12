@@ -52,8 +52,8 @@ Very rare items that can turn around an entire run.
 - [x] Schedule Editor - On Attend: Guarantees that the next x lectures will be about this course.
 - [x] Clover - After Skip: If the Understand Chance of the next lecture is less than the Understand Chance of this one, carry it over and add x%.
 - [x] Anvil - On Attend: If there are two unselected items directly to the left and right of this item in the Inventory, destroys the item on the right and transfers all the levels to the item on the left. Has a x% chance of breaking on use, disabling it until next block.
-- [x] Brain - After Attend: If you understood this lecture, gain x times the amount of Understanding you need for this course. Otherwise, lose all U for this course. Can only be used once block.
-- [x] Time Machine - After Attend: Lectures for this course now give half as much understanding, but +x lectures are added to the block. Can only be used once block.
+- [x] Brain - After Attend: If you understood this lecture, gain x times the amount of Understanding you need for this course. Otherwise, lose all U for this course. Can only be used once per block.
+- [x] Time Machine - After Attend: Lectures for this course now give half as much understanding, but +x lectures are added to the block. Can only be used once per block.
 
 
 
