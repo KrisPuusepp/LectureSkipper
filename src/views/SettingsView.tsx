@@ -29,7 +29,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       ],
       smallChanges: [],
       bugFixes: [
-        "Fixed Aftershocked crashing the game when you only had 1 lecture left."
+        "Fixed Aftershock crashing the game when you only had 1 lecture left."
       ],
     },
     {
