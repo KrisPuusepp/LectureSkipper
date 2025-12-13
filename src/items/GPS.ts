@@ -25,6 +25,6 @@ export const itemBehavior: ItemBehavior = {
   {
     params.logEntry.message = `Understand Chance ${(params.lecture.understandChance * 100).toFixed(2)}% →`;
     params.lecture.understandChance = Math.min(params.lecture.understandChance + itemUtils.geometricSeries(params.item.level - 1, 0.95, 0.05, 0.5), 1);
-    params.logEntry.message += `${(params.lecture.understandChance * 100).toFixed(2)}%`;
+    params.logEntry.message += ` ${(params.lecture.understandChance * 100).toFixed(2)}%`;
   },
 };
