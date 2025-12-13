@@ -495,7 +495,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
 
   // Generate next lecture
   newState.nextLecture = newState.lecturesLeft > 0 ? generateLecture(newState) : null;
-  let nextLecture = { ...newState.nextLecture! };
+  let nextLecture = newState.nextLecture;
 
   // AFTER ROUND ITEM HOOKS
   for (let i = 0; i < newState.items.length; i++)
@@ -507,7 +507,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       let itemLogEntry: LogEntry = {
         icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
       };
-      behaviorRegistry[item.name].afterRound!({ state: newState, item, lecture, nextLecture: newState.nextLecture, result: lectureResult, logEntry: itemLogEntry });
+      behaviorRegistry[item.name].afterRound!({ state: newState, item, lecture, nextLecture: nextLecture, result: lectureResult, logEntry: itemLogEntry });
       if (itemLogEntry.message !== "")
         newState.log.push(itemLogEntry);
     }
@@ -557,7 +557,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
   }
 
   // NEW LECTURE APPEAR EFFECTS
-  if (newState.nextLecture)
+  if (nextLecture)
   {
     listOfAppliedEffects = newState.courses[nextLecture.courseIndex].effects.map(e => e.name);
     if (listOfAppliedEffects.includes("Cash"))
@@ -726,7 +726,7 @@ export function generateQuest(state: GameState): Quest
 
   // U requirement comes from questDifficulty * targetCourse.goal
   // effectively "how many courses worth of U is required to complete this quest?"
-  let questDifficulty = Math.random() * 2 + 0.5;
+  let questDifficulty = Math.random() * 2 + 0.05;
 
   // Generating requirements
   let randomCourseIndex = Math.floor(Math.random() * state.courses.length);
@@ -750,7 +750,7 @@ export function generateQuest(state: GameState): Quest
   // Generating rewards
   rewards.push({
     type: "cash",
-    amount: Math.round(50 + 40 * state.block * questDifficulty + Math.random() * 25),
+    amount: Math.round(50 + 40 * state.block * ((1 + questDifficulty) ** 3) + Math.random() * 25 * (1 + questDifficulty)),
   });
 
   return {

@@ -20,20 +20,29 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
 {
   const gameUpdates = [
     {
+      version: "0.3.2",
+      date: "December 13, 2025",
+      title: "GC Rebalance",
+      description: "The GC was useless.",
+      majorChanges: [
+        "Offers in the GC now require less U and provide more $.",
+      ],
+      smallChanges: [],
+      bugFixes: [
+        "Fixed Aftershocked crashing the game when you only had 1 lecture left."
+      ],
+    },
+    {
       version: "0.3.1",
       date: "December 13, 2025",
-      title: "Small Rebalance",
-      description: "Early-game was completely impossible",
+      title: "Lecture and Market Rebalance",
+      description: "Early game was completely impossible.",
       majorChanges: [
         "Lectures in the earlier blocks now have a lower bound for the understand chance.",
         "Rebalanced Market box values.",
       ],
-      smallChanges: [
-
-      ],
-      bugFixes: [
-
-      ],
+      smallChanges: [],
+      bugFixes: [],
     },
     {
       version: "0.3.0",
@@ -85,15 +94,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       date: "December 1, 2025",
       title: "First Test Version",
       description: "The first public release of Lecture Skipper.",
-      majorChanges: [
-
-      ],
-      smallChanges: [
-
-      ],
-      bugFixes: [
-
-      ],
+      majorChanges: [],
+      smallChanges: [],
+      bugFixes: [],
     },
   ];
 
