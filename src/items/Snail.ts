@@ -26,7 +26,7 @@ export const itemMeta: ItemMeta = {
           .join("\n")
         : "- None";
 
-    return `**On Attend**: Increases the Potential Understanding by **${item.level * 10}%**, but it is instead given to you over the course of the next 5 rounds, as long as this item is in your Inventory. Failing to understand any lecture from any course within this period will interrupt the process.\n\nCurrently giving U for the following courses:\n${list}`;
+    return `**On Attend**: Increases the Potential Understanding by **${item.level * 10}%**, but it is instead given to you over the course of the next 5 rounds, as long as this item is in your Inventory. Failing to understand any attended lecture from any course within this period will interrupt the process.\n\nCurrently giving U for the following courses:\n${list}`;
   },
   getEnabled: (item, state) => true,
 };

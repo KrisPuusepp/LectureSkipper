@@ -33,6 +33,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       bugFixes: [
         "Time Machine now works when used on the last lecture.",
         "Fixed a problem in the description of the Cookie.",
+        "Clarified the description of the Snail.",
         "Fixed error in the story.",
       ],
     },
