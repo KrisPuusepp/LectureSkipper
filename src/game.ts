@@ -17,6 +17,8 @@ export function generateUUID(): string
   });
 }
 
+export const DEFAULT_MINIMUM_LECTURES_LEFT = 3;
+
 export type Course = {
   title: string;
   color: string;
@@ -709,7 +711,7 @@ export function generateCourse(state: GameState, hue: number): Course
     understandings: 0,
     color: chroma.hsv(hue, 1, 0.25).hex(),
     effects: [],
-    minimumLecturesLeft: 3,
+    minimumLecturesLeft: DEFAULT_MINIMUM_LECTURES_LEFT,
     lecturesAppeared: 0,
     lectureAppearWeight: 100,
     maxUnderstandingsPerLecture: maxUnderstandingsPerLecture,

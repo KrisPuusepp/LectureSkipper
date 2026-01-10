@@ -6,7 +6,7 @@ import { GraduationCap, BookAlert } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import type { GameState } from "@/game";
+import { DEFAULT_MINIMUM_LECTURES_LEFT, type GameState } from "@/game";
 import { EffectBadge } from "./EffectBadge";
 
 interface CoursesCardProps
@@ -28,8 +28,7 @@ export function CoursesCard({ game }: CoursesCardProps)
           </h2>
 
           <p className="text-sm">
-            Every block, you have 3 courses and a set amount of lectures before exams. Attend lectures
-            to acquire Understanding (U).
+            Every block, you have 3 (or more) courses and a set amount of lectures before exams. Attend lectures to acquire Understanding (U). Every course is guaranteed to have at least {DEFAULT_MINIMUM_LECTURES_LEFT} lectures.
           </p>
 
           <br />
