@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
-import { Settings, RefreshCcw, PenOff, ScrollText, Box, Trophy } from "lucide-react";
+import { Settings, RefreshCcw, PenOff, ScrollText, Box, Trophy, AlertCircle } from "lucide-react";
 import type { GameState, Run } from "@/game";
 import { initGame } from "@/game";
 import { itemRegistry, itemsByRarity } from "@/itemRegistry";
@@ -19,7 +19,7 @@ interface Props
 export default function SettingsView({ game, setGame, topRuns }: Props)
 {
   const gameUpdates = [
-        {
+    {
       version: "0.4.0",
       date: "???, 2025",
       title: "Another Rebalance",
@@ -27,9 +27,13 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       majorChanges: [
         "",
       ],
-      smallChanges: [],
+      smallChanges: [
+        "Minor UI changes.",
+      ],
       bugFixes: [
-        "Time Machine now works when used on the last lecture."
+        "Time Machine now works when used on the last lecture.",
+        "Fixed a problem in the description of the Cookie.",
+        "Fixed error in the story.",
       ],
     },
     {
@@ -169,6 +173,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
             >
               Reset Run
             </CustomButton>
+            <div className="italic text-red-500 flex items-center gap-2">
+              <AlertCircle className="w-5 h-5" /> Warning: Does not record the run.
+            </div>
           </CardContent>
         </Card>
       </div>
