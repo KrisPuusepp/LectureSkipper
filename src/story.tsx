@@ -74,7 +74,7 @@ export const story: Record<string, (game: GameState, setGame: React.Dispatch<Rea
 
   "4": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
-      The first 5 blocks have passed.
+      The first 3 blocks have passed.
       <br /> <br />
       It was already clear from day one that this place is not what it seems like. On the surface, a professional academic environment, but deep down, it's a trap — a prison that locks you up for eternity with no hope of escape. I haven't found a way out yet, but I know that there must be one, as hopeless as my search may be.
       <br /> <br />
@@ -88,7 +88,7 @@ export const story: Record<string, (game: GameState, setGame: React.Dispatch<Rea
 
   "7": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
-      10 blocks have passed.
+      6 blocks have passed.
       <br /> <br />
       Come to think of it, I can't even remember why I first enrolled here. Or, for that matter, <span className="italic">how</span> I got here in the first place. My memory is blank and I can barely remember my past. All that's been on my mind lately are the courses.
       <br /> <br />
