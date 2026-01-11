@@ -25,7 +25,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       title: "Another Rebalance",
       description: "More content has been added as well.",
       majorChanges: [
-        "",
+        "Anvil Nerf: Now only works on items of equal type.",
       ],
       smallChanges: [
         "Minor UI changes.",

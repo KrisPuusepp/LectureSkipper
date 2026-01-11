@@ -16,7 +16,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: If there are two unselected items directly to the left and right of this item in the Inventory, destroys the item on the right and transfers all the levels to the item on the left. Has a **${Math.max(101 - item.level, 0)}%** chance of breaking on use, disabling it until next block.`,
+    `**On Attend**: If there are two unselected items of equal type directly to the left and right of this item in the Inventory, destroys the item on the right and transfers all the levels to the item on the left. Has a **${Math.max(101 - item.level, 0)}%** chance of breaking on use, disabling it until next block.`,
   getEnabled: (item, state) => !itemUtils.getItemUsedThisBlock(item, state),
 };
 
@@ -33,7 +33,12 @@ export const itemBehavior: ItemBehavior = {
       let sourceItem = params.state.items[sourceSlot];
       if (targetItem != null && params.state.selectedItemIDs.indexOf(targetItem.id) == -1 && sourceItem != null && params.state.selectedItemIDs.indexOf(sourceItem.id) == -1)
       {
-        // There are items on both sides, so we can upgrade the left one
+        // There are items on both sides
+        
+        // Are they of equal type?
+        if (targetItem.name != sourceItem.name) return;
+
+        // We can upgrade the left one
         params.logEntry.message = `Upgraded ${targetItem.name}, Level ${targetItem.level} →`;
 
         targetItem.level += sourceItem.level;
