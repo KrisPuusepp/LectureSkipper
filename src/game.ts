@@ -979,6 +979,8 @@ export function attendExams(state: GameState, setTopRuns: React.Dispatch<React.S
 
   const newState: GameState = { ...state };
 
+  newState.courseTexts = [];
+
   // Remove Quests
   newState.quests = [];
 
