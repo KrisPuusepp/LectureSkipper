@@ -236,7 +236,7 @@ export function saveGame(game: GameState)
   try
   {
     // Create a copy of game with an empty log
-    const toSave = { ...game, log: [] };
+    const toSave: GameState = { ...game, log: [], courseTexts: [] };
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(toSave));
   } catch (err)
   {
