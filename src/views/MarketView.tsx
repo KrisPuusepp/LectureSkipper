@@ -1,10 +1,9 @@
 import Inventory from "@/components/Inventory";
-import type { GameState } from "@/game";
+import type { GameState, ShopEntry } from "@/game";
 import { saveGame } from "@/game";
 import type { Dispatch, SetStateAction } from "react";
-import { HelpCircle, PackageOpen, Store, Gift, Box } from "lucide-react";
+import { PackageOpen, Store, Gift, Box } from "lucide-react";
 import ItemSlot from "@/components/ItemSlot";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Item as ShadItem, ItemGroup } from "@/components/ui/item";
 import { itemMetaRegistry, itemsByRarity } from "@/itemRegistry";
 import { itemUtils } from "@/item";
@@ -30,12 +29,8 @@ export default function MarketView({ game, setGame }: Props)
     rarityWeights: [number, number, number]; // [common, rare, legendary]
   };
 
-  // Example shop listing
   const shopListings: Box[] = [
-    { name: "Mild Box", cost: 30, border: "border-green-700", bg: "bg-green-950", rarityWeights: [1000, 30, 1] },
-    { name: "Anxiety Box", cost: 200, border: "border-yellow-700", bg: "bg-yellow-950", rarityWeights: [80, 25, 1] },
-    { name: "Stress Box", cost: 700, border: "border-red-700", bg: "bg-red-950", rarityWeights: [0, 90, 10] },
-    { name: "Breakdown Box", cost: 5000, border: "border-purple-700", bg: "bg-purple-950", rarityWeights: [0, 0, 100] },
+    { name: "Stress Box", cost: 300, border: "border-red-700", bg: "bg-red-950", rarityWeights: [100, 40, 10] },
   ];
 
   // Weighted random helper
@@ -79,6 +74,25 @@ export default function MarketView({ game, setGame }: Props)
     });
   };
 
+  const handleBuyItem = (entry: ShopEntry) =>
+  {
+    const finalPrice = Math.floor(entry.price * (1 - entry.discount));
+
+    if (game.procrastinations < finalPrice) return;
+
+    setGame(prev =>
+    {
+      const newState = {
+        ...prev,
+        procrastinations: prev.procrastinations - finalPrice,
+        unboxedItem: itemUtils.createItemInstance(entry.item),
+        shop: prev.shop.filter(e => e !== entry), // remove after purchase
+      };
+
+      saveGame(newState);
+      return newState;
+    });
+  };
 
   // Place item into inventory
   const handlePlaceItem = () =>
@@ -104,7 +118,6 @@ export default function MarketView({ game, setGame }: Props)
       return newState;
     });
   };
-
 
   // Trash the unboxed item
   const handleTrash = () =>
@@ -138,12 +151,70 @@ export default function MarketView({ game, setGame }: Props)
               <Store className="w-5 h-5" /> Store
             </h2>
             <div className="text-sm">
-              Spend units of Procrastination to buy items. The more expensive a box is,
-              the higher the chance of getting rare and high-level items.
+              Spend Procrastinations to buy items. The shop refreshes once a new block starts.
             </div>
           </>
         }
       >
+        {game.shop.length > 0 ? (
+          <div className="grid grid-cols-3 gap-4">
+            {game.shop.map((entry, i) =>
+            {
+              const finalPrice = Math.floor(entry.price * (1 - entry.discount));
+              const canAfford = game.procrastinations >= finalPrice;
+
+              return (
+                <motion.div
+                  key={"entry-" + entry.item.id}
+                  layout
+                  layoutId={"entry-" + entry.item.id}
+                  className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg bg-neutral-800 border-1 border-neutral-700 relative"
+                >
+                  {/* Item visual */}
+                  <ItemSlot size={56} game={game}>
+                    <ItemComponent
+                      game={game}
+                      item={entry.item}
+                      size={56}
+                    />
+                    {/* Discount badge */}
+                    {entry.discount > 0 && (
+                      <div className="absolute -top-3 -left-4 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-md z-10 rotate-[-15deg]">
+                        -{Math.round(entry.discount * 100)}%
+                      </div>
+                    )}
+                  </ItemSlot>
+
+                  {/* Price */}
+                  <div className="text-sm flex items-center gap-1">
+                    {entry.discount > 0 && (
+                      <span className="line-through text-muted-foreground">
+                        {entry.price}
+                      </span>
+                    )}
+                    <span className={entry.discount > 0 ? "text-green-500 font-bold" : ""}>
+                      {finalPrice} P
+                    </span>
+                  </div>
+
+                  {/* Buy */}
+                  <CustomButton
+                    color={canAfford ? "MediumSeaGreen" : "gray"}
+                    onClick={() => handleBuyItem(entry)}
+                    className="w-full"
+                  >
+                    Buy
+                  </CustomButton>
+                </motion.div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-muted-foreground p-0">No items available.</div>
+        )}
+
+        <hr className="my-0 border-muted" />
+
         <ItemGroup className="space-y-2">
           {shopListings.map((box, i) => (
             <ShadItem
@@ -188,6 +259,7 @@ export default function MarketView({ game, setGame }: Props)
         </ItemGroup>
       </CustomInfoCard>
 
+
       {/* Unboxed Item */}
       <CustomInfoCard
         icon={PackageOpen}
@@ -200,7 +272,7 @@ export default function MarketView({ game, setGame }: Props)
             </h2>
 
             <div className="text-sm">
-              After buying an item, click on an empty inventory slot to place the item there, or buy another item (automatically trash the previous one).
+              After buying an item, click on an empty inventory slot to place the item there. Buying another item will automatically trash the previous one, if left in this slot.
             </div>
           </>
         }
@@ -247,14 +319,6 @@ export default function MarketView({ game, setGame }: Props)
               onClick={handleTrash}
             >
               Trash
-            </CustomButton>
-
-            <CustomButton
-              color="Green"
-              className={`${game.unboxedItem ? "" : "invisible"}`}
-              onClick={handlePlaceItem}
-            >
-              Take
             </CustomButton>
           </div>
 

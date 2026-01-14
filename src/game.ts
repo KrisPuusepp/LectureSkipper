@@ -1,7 +1,7 @@
 import { Box, Check, PenOff, StepForward, X, type LucideProps } from "lucide-react";
 import Mustache from "mustache";
 import chroma from "chroma-js";
-import { behaviorRegistry, itemMetaRegistry } from "@/itemRegistry";
+import { behaviorRegistry, itemMetaRegistry, itemRegistry, itemsByRarity } from "@/itemRegistry";
 import { itemUtils, type ItemData } from "@/item";
 import type { EffectData } from "@/effect";
 import { story } from "@/story";
@@ -78,6 +78,13 @@ export type Quest = {
   color: string;
 };
 
+export interface ShopEntry
+{
+  item: ItemData;
+  price: number;
+  discount: number;
+}
+
 export interface LogEntry
 {
   icon?: React.ComponentType<LucideProps>;
@@ -147,6 +154,7 @@ export type GameState = {
   unboxedItem: ItemData | null;
   selectedItemIDs: string[];
   calendarActivatedItemIDs: string[];
+  shop: ShopEntry[];
 
   // Player Stats
   energy: number;
@@ -180,6 +188,7 @@ export function initGame(): GameState
     unboxedItem: null,
     selectedItemIDs: [],
     calendarActivatedItemIDs: [],
+    shop: [],
     quests: [],
     log: [],
     examsAttended: true,
@@ -208,7 +217,7 @@ export function initGame(): GameState
 };
 
 const LOCAL_STORAGE_KEY = "myGameState";
-const CURRENT_SAVE_VERSION = 3;
+const CURRENT_SAVE_VERSION = 4;
 
 export function saveGame(game: GameState)
 {
@@ -242,6 +251,12 @@ export function loadGame(): GameState | "GameDoesNotExist" | "ParsingFailed"
     if (parsed.saveVersion < 3)
     {
       throw new Error("Unsupported save version.");
+    }
+
+    if (parsed.saveVersion == 3)
+    {
+      parsed.saveVersion = 4;
+      generateShop(parsed);
     }
 
     parsed.log = [{
@@ -715,7 +730,7 @@ export function generateCourse(state: GameState, hue: number): Course
     lecturesAppeared: 0,
     lectureAppearWeight: 100,
     maxUnderstandingsPerLecture: maxUnderstandingsPerLecture,
-    maxProcrastinationsPerLecture: 20 + Math.round((courseDifficulty + 1) * state.block * 10),
+    maxProcrastinationsPerLecture: 200,
     maxEnergyCostPerLecture: 5 + 10 * (state.block - 1)
   };
 }
@@ -855,6 +870,68 @@ export function generateLecture(state: GameState): Lecture
   };
 
   return lecture;
+}
+
+/**
+ * Mutates the GameState that you give it.
+ */
+export function generateShop(state: GameState)
+{
+  state.shop = [];
+
+  let commonCount = 4;
+
+  if (Math.random() > 0.5) commonCount++;
+  if (Math.random() > 0.5) commonCount++;
+
+  for (var i = 0; i < commonCount; i++)
+  {
+    state.shop.push({
+      item: itemUtils.createItemInstance(itemsByRarity[1][Math.floor(Math.random() * itemsByRarity[1].length)]),
+      price: 100,
+      discount: 0,
+    });
+  }
+
+  for (var i = 0; i < 8 - commonCount; i++)
+  {
+    state.shop.push({
+      item: itemUtils.createItemInstance(itemsByRarity[2][Math.floor(Math.random() * itemsByRarity[2].length)]),
+      price: 500,
+      discount: 0,
+    });
+  }
+
+  state.shop.push({
+    item: itemUtils.createItemInstance(itemsByRarity[3][Math.floor(Math.random() * itemsByRarity[3].length)]),
+    price: 3000,
+    discount: 0,
+  });
+
+  // Add discounts
+  for (var i = 0; i < 4; i++)
+  {
+    let randomItemIdx = Math.floor(Math.random() * state.shop.length);
+    if (state.shop[randomItemIdx].discount > 0)
+    {
+      i--;
+      continue;
+    }
+    state.shop[randomItemIdx].discount += Math.random() * 0.2 + 0.2;
+  }
+
+  // Add levels
+  for (var i = 0; i < 3; i++)
+  {
+    let randomItemIdx = Math.floor(Math.random() * state.shop.length);
+    if (state.shop[randomItemIdx].item.level > 1)
+    {
+      i--;
+      continue;
+    }
+    state.shop[randomItemIdx].item.level += Math.floor(Math.random() * 3 + 2);
+    state.shop[randomItemIdx].item.startingLevel = state.shop[randomItemIdx].item.level;
+  }
 }
 
 export function attendExams(state: GameState, setTopRuns: React.Dispatch<React.SetStateAction<Run[]>>): GameState
@@ -1041,6 +1118,9 @@ export function startNewBlock(state: GameState): GameState
     newQuests.push(generateQuest(newState));
   }
   newState.quests = newQuests;
+
+  // Create shop entries
+  generateShop(newState);
 
   const nextLecture: Lecture = generateLecture(newState);
   newState.nextLecture = nextLecture;

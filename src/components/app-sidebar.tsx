@@ -60,7 +60,7 @@ export function AppSidebar({ game, setGame }: Props)
                     <button onClick={() => setGame(prev => changeView(prev, item.title))} className={`flex items-center gap-2 p-1 ${game.view === item.title ? "ring-1 ring-gray-500" : ""}`}>
                       <item.icon />
                       <span className={game.view === item.title ? "font-bold" : ""}>{item.title}</span>
-                      <Kbd className="ml-auto sm:visible invisible">{i + 1}</Kbd>
+                      <Kbd className="ml-auto md:visible invisible">{i + 1}</Kbd>
                     </button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

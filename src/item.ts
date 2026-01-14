@@ -196,5 +196,4 @@ export const itemUtils = {
     // f(step) = endValue + (startValue - endValue) * (ratio^step)
     return endValue + (startValue - endValue) * Math.pow(ratio, step);
   },
-
 };
