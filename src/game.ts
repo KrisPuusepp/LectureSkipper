@@ -984,7 +984,7 @@ export function generateShop(state: GameState)
   const chosenLegendaryItem = weightedRandom(itemsByRarity[3], legendaryItemWeights);
 
   state.shop.push({
-    item: chosenLegendaryItem,
+    item: itemUtils.createItemInstance(chosenLegendaryItem),
     price: 6000,
     discount: 0,
   });

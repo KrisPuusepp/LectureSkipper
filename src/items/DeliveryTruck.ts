@@ -43,14 +43,12 @@ export const itemBehavior: ItemBehavior = {
     const itemWeights = itemsByRarity[chosenRarity].map((i) => i.dropWeight);
     const chosenItem = weightedRandom(itemsByRarity[chosenRarity], itemWeights);
 
-    const newItem = itemUtils.createItemInstance(chosenItem);
-
     params.state.shop.push({
-      item: newItem,
+      item: itemUtils.createItemInstance(chosenItem),
       price: cost,
       discount: 0,
     });
 
-    params.logEntry.message = `Added ${newItem.name} to the Shop`;
+    params.logEntry.message = `Added ${chosenItem.name} to the Shop`;
   },
 };
