@@ -180,7 +180,7 @@ export default function Inventory({
               <li>On <strong>Attend</strong>: activates when attending a lecture </li>
               <li>On <strong>Skip</strong>: activates when skipping a lecture </li>
               <li>On <strong>Use</strong>: activates when attending or skipping a lecture </li>
-              <li>On <strong>Always Active</strong>: always activates, even if the item is not selected </li>
+              <li><strong>Always Active</strong>: always activates, even if the item is not selected </li>
               <li><strong>Consumable</strong>: used up after attending or skipping a lecture </li>
             </ul>
           </div>
