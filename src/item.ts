@@ -73,6 +73,15 @@ export const itemUtils = {
     };
     return newItem;
   },
+  destroyItemInSlot: (slot: number, state: GameState): void =>
+  {
+    state.items[slot] = null;
+  },
+  destroyItemWithID: (id: string, state: GameState): void =>
+  {
+    const slot = itemUtils.itemIDtoSlot(id, state);
+    itemUtils.destroyItemInSlot(slot, state);
+  },
 
   /**
    * Fails if there are no free slots in the inventory.

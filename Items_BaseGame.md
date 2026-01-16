@@ -5,24 +5,31 @@ Stat increases and simple boosts. Meant to help in the early game and support so
 
 ###### Stat Increases
 
-- [x] Apple - On Attend: increase your max energy by x E.
-- [x] Cake - On Attend: increase your current energy by x E.
-- [x] Pizza - On Attend: reduces the energy cost by x%.
-- [x] Video Game - On Skip: Gain +x% extra Procrastination.
+- [x] Apple - On Attend: Increase your max energy by x E.
+- [x] Cake - On Attend: Increase your current energy by x E.
+- [x] Pizza - On Attend: Reduces the energy cost by x%.
+- [x] Video Game - On Skip: Gain +x% extra Procrastination from the lecture.
 - [x] Headphones - On Attend: Still gain x% of the Procrastination Value, despite not skipping.
-- [x] Wallet - On Attend: Gain +$x.
+- [x] Wallet - On Use: Gain +$x.
 - [x] Soda - After Skip: For the rest of the block, skipping this lecture now gives you +x E.
 - [x] Joystick - On Skip: Increases its own level by 1, and has a x % chance of giving you double the Procrastinations from this lecture.
+- [x] Barcode - On Skip: adds a 1% discount to a random item in the Shop. Activates x times. Discounts can stack, but will not go past 100%.
+- [x] Grass - On Touch: Gives x Procrastinations.
+- [x] Sun - Always Active: Whenever a lecture appears, immediately gain +x Understanding in that course.
 
 ###### Consumables
 
 - [x] Paper - Consumable: If attending, increases the Understand Chance by x %.
 - [x] Sticky Note - Consumable: If skipping, still gain x% of the Potential Understanding.
 - [x] Origami - Consumable: Increase your current amount of Procrastinations by x %.
+- [x] Coupon - Consumable: Add a x% discount to every item in the Shop. Discounts can stack, but will not go past 100%.
+- [x] Wrench - Consumable: Randomly distributes all of its levels across every other item in the inventory.
+- [x] Toolbox - Consumable: Increases the starting level of a random item in the shop by 1. Activates x times.
 
 ###### Miscellanous
 
-- [x] Cookie - On Use: has a x% chance of giving you a cookie. Going over 100% can give you more cookies per use.
+- [x] Cookie - On Use: Has a x% chance of giving you a cookie. Going over 100% can give you more cookies per use.
+- [x] Cat - Always Active: If this item is at the top right of the inventory, it will activate and start to move on its own. Every lecture, it will move into a random adjacent (horizontally or vertically) free slot. If it reaches the bottom left corner, it disappears and you gain $x and x P. If you manually move it before it reaches its destination, it becomes deactivated.
 
 
 
@@ -39,7 +46,13 @@ The main components of a good build.
 - [x] Friend - On Attend: Eats the item in the slot directly to the right of it in the Inventory, if that item is not selected. If it gets to eat an item, gives you x P and $x, multiplied by the eaten item's level. 
 - [x] GPS - On Attend: The chance of understanding this lecture is increased by +x%.
 - [x] Course Material - After Attend: Permanently increases the amount of understandings that lectures of this course give by x%, but now they are half as likely to appear. Can be used once per block.
-- [x] Printer - On Attend: Gain +$1 for every level of the x highest level items you have.
+- [x] Printer - On Skip: Gain +$1 for every level of the x highest level items you have.
+- [x] Delivery Truck - On Attend: Adds a new item to the Shop. This new item has a x% chance of being common, a x% chance of being rare and a x% chance of being legendary.
+- [x] Bug - On Attend: Increases the Potential Understanding by x%, but all gained Understandings instead go to a random course.
+- [x] Flame - On Attend: Increases the Potential Understanding by x%, multiplied by the current streak, then adds +1 to the lecture streak. If you attend a lecture of a different course while this item is active, the streak will be reset.
+- [x] Job - On Skip: Gain $1 for every Potential Understanding of the lecture that you skipped, multiplied by x.
+- [x] Low Battery - On Skip: Reduce the Understanding requirements of all chats in the Group Chat by x%.
+- [x] WiFi - On Skip: Increase the Cash rewards of all chats in the Group Chat by +$x.
 
 
 
@@ -54,6 +67,10 @@ Very rare items that can turn around an entire run.
 - [x] Anvil - On Attend: If there are two unselected items of equal type directly to the left and right of this item in the Inventory, destroys the item on the right and transfers all the levels to the item on the left. Has a x% chance of breaking on use, disabling it until next block.
 - [x] Brain - After Attend: If you understood this lecture, gain x times the amount of Understanding you need for this course. Otherwise, lose all U for this course. Can only be used once per block.
 - [x] Time Machine - After Attend: Lectures for this course now give 90% less understanding, but +x lectures are added to the block. Can only be used once per block.
+- [x] Mythical Croissant - On Attend: Permanently increases the amount of energy restored when skipping a lecture by x E.
+- [x] Gem - Always Active: After a lecture, gain +$x.
+- [x] Superintelligence - After Attend: All other courses also gain x% of the gained Understandings from this lecture.
+- [x] DNA - Consumable: Turns into a level x copy of the item that is directly to the right of this one.
 
 
 
@@ -64,9 +81,7 @@ Very rare items that can turn around an entire run.
 - [ ] ..... - On Attend: If the Understand Chance is below x%, double the Potential Understanding.
 - [ ] AI Assistant - On Attend: Increase the Understand Chance by x%, but decrease the Potential Understanding by x%.
 - [ ] Generic Beer - On Attend: Applies one stack of Alcoholism to the course that you use it on, permanently halving the chance to understand it.
-- [ ] Grass - On Touch: Adds x Procrastination.
 - [ ] Pot - On Attend: Gives you x items from a Mild Box.
 - [ ] Inverter - On Attend: If your Chance of Understanding is below 50%, set it to x %.
 - [ ] Epic Beer - On Attend: Gives you one Master Professor item. Has a x% chance of applying Alcoholism to the course that you use it on, permanently halving the chance to understand it.
 - [ ] Master Professor - On Attend: Gives you x^n Understandings where n is the amount of active Master Professors.
-- [ ] Cat - On Use: if this item is at the top right of the inventory, it will activate and start to move on its own. Every lecture, it will move into a random adjacent (horizontally or vertically) free slot. If it reaches the bottom left corner, it disappears and you gain +$x. If you manually move it before it reaches its destination, it becomes deactivated.

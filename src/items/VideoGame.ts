@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Skip**: Gain **${Math.min(item.level * 5)}%** extra Procrastination.`,
+    `**On Skip**: Gain **${Math.min(item.level * 10)}%** extra Procrastination from the lecture.`,
   getEnabled: (item, state) => true,
 };
 

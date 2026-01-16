@@ -1,9 +1,9 @@
-import { CupSoda as ItemIcon } from "lucide-react";
+import { Leaf as ItemIcon } from "lucide-react";
 import { type ItemData, type ItemMeta, type ItemBehavior, itemUtils } from "@/item";
 import { effectUtils } from "@/effect";
 
 export const itemData: ItemData = {
-  name: "Soda",
+  name: "Grass",
   rarity: 1,
   dropWeight: 100,
 
@@ -17,13 +17,14 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**After Skip**: For the rest of the block, skipping this lecture now gives you **+${item.level} E**.`,
+    `**On Touch**: Gives **${item.level * 10}** Procrastinations.`,
   getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
-  afterSkipLecture: (params) =>
+  afterUse: (params) =>
   {
-    effectUtils.addEffectStacksToCourse(params.state, params.lecture.courseIndex, "Soda", params.item.level);
+    params.state.procrastinations += params.item.level * 10;
+    params.logEntry.message = `+${params.item.level * 10} P`;
   },
 };

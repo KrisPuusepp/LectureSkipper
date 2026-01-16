@@ -51,7 +51,10 @@ export const itemBehavior: ItemBehavior = {
       // Remove the understandings that were gained so that they can be given over time
       params.state.courses[params.lecture.courseIndex].understandings -= params.result.gainedUnderstandings;
 
-      params.logEntry.message = `Now giving ${params.result.gainedUnderstandings} U over 5 rounds`;
+      // Prevent other items from using gainedUnderstandings
+      params.result.gainedUnderstandings = 0;
+
+      params.logEntry.message += `Now giving ${params.item.memory.courses[params.item.memory.courses.length - 1].gainedUnderstandings} U over 5 rounds`;
     }
   },
   beforeRound: (params) =>

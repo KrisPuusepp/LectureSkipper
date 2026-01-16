@@ -1,7 +1,7 @@
 import { Box, Check, PenOff, StepForward, X, type LucideProps } from "lucide-react";
 import Mustache from "mustache";
 import chroma from "chroma-js";
-import { behaviorRegistry, itemMetaRegistry, itemsByRarity } from "@/itemRegistry";
+import { behaviorRegistry, itemMetaRegistry, itemRegistry, itemsByRarity } from "@/itemRegistry";
 import { itemUtils, type ItemData } from "@/item";
 import { effectUtils, type EffectData } from "@/effect";
 import { story } from "@/story";
@@ -144,6 +144,7 @@ export type GameState = {
   // Settings
   view: View;
   showOnlyCompletableQuests: boolean;
+  autoTrashForge: boolean;
 
   // General Game
   block: number;
@@ -184,6 +185,7 @@ export function initGame(): GameState
 
     view: "Calendar",
     showOnlyCompletableQuests: false,
+    autoTrashForge: false,
     block: 0,
     lecturesLeft: 0,
     courses: [],
@@ -211,18 +213,7 @@ export function initGame(): GameState
   };
 
   // Debug code for testing
-
-  //game.items[0] = {
-  //  name: "Snail",
-  //  rarity: 2,
-  //  dropWeight: 100,
-  //
-  //  // Don't change
-  //  level: 50,
-  //  startingLevel: 1,
-  //  memory: {},
-  //  id: "Testing",
-  //}
+  //itemUtils.createItemInstanceAndAddToInventory(itemRegistry["WiFi"], game);
 
   game = startNewBlock(game);
 
@@ -272,6 +263,7 @@ export function loadGame(): GameState | "GameDoesNotExist" | "ParsingFailed"
       parsed.lastLecture = null;
       parsed.lastLectureResult = null;
       parsed.courseTexts = [];
+      parsed.autoTrashForge = false;
       generateShop(parsed);
       for (let i = 0; i < parsed.courses.length; i++)
       {
@@ -365,9 +357,16 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
   newState.log = [];
 
   // BEFORE ROUND ITEM HOOKS
+  let itemIDsToActivate: string[] = [];
   for (let i = 0; i < newState.items.length; i++)
   {
     let item = newState.items[i];
+    if (item === null) continue;
+    itemIDsToActivate.push(item.id);
+  }
+  for (let i = 0; i < itemIDsToActivate.length; i++)
+  {
+    let item = itemUtils.itemIDtoItem(itemIDsToActivate[i], newState);
     if (item === null) continue;
     if (behaviorRegistry[item.name].beforeRound !== undefined)
     {
@@ -378,6 +377,9 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       if (itemLogEntry.message !== "")
         newState.log.push(itemLogEntry);
     }
+
+    // Item may have been deleted
+    if (item === null) continue;
 
     if (newState.selectedItemIDs.includes(item.id) == false) continue;
 
@@ -390,6 +392,10 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       if (itemLogEntry.message !== "")
         newState.log.push(itemLogEntry);
     }
+
+    // Item may have been deleted
+    if (item === null) continue;
+
     if (action == "skip" && behaviorRegistry[item.name].beforeSkipLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {
@@ -399,6 +405,10 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       if (itemLogEntry.message !== "")
         newState.log.push(itemLogEntry);
     }
+
+    // Item may have been deleted
+    if (item === null) continue;
+
     if (action == "attend" && behaviorRegistry[item.name].beforeAttendLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {
@@ -542,9 +552,16 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
   let nextLecture = newState.nextLecture;
 
   // AFTER ROUND ITEM HOOKS
+  itemIDsToActivate = [];
   for (let i = 0; i < newState.items.length; i++)
   {
     let item = newState.items[i];
+    if (item === null) continue;
+    itemIDsToActivate.push(item.id);
+  }
+  for (let i = 0; i < itemIDsToActivate.length; i++)
+  {
+    let item = itemUtils.itemIDtoItem(itemIDsToActivate[i], newState);
     if (item === null) continue;
     if (behaviorRegistry[item.name].afterRound !== undefined)
     {
@@ -555,6 +572,9 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       if (itemLogEntry.message !== "")
         newState.log.push(itemLogEntry);
     }
+
+    // Item may have been deleted
+    if (item === null) continue;
 
     if (newState.selectedItemIDs.includes(item.id) == false) continue;
 
@@ -567,6 +587,10 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       if (itemLogEntry.message !== "")
         newState.log.push(itemLogEntry);
     }
+
+    // Item may have been deleted
+    if (item === null) continue;
+
     if (action == "skip" && behaviorRegistry[item.name].afterSkipLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {
@@ -576,6 +600,10 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       if (itemLogEntry.message !== "")
         newState.log.push(itemLogEntry);
     }
+
+    // Item may have been deleted
+    if (item === null) continue;
+
     if (action == "attend" && behaviorRegistry[item.name].afterAttendLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {

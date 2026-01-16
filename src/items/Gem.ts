@@ -1,12 +1,12 @@
-import { CupSoda as ItemIcon } from "lucide-react";
+import { Gem as ItemIcon } from "lucide-react";
 import { type ItemData, type ItemMeta, type ItemBehavior, itemUtils } from "@/item";
 import { effectUtils } from "@/effect";
 
 export const itemData: ItemData = {
-  name: "Soda",
-  rarity: 1,
+  name: "Gem",
+  rarity: 3,
   dropWeight: 100,
-
+  
   // Don't change
   level: 1,
   startingLevel: 1,
@@ -17,13 +17,13 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**After Skip**: For the rest of the block, skipping this lecture now gives you **+${item.level} E**.`,
+    `**Always Active**:  After a lecture, gain **+$${item.level * 250 + 750}**`,
   getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
-  afterSkipLecture: (params) =>
-  {
-    effectUtils.addEffectStacksToCourse(params.state, params.lecture.courseIndex, "Soda", params.item.level);
+  afterRound: (params) => {
+    params.state.cash += params.item.level * 250 + 750;
+    params.logEntry.message = `+$${params.item.level * 250 + 750}`;
   },
 };

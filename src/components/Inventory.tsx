@@ -1,6 +1,6 @@
 import { ArrowBigRight, Box, Boxes, Check, LayoutGrid, ListOrdered, Package } from "lucide-react";
 import ItemSlot from "@/components/ItemSlot";
-import { saveGame, type GameState } from "@/game";
+import { type GameState } from "@/game";
 import type { Dispatch, SetStateAction } from "react";
 import { CustomInfoCard } from "./CustomInfoCard";
 import { itemUtils } from "@/item";
@@ -46,8 +46,6 @@ export default function Inventory({
 
       const newState = { ...prev, selectedItemIDs: selected };
 
-      saveGame(newState);
-
       return newState;
     });
   };
@@ -87,8 +85,6 @@ export default function Inventory({
         unboxedItem,
       };
 
-      saveGame(newState);
-
       return newState;
     });
   };
@@ -106,8 +102,6 @@ export default function Inventory({
       });
 
       const newState = { ...prev, items, selectedItemIDs: [] };
-
-      saveGame(newState);
 
       return newState;
     });
@@ -186,7 +180,7 @@ export default function Inventory({
               <li>On <strong>Attend</strong>: activates when attending a lecture </li>
               <li>On <strong>Skip</strong>: activates when skipping a lecture </li>
               <li>On <strong>Use</strong>: activates when attending or skipping a lecture </li>
-              <li>On <strong>Round</strong>: always activates, even if the item is not selected </li>
+              <li>On <strong>Always Active</strong>: always activates, even if the item is not selected </li>
               <li><strong>Consumable</strong>: used up after attending or skipping a lecture </li>
             </ul>
           </div>

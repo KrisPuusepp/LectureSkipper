@@ -29,6 +29,6 @@ export const itemBehavior: ItemBehavior = {
     params.logEntry.message += ` ${params.state.procrastinations} P`;
     
     // Delete self
-    params.state.items[itemUtils.itemIDtoSlot(params.item.id, params.state)] = null;
+    itemUtils.destroyItemWithID(params.item.id, params.state);
   },
 };

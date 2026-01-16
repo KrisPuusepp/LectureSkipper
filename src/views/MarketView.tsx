@@ -34,8 +34,7 @@ export default function MarketView({ game, setGame }: Props)
     { name: "Stress Box", cost: 600, border: "border-red-700", bg: "bg-red-950", rarityWeights: [100, 40, 10] },
   ];
 
-  // Buy a box
-  const handleBuy = (box: Box) =>
+  const handleBuyBox = (box: Box) =>
   {
     if (game.procrastinations < box.cost) return;
 
@@ -53,10 +52,23 @@ export default function MarketView({ game, setGame }: Props)
     {
       const newState = {
         ...prev,
-        unboxedItem: newItem,
         procrastinations: prev.procrastinations - box.cost,
       };
 
+      if (newState.unboxedItem != null && prev.autoTrashForge == false)
+      {
+        // Find free slot and place the item there if possible
+        for (let i = 0; i < newState.items.length; i++)
+        {
+          if (newState.items[i] == null)
+          {
+            newState.items[i] = newState.unboxedItem;
+            break;
+          }
+        }
+      }
+
+      newState.unboxedItem = newItem;
       return newState;
     });
   };
@@ -67,16 +79,31 @@ export default function MarketView({ game, setGame }: Props)
 
     if (game.procrastinations < finalPrice) return;
 
+    // Create unique instance
+    const newItem = itemUtils.createItemInstance(entry.item);
+
     setGame(prev =>
     {
       const newState = {
         ...prev,
         procrastinations: prev.procrastinations - finalPrice,
-        unboxedItem: itemUtils.createItemInstance(entry.item),
         shop: prev.shop.filter(e => e !== entry), // remove after purchase
       };
 
-      saveGame(newState);
+      if (newState.unboxedItem != null && prev.autoTrashForge == false)
+      {
+        // Find free slot and place the item there if possible
+        for (let i = 0; i < newState.items.length; i++)
+        {
+          if (newState.items[i] == null)
+          {
+            newState.items[i] = newState.unboxedItem;
+            break;
+          }
+        }
+      }
+
+      newState.unboxedItem = newItem;
       return newState;
     });
   };
@@ -145,56 +172,71 @@ export default function MarketView({ game, setGame }: Props)
       >
         {game.shop.length > 0 ? (
           <div className="grid grid-cols-3 gap-4">
-            {game.shop.map((entry, i) =>
-            {
-              const finalPrice = Math.floor(entry.price * (1 - entry.discount));
-              const canAfford = game.procrastinations >= finalPrice;
+            <AnimatePresence>
+              {game.shop.map((entry, i) =>
+              {
+                const finalPrice = Math.floor(entry.price * (1 - entry.discount));
+                const canAfford = game.procrastinations >= finalPrice;
 
-              return (
-                <motion.div
-                  key={"entry-" + entry.item.id}
-                  layout
-                  layoutId={"entry-" + entry.item.id}
-                  className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg bg-neutral-800 border-1 border-neutral-700 relative"
-                >
-                  {/* Item visual */}
-                  <ItemSlot size={56} game={game}>
-                    <ItemComponent
-                      game={game}
-                      item={entry.item}
-                      size={56}
-                    />
-                    {/* Discount badge */}
-                    {entry.discount > 0 && (
-                      <div className="absolute -top-3 -left-4 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-md z-10 rotate-[-15deg]">
-                        -{Math.round(entry.discount * 100)}%
-                      </div>
-                    )}
-                  </ItemSlot>
-
-                  {/* Price */}
-                  <div className="text-sm flex items-center gap-1">
-                    {entry.discount > 0 && (
-                      <span className="line-through text-muted-foreground">
-                        {entry.price}
-                      </span>
-                    )}
-                    <span className={entry.discount > 0 ? "text-green-500 font-bold" : ""}>
-                      {finalPrice} P
-                    </span>
-                  </div>
-
-                  {/* Buy */}
-                  <CustomButton
-                    color={canAfford ? "MediumSeaGreen" : "gray"}
-                    onClick={() => handleBuyItem(entry)}
-                    className="w-full"
+                return (
+                  <motion.div
+                    key={"entry-" + entry.item.id}
+                    layout
+                    className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg bg-neutral-800 border-1 border-neutral-700 relative"
+                    initial={{ opacity: 0, scale: 0.9, y: -50 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{
+                      opacity: 0, scale: 0.9, y: 0, transition: {
+                        duration: 0.1,
+                        ease: "easeOut"
+                      }
+                    }}
+                    transition={{
+                      type: "spring",
+                      damping: 35,
+                      stiffness: 300,
+                      delay: i * 0.025
+                    }}
                   >
-                    Buy
-                  </CustomButton>
-                </motion.div>
-              );
-            })}
+                    {/* Item visual */}
+                    <ItemSlot size={56} game={game}>
+                      <ItemComponent
+                        game={game}
+                        item={entry.item}
+                        size={56}
+                      />
+                      {/* Discount badge */}
+                      {entry.discount > 0 && (
+                        <div className="absolute -top-3 -left-4 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-md z-10 rotate-[-15deg]">
+                          -{Math.round(entry.discount * 100)}%
+                        </div>
+                      )}
+                    </ItemSlot>
+
+                    {/* Price */}
+                    <div className="text-sm flex items-center gap-1">
+                      {entry.discount > 0 && (
+                        <span className="line-through text-muted-foreground">
+                          {entry.price}
+                        </span>
+                      )}
+                      <span className={entry.discount > 0 ? "text-green-500 font-bold" : ""}>
+                        {finalPrice} P
+                      </span>
+                    </div>
+
+                    {/* Buy */}
+                    <CustomButton
+                      color={canAfford ? "MediumSeaGreen" : "gray"}
+                      onClick={() => handleBuyItem(entry)}
+                      className="w-full"
+                    >
+                      Buy
+                    </CustomButton>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
           </div>
         ) : (
           <div className="text-muted-foreground p-0">No items available.</div>
@@ -236,7 +278,7 @@ export default function MarketView({ game, setGame }: Props)
 
               <CustomButton
                 color={game.procrastinations < box.cost ? "gray" : "MediumSeaGreen"}
-                onClick={() => handleBuy(box)}
+                onClick={() => handleBuyBox(box)}
                 className="h-full"
               >
                 Buy
@@ -259,7 +301,13 @@ export default function MarketView({ game, setGame }: Props)
             </h2>
 
             <div className="text-sm">
-              After buying an item, click on an empty inventory slot to place the item there. Buying another item will automatically trash the previous one, if left in this slot.
+              <p>
+                After buying an item, click on an empty inventory slot to place the item there.
+              </p>
+              <br />
+              <p>
+                Check the "Auto Trash" checkbox to automatically trash any item left in this slot when you buy another one.
+              </p>
             </div>
           </>
         }
@@ -360,6 +408,26 @@ export default function MarketView({ game, setGame }: Props)
               </div>
             </div>
           }
+
+          {/* --- Show auto trash checkbox --- */}
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="AutoTrash"
+              checked={game.autoTrashForge} // save in gameState
+              onChange={(e) =>
+                setGame((g) => ({ ...g, autoTrashForge: e.target.checked }))
+              }
+              className="w-5 h-5
+                       rounded-full appearance-none
+                       border-2 border-white-400
+                       checked:bg-green-600 checked:border-green-700
+                       transition-colors"
+            />
+            <label htmlFor="AutoTrash" className="text-sm font-medium">
+              Auto Trash
+            </label>
+          </div>
         </div>
       </CustomInfoCard>
 

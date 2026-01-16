@@ -22,7 +22,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
   const gameUpdates = [
     {
       version: "0.4.0",
-      date: "January ???, 2025",
+      date: "January 16, 2026",
       title: "Rebalance, Reworks and Animations",
       description: "More content has been added as well.",
       majorChanges: [
@@ -30,6 +30,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
         "Reworked Market: now sells items, not just boxes.",
         "Improved Forge: you can now upgrade items multiple levels at a time.",
         "Added lots of animations to the UI.",
+        "Added 17 new items.",
       ],
       smallChanges: [
         "Minor UI changes.",
@@ -40,8 +41,10 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
         "Pizza Buff: now can go up to 100% and scales faster. Clarified description.",
         "Sticky Note Buff: now starts at 50% and gains 10% per level.",
         "Time Machine Nerf: now reduces the understandings that the lectures of the course give by 90%.",
-        "Video Game Buff: now increases +5% per level.",
-        "Wallet Buff: now starts at $25 and increases $5 per level.",
+        "Video Game Buff: now increases +10% per level.",
+        "Wallet Buff: now starts at $25, increases $5 per level and activates on use, rather than on attend.",
+        "Cart Buff: now no longer gets disabled after use.",
+        "Printer Change: now activates on skip, instead of on attend.",
       ],
       bugFixes: [
         "Time Machine now works when used on the last lecture.",
@@ -245,9 +248,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
                 key={`preview-${item.name}`}
                 game={game}
                 onClick={() => { }}
-                size={40}
+                size={50}
               >
-                {item && <ItemComponent item={item} game={{} as GameState} size={40} />}
+                {item && <ItemComponent item={item} game={{} as GameState} size={50} />}
               </ItemSlot>
             ))
           )}
