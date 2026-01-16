@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Always Active**:  After a lecture, gain **+$${item.level * 250 + 750}**`,
+    `**Always Active**:  After a lecture, gain **+$${item.level * 250 + 750}**.`,
   getEnabled: (item, state) => true,
 };
 

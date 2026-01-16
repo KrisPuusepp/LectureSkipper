@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**After Skip**: If the Understand Chance of the next lecture is less than the Understand Chance of this one, carry it over and add **${Math.min(item.level, 100).toFixed(2)}%**`,
+    `**After Skip**: If the Understand Chance of the next lecture is less than the Understand Chance of this one, carry it over and add **${Math.min(item.level, 100).toFixed(2)}%**.`,
   getEnabled: (item, state) => true,
 };
 
