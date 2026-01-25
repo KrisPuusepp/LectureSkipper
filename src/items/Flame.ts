@@ -38,7 +38,7 @@ export const itemBehavior: ItemBehavior = {
     params.lecture.potentialUnderstandings += Math.round(params.lecture.potentialUnderstandings * params.item.level * 10 / 100) * multiplier;
     if (multiplier > 0)
     {
-      params.logEntry.message = `Potential ${lastUnderstandings} U → ${params.lecture.potentialUnderstandings} U, +${(multiplier * params.item.level * 10)}%`;
+      params.logEntry.message = `Potential ${lastUnderstandings} U → ${params.lecture.potentialUnderstandings} U, +${(multiplier * params.item.level * 10)}%, streak ${multiplier}`;
     }
 
     params.item.memory.streak = (params.item.memory.streak || 0) + 1;

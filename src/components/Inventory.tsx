@@ -1,13 +1,14 @@
 import { ArrowBigRight, Box, Boxes, Check, LayoutGrid, ListOrdered, Package } from "lucide-react";
 import ItemSlot from "@/components/ItemSlot";
 import { type GameState } from "@/game";
-import type { Dispatch, SetStateAction } from "react";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { CustomInfoCard } from "./CustomInfoCard";
 import { itemUtils } from "@/item";
 import { CustomButton } from "./CustomButton";
 import { itemMetaRegistry } from "@/itemRegistry";
 import ItemComponent from "./ItemComponent";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { Kbd } from "./ui/kbd";
 
 interface Props
 {
@@ -61,12 +62,12 @@ export default function Inventory({
 
       if (selected.length === 1)
       {
-        const item = items[itemUtils.itemIDtoSlot(selected[0], prev)];
+        const item = items[itemUtils.itemIDtoSlot(selected[0], prev)!];
         if (item)
         {
           const sourceIndex = itemUtils.itemToSlot(item, prev);
           items[itemSlotID] = item;
-          items[sourceIndex] = null;
+          items[sourceIndex!] = null;
           selected = [];
         }
       } else if (unboxedItem && game.view == "Market")
@@ -98,7 +99,7 @@ export default function Inventory({
 
       selected.forEach(slotID =>
       {
-        items[itemUtils.itemIDtoSlot(slotID, prev)] = null;
+        items[itemUtils.itemIDtoSlot(slotID, prev)!] = null;
       });
 
       const newState = { ...prev, items, selectedItemIDs: [] };
@@ -107,8 +108,42 @@ export default function Inventory({
     });
   };
 
+  // Keyboard buttons to quickly select rows
+  useEffect(() =>
+  {
+    const handleKeyDown = (e: KeyboardEvent) =>
+    {
+      const keyToFunction: Record<string, () => void> = {
+        "1": () => handleSelectRow(0),
+        "2": () => handleSelectRow(1),
+        "3": () => handleSelectRow(2),
+        "4": () => handleSelectRow(3),
+        "5": () => handleSelectRow(4),
+        "6": () => handleSelectRow(5),
+      };
+
+      const func = keyToFunction[e.key];
+      if (func)
+      {
+        func();
+      }
+    };
+
+    // Attach listener once
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup on unmount
+    return () =>
+    {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []); // empty dependency array ensures this runs only once
+
   const handleSelectRow = (row: number) =>
   {
+    if (game.view != "Calendar")
+      return;
+
     setGame(prev =>
     {
       const items = [...prev.items];
@@ -193,6 +228,9 @@ export default function Inventory({
 
           <div className="text-sm">
             Click on an item to select/activate it. Click on an empty slot to move an item there. Outside of the Calendar view, click on the Trash button to remove items. Trashing an item does not give you anything.
+            <br />
+            <br />
+            While in the Calendar, click the buttons on the left to select an entire row, or press the corresponding key on the keyboard.
           </div>
 
           <br></br>
@@ -208,7 +246,7 @@ export default function Inventory({
       }
     >
       <div className="flex-1 flex items-center justify-center overflow-hidden p-5">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center scale-90 md:scale-100">
 
           {game.view === "Calendar" && (
             <h2 className="font-bold flex items-center gap-2 pb-2">
@@ -247,15 +285,18 @@ export default function Inventory({
               {/* Left column: 1x6 row select buttons */}
               {game.view === "Calendar" && (
                 <div className={`grid grid-rows-${numRows} gap-0`}>
-                  {Array.from({ length: numRows }).map((_, rowIndex) => (
+                  {Array.from({ length: numRows }).map((i, rowIndex) => (
                     <CustomButton
                       key={`row-btn-${rowIndex}`}
                       color="#494949ff"
                       outlineColor="rgb(41, 41, 41)"
                       className="w-10 h-10 mt-2 rounded-2xl"
                       onClick={() => handleSelectRow(rowIndex)}
-                      icon={ArrowBigRight}
-                    />
+                    >
+                      <p className="text-xl font-bold">
+                        {rowIndex + 1}
+                      </p>
+                    </CustomButton>
                   ))}
                 </div>
               )}

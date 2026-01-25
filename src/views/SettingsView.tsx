@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { Settings, RefreshCcw, PenOff, ScrollText, Box, Trophy, AlertCircle } from "lucide-react";
 import type { GameState, Run } from "@/game";
@@ -9,17 +9,63 @@ import githubIcon from "@/assets/github-mark-white.svg";
 import { CustomButton } from "@/components/CustomButton";
 import ItemComponent from "@/components/ItemComponent";
 import { CustomInfoCard } from "@/components/CustomInfoCard";
+import { Separator } from "@/components/ui/separator"
+import { Label } from "@/components/ui/label"
+import
+{
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface Props
 {
   game: GameState;
   setGame: Dispatch<SetStateAction<GameState>>;
   topRuns: Run[];
+  animations: string;
+  setAnimations: Dispatch<SetStateAction<string>>;
 }
 
-export default function SettingsView({ game, setGame, topRuns }: Props)
+export default function SettingsView({ game, setGame, topRuns, animations, setAnimations }: Props)
 {
   const gameUpdates = [
+    {
+      version: "0.5.0",
+      date: "January 25, 2026",
+      title: "3x Speed Update",
+      description: "The game was too slow, so it has been sped up. Faster difficulty scaling, less time between story segments, earlier ending.",
+      majorChanges: [
+        "Ending is now at Block 11 instead of Block 30.",
+        "Difficulty scales much, much faster. This includes everything, from the Understanding Goals to the innate course effects.",
+        "Lectures now take at most 10 E and this amount no longer scales over time. However, items and effects can still affect this amount.",
+        "Innate course effects now scale with time. (later blocks have courses with effects that have more detrimental numbers)",
+        "Added 8 new items.",
+      ],
+      smallChanges: [
+        "Removed the mechanic where you would gain half as much Energy per skip if you had less than 50% of your max Energy.",
+        "The Shop now no longer sells a legendary item at the start of the block, but sells more items by default.",
+        "Added the option to change the amount of animations.",
+        "You can now select a row of items in the inventory with the keys 1 to 6.",
+        "Small UI tweaks for both desktop and mobile browsers.",
+        "The log now separates the lecture result from the rest of the entries.",
+        "Brain Nerf: when you fail to understand the lecture, it now removes the amount of Understanding that you would have otherwise gained.",
+        "DNA Buff: now inherits the levels from the item that it copies.",
+        "Grass Buff: now gives 3x more Procrastinations per touch.",
+        "Low Battery Nerf: now reduces the requirements less.",
+        "Mythical Croissant Buff: now increases the energy gained per skip by 3x per level.",
+        "Printer Buff: now always active.",
+        "Clarified the Bug's description.",
+        "Bug Buff: items that activate after this one can still use gained procrastinations.",
+        "Cat Nerf: now gives less rewards.",
+      ],
+      bugFixes: [
+        "Sticky Note now properly works.",
+        "Sun now shows the correct description.",
+      ],
+    },
     {
       version: "0.4.0",
       date: "January 16, 2026",
@@ -52,18 +98,6 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
         "Clarified the description of the Snail.",
         "Fixed an error in the story.",
       ],
-    },
-    {
-      version: "0.3.1",
-      date: "December 13, 2025",
-      title: "Lecture and Market Rebalance",
-      description: "Early game was completely impossible.",
-      majorChanges: [
-        "Lectures in the earlier blocks now have a lower bound for the understand chance.",
-        "Rebalanced Market box values.",
-      ],
-      smallChanges: [],
-      bugFixes: [],
     },
     {
       version: "0.3.2",
@@ -153,7 +187,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       {/* Game Info */}
       <CustomInfoCard
         icon={PenOff}
-        title="Next Event"
+        title="Lecture Skipper"
       >
         <div className="text-sm">A 75% vibe-coded game made in 4 days while skipping lectures. Made by Kris Puusepp.</div>
         <div className="text-sm">On a real note, unless you have good reasons, don't skip lectures. It doesn't give you bragging rights, you are just refraining from going to lectures which you paid for.</div>
@@ -173,10 +207,33 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
         icon={Settings}
         title="Game Settings"
       >
+        {/* Settings - Animations */}
+        <div className="flex items-center justify-end w-full gap-4">
+          <Label htmlFor="animations-select" className="whitespace-nowrap">
+            Animations
+          </Label>
+          <div className="w-full max-w-[50%]">
+            <Select
+              value={animations}
+              onValueChange={(val) => { setAnimations(val); }}
+            >
+              <SelectTrigger id="animations-select" className="w-full">
+                <SelectValue placeholder="Full" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Full">Full</SelectItem>
+                <SelectItem value="Reduced">Reduced</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <Separator />
+        {/* Settigns - Reset Run */}
         <CustomButton
           icon={RefreshCcw}
           color="FireBrick"
           onClick={() => setGame(initGame())}
+          style={{ maxWidth: "30%" }}
         >
           Reset Run
         </CustomButton>

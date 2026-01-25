@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**After Attend**: If you understood this lecture, gain **${item.level}** times the amount of Understanding you need for this course. Otherwise, lose all U for this course. Can only be used once per block.`,
+    `**After Attend**: If you understood this lecture, gain **${item.level}** times the amount of Understanding you need for this course. Otherwise, lose the same amount of U for this course. Can only be used once per block.`,
   getEnabled: (item, state) => !itemUtils.getItemUsedThisBlock(item, state),
 };
 
@@ -26,12 +26,12 @@ export const itemBehavior: ItemBehavior = {
   {
     itemUtils.setItemUsedThisBlock(params.item, params.state);
 
+    let addU = params.state.courses[params.lecture.courseIndex].goal * params.item.level;
     if(params.result.result == "success") {
-      let addU = params.state.courses[params.lecture.courseIndex].goal * params.item.level;
       params.state.courses[params.lecture.courseIndex].understandings += addU;
       params.logEntry.message = `+${addU} U`;
     } else {
-      params.state.courses[params.lecture.courseIndex].understandings = 0;
+      params.state.courses[params.lecture.courseIndex].understandings -= addU;
       params.logEntry.message = `Failed`;
     }
   },

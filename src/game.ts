@@ -95,6 +95,7 @@ export interface LogEntry
   icon?: React.ComponentType<LucideProps>;
   color: string;
   message: string;
+  type: "normal" | "result";
 }
 
 export type View = "Calendar" | "Market" | "Chat" | "Forge" | "Settings";
@@ -213,7 +214,11 @@ export function initGame(): GameState
   };
 
   // Debug code for testing
-  //itemUtils.createItemInstanceAndAddToInventory(itemRegistry["WiFi"], game);
+  //let debugItem = itemUtils.createItemInstanceAndAddToInventory(itemRegistry["Epic Beer"], game);
+  //if (debugItem)
+  //{
+  //  debugItem.level = 1;
+  //}
 
   game = startNewBlock(game);
 
@@ -275,6 +280,7 @@ export function loadGame(): GameState | "GameDoesNotExist" | "ParsingFailed"
       icon: Check,
       color: "LawnGreen",
       message: "Save game loaded.",
+      type: "normal",
     }];
 
     return parsed;
@@ -371,7 +377,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     if (behaviorRegistry[item.name].beforeRound !== undefined)
     {
       let itemLogEntry: LogEntry = {
-        icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
+        icon: itemMetaRegistry[item.name].icon, color: "white", message: "", type: "normal",
       };
       behaviorRegistry[item.name].beforeRound!({ state: newState, item, lecture, logEntry: itemLogEntry });
       if (itemLogEntry.message !== "")
@@ -386,7 +392,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     if (behaviorRegistry[item.name].beforeUse !== undefined)
     {
       let itemLogEntry: LogEntry = {
-        icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
+        icon: itemMetaRegistry[item.name].icon, color: "white", message: "", type: "normal",
       };
       behaviorRegistry[item.name].beforeUse!({ state: newState, item, lecture, logEntry: itemLogEntry });
       if (itemLogEntry.message !== "")
@@ -399,7 +405,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     if (action == "skip" && behaviorRegistry[item.name].beforeSkipLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {
-        icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
+        icon: itemMetaRegistry[item.name].icon, color: "white", message: "", type: "normal",
       };
       behaviorRegistry[item.name].beforeSkipLecture!({ state: newState, item, lecture, logEntry: itemLogEntry });
       if (itemLogEntry.message !== "")
@@ -412,7 +418,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     if (action == "attend" && behaviorRegistry[item.name].beforeAttendLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {
-        icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
+        icon: itemMetaRegistry[item.name].icon, color: "white", message: "", type: "normal",
       };
       behaviorRegistry[item.name].beforeAttendLecture!({ state: newState, item, lecture, logEntry: itemLogEntry });
       if (itemLogEntry.message !== "")
@@ -426,13 +432,13 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
   {
     let oldEnergyCost = lecture.energyCost;
     lecture.energyCost = Math.round(lecture.energyCost * (1 + effectUtils.getEffectStacks(newState, lecture.courseIndex, "Shocked") * 0.01));
-    newState.log.push({ icon: effectMetaRegistry["Shocked"].icon, color: "crimson", message: `${oldEnergyCost} E → ${lecture.energyCost} E` });
+    newState.log.push({ icon: effectMetaRegistry["Shocked"].icon, color: "crimson", message: `${oldEnergyCost} E → ${lecture.energyCost} E`, type: "normal", });
     effectUtils.setEffectStacksForCourse(newState, lecture.courseIndex, "Shocked", 0)
   }
   if (listOfAppliedEffects.includes("BadPacing") && lecture.understandChance < effectUtils.getEffectStacks(newState, lecture.courseIndex, "BadPacing") * 0.01)
   {
     lecture.understandChance = 0;
-    newState.log.push({ icon: effectMetaRegistry["BadPacing"].icon, color: "crimson", message: `Understand chance set to 0%` });
+    newState.log.push({ icon: effectMetaRegistry["BadPacing"].icon, color: "crimson", message: `Understand chance set to 0%`, type: "normal", });
   }
   if (listOfAppliedEffects.includes("Collateral") && action == "attend")
   {
@@ -442,44 +448,44 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
       newState.courses[i].understandings -= Math.round(newState.courses[i].understandings * effectUtils.getEffectStacks(newState, lecture.courseIndex, "Collateral") * 0.01);
       if (newState.courses[i].understandings < 0) newState.courses[i].understandings = 0;
     }
-    newState.log.push({ icon: effectMetaRegistry["Collateral"].icon, color: "crimson", message: `Removed ${effectUtils.getEffectStacks(newState, lecture.courseIndex, "Collateral")}% U from other courses` });
+    newState.log.push({ icon: effectMetaRegistry["Collateral"].icon, color: "crimson", message: `Removed ${effectUtils.getEffectStacks(newState, lecture.courseIndex, "Collateral")}% U from other courses`, type: "normal", });
   }
   if (listOfAppliedEffects.includes("Exhausting"))
   {
     let oldEnergyCost = lecture.energyCost;
     lecture.energyCost = Math.round(lecture.energyCost * (1 + effectUtils.getEffectStacks(newState, lecture.courseIndex, "Exhausting") * 0.01));
-    newState.log.push({ icon: effectMetaRegistry["Exhausting"].icon, color: "crimson", message: `${oldEnergyCost} E → ${lecture.energyCost} E` });
+    newState.log.push({ icon: effectMetaRegistry["Exhausting"].icon, color: "crimson", message: `${oldEnergyCost} E → ${lecture.energyCost} E`, type: "normal", });
   }
   if (listOfAppliedEffects.includes("TakesP") && action == "attend")
   {
     let loseP = effectUtils.getEffectStacks(newState, lecture.courseIndex, "TakesP");
     loseP = Math.min(loseP, newState.procrastinations);
     newState.procrastinations -= loseP;
-    newState.log.push({ icon: effectMetaRegistry["TakesP"].icon, color: "crimson", message: `-${loseP} P` });
+    newState.log.push({ icon: effectMetaRegistry["TakesP"].icon, color: "crimson", message: `-${loseP} P`, type: "normal", });
   }
   if (listOfAppliedEffects.includes("TravelCost") && action == "attend")
   {
     let loseCash = effectUtils.getEffectStacks(newState, lecture.courseIndex, "TravelCost");
     loseCash = Math.min(loseCash, newState.cash);
     newState.cash -= loseCash;
-    newState.log.push({ icon: effectMetaRegistry["TravelCost"].icon, color: "crimson", message: `-$${loseCash} ` });
+    newState.log.push({ icon: effectMetaRegistry["TravelCost"].icon, color: "crimson", message: `-$${loseCash} `, type: "normal", });
   }
   if (listOfAppliedEffects.includes("Unhelpful") && action == "attend")
   {
     let oldUnderstanding = lecture.potentialUnderstandings;
     lecture.potentialUnderstandings = Math.round(lecture.potentialUnderstandings * (1 - effectUtils.getEffectStacks(newState, lecture.courseIndex, "Unhelpful") * 0.01));
-    newState.log.push({ icon: effectMetaRegistry["Unhelpful"].icon, color: "crimson", message: `${oldUnderstanding} U → ${lecture.potentialUnderstandings} U` });
+    newState.log.push({ icon: effectMetaRegistry["Unhelpful"].icon, color: "crimson", message: `${oldUnderstanding} U → ${lecture.potentialUnderstandings} U`, type: "normal", });
   }
   if (listOfAppliedEffects.includes("Prepared") && action == "attend")
   {
     let oldUnderstanding = lecture.potentialUnderstandings;
     lecture.potentialUnderstandings = Math.round(lecture.potentialUnderstandings * (1 + effectUtils.getEffectStacks(newState, lecture.courseIndex, "Prepared") * 0.01));
-    newState.log.push({ icon: effectMetaRegistry["Prepared"].icon, color: effectMetaRegistry["Prepared"].backgroundColor, message: `${oldUnderstanding} U → ${lecture.potentialUnderstandings} U` });
+    newState.log.push({ icon: effectMetaRegistry["Prepared"].icon, color: effectMetaRegistry["Prepared"].backgroundColor, message: `${oldUnderstanding} U → ${lecture.potentialUnderstandings} U`, type: "normal", });
   }
   if (listOfAppliedEffects.includes("Soda") && action == "skip")
   {
     newState.energy += effectUtils.getEffectStacks(newState, lecture.courseIndex, "Soda");
-    newState.log.push({ icon: effectMetaRegistry["Soda"].icon, color: effectMetaRegistry["Soda"].backgroundColor, message: `+${effectUtils.getEffectStacks(newState, lecture.courseIndex, "Soda")} E` });
+    newState.log.push({ icon: effectMetaRegistry["Soda"].icon, color: effectMetaRegistry["Soda"].backgroundColor, message: `+${effectUtils.getEffectStacks(newState, lecture.courseIndex, "Soda")} E`, type: "normal", });
   }
 
   // Calculate round
@@ -501,10 +507,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
   } else // Skip
   {
     const gainedProcrastinations = lecture.procrastinationValue;
-    const energyChange =
-      newState.energy / newState.maxEnergy < 0.5
-        ? Math.round(newState.energyPerSkip / 2)
-        : newState.energyPerSkip;
+    const energyChange = newState.energyPerSkip;
 
     lectureResult = {
       action: action,
@@ -538,13 +541,13 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
   if (action == "attend")
   {
     newState.log.push(lectureResult.result == "success"
-      ? { icon: Check, color: "LawnGreen", message: `+${lectureResult.gainedUnderstandings} Understanding (U) in ${courseTitle}.` }
-      : { icon: X, color: "red", message: `Could not understand ${courseTitle}.` });
+      ? { icon: Check, color: "LawnGreen", message: `+${lectureResult.gainedUnderstandings} Understanding (U) in ${courseTitle}.`, type: "result", }
+      : { icon: X, color: "red", message: `Could not understand ${courseTitle}.`, type: "result", });
   } else
   {
     newState.log.push(lectureResult.result == "success"
-      ? { icon: StepForward, color: "gray", message: `Skipped ${courseTitle}.` }
-      : { icon: X, color: "red", message: `Could not skip ${courseTitle}.` });
+      ? { icon: StepForward, color: "gray", message: `Skipped ${courseTitle}.`, type: "result", }
+      : { icon: X, color: "red", message: `Could not skip ${courseTitle}.`, type: "result", });
   }
 
   // Generate next lecture
@@ -566,7 +569,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     if (behaviorRegistry[item.name].afterRound !== undefined)
     {
       let itemLogEntry: LogEntry = {
-        icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
+        icon: itemMetaRegistry[item.name].icon, color: "white", message: "", type: "normal",
       };
       behaviorRegistry[item.name].afterRound!({ state: newState, item, lecture, nextLecture: nextLecture, result: lectureResult, logEntry: itemLogEntry });
       if (itemLogEntry.message !== "")
@@ -581,7 +584,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     if (behaviorRegistry[item.name].afterUse !== undefined)
     {
       let itemLogEntry: LogEntry = {
-        icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
+        icon: itemMetaRegistry[item.name].icon, color: "white", message: "", type: "normal",
       };
       behaviorRegistry[item.name].afterUse!({ state: newState, item, lecture, nextLecture: nextLecture, result: lectureResult, logEntry: itemLogEntry });
       if (itemLogEntry.message !== "")
@@ -594,7 +597,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     if (action == "skip" && behaviorRegistry[item.name].afterSkipLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {
-        icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
+        icon: itemMetaRegistry[item.name].icon, color: "white", message: "", type: "normal",
       };
       behaviorRegistry[item.name].afterSkipLecture!({ state: newState, item, lecture, nextLecture: nextLecture, result: lectureResult, logEntry: itemLogEntry });
       if (itemLogEntry.message !== "")
@@ -607,7 +610,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     if (action == "attend" && behaviorRegistry[item.name].afterAttendLecture !== undefined)
     {
       let itemLogEntry: LogEntry = {
-        icon: itemMetaRegistry[item.name].icon, color: "white", message: ""
+        icon: itemMetaRegistry[item.name].icon, color: "white", message: "", type: "normal",
       };
       behaviorRegistry[item.name].afterAttendLecture!({ state: newState, item, lecture, nextLecture: nextLecture, result: lectureResult, logEntry: itemLogEntry });
       if (itemLogEntry.message !== "")
@@ -624,7 +627,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
   }
   if (listOfAppliedEffects.includes("Frying") && action == "attend" && nextLecture)
   {
-    newState.log.push({ icon: effectMetaRegistry["Frying"].icon, color: "crimson", message: `${(nextLecture.understandChance * 100).toFixed(1)}% → ${effectUtils.getEffectStacks(newState, lecture.courseIndex, "Frying")}%` });
+    newState.log.push({ icon: effectMetaRegistry["Frying"].icon, color: "crimson", message: `${(nextLecture.understandChance * 100).toFixed(1)}% → ${effectUtils.getEffectStacks(newState, lecture.courseIndex, "Frying")}%`, type: "normal", });
     nextLecture.understandChance = effectUtils.getEffectStacks(newState, lecture.courseIndex, "Frying") / 100;
   }
 
@@ -635,12 +638,12 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     if (listOfAppliedEffects.includes("Cash"))
     {
       newState.cash += effectUtils.getEffectStacks(newState, nextLecture.courseIndex, "Cash");
-      newState.log.push({ icon: effectMetaRegistry["Cash"].icon, color: "yellow", message: `+${effectUtils.getEffectStacks(newState, nextLecture.courseIndex, "Cash")}$` });
+      newState.log.push({ icon: effectMetaRegistry["Cash"].icon, color: "yellow", message: `+${effectUtils.getEffectStacks(newState, nextLecture.courseIndex, "Cash")}$`, type: "normal", });
     }
     if (listOfAppliedEffects.includes("Mutating"))
     {
       newState.courses[nextLecture.courseIndex].understandings = Math.round(newState.courses[nextLecture.courseIndex].understandings * (1 - effectUtils.getEffectStacks(newState, nextLecture.courseIndex, "Mutating") / 100));
-      newState.log.push({ icon: effectMetaRegistry["Mutating"].icon, color: "crimson", message: `Lost ${effectUtils.getEffectStacks(newState, nextLecture.courseIndex, "Mutating")}% U in ${newState.courses[nextLecture.courseIndex].title}` });
+      newState.log.push({ icon: effectMetaRegistry["Mutating"].icon, color: "crimson", message: `Lost ${effectUtils.getEffectStacks(newState, nextLecture.courseIndex, "Mutating")}% U in ${newState.courses[nextLecture.courseIndex].title}`, type: "normal", });
     }
   }
 
@@ -769,22 +772,22 @@ export function generateCourse(state: GameState, hue: number): Course
   let courseDifficulty = Math.random();
 
   // For online graphing calculators:
-  // Max: y\ =\ 100\left(0.35x+1\right)\ +\ 3.5^{\frac{x}{5}}
-  // Min: y\ =\ 100\left(0.15x+1\right)\ +3^{\frac{x}{5}}
+  // Max: y\ =\ 100\left(2x+-1.5\right)\ +\ 4.5^{\frac{x}{1}}
+  // Min: y\ =\ 100\left(1x+-0.5\right)\ +\ 4^{\frac{x}{2}}
   let goal =
     Math.round(
-      (100 * ((0.15 + 0.2 * courseDifficulty) * state.block + 1)
-        + (3 + 0.5 * courseDifficulty) ** (state.block / 5)
-        + Math.random() * 5)
+      (100 * ((1 + 1 * courseDifficulty) * state.block + (-0.5 + -1 * courseDifficulty))
+        + (4 + 0.5 * courseDifficulty) ** (state.block / (2 - courseDifficulty))
+        + Math.random() * 10)
     )
   // For online graphing calculators:
-  // Max: y\ =\ \frac{\left(100\left(0.30x+1\right)\ +\ 1.5^{\frac{x}{5}}\right)}{3}
-  // Min: y\ =\ \frac{\left(100\left(0.125x+1\right)\ +1^{\frac{x}{5}}\right)}{3}
+  // Max: y\ =\ \frac{\left(100\left(0.30x+1\right)\ +\ 3.5^{\frac{x}{3}}\right)}{3}
+  // Min: y\ =\ \frac{\left(100\left(0.125x+1\right)\ +\ 3^{\frac{x}{3}}\right)}{3}
   let maxUnderstandingsPerLecture =
     Math.round(
-      (100 * ((0.125 + 0.175 * courseDifficulty) * state.block + 1)
-        + (1 + 0.5 * courseDifficulty) ** (state.block / 5)
-        + Math.random() * 5)
+      (100 * ((0.125 + 0.175 * courseDifficulty) * (state.block + 1))
+        + (3 + 0.5 * courseDifficulty) ** (state.block / 3)
+        + Math.random() * 10)
       / 3
     )
 
@@ -800,7 +803,7 @@ export function generateCourse(state: GameState, hue: number): Course
     lectureAppearWeight: 100,
     maxUnderstandingsPerLecture: maxUnderstandingsPerLecture,
     maxProcrastinationsPerLecture: 200,
-    maxEnergyCostPerLecture: 5 + 10 * (state.block - 1)
+    maxEnergyCostPerLecture: 10
   };
 }
 
@@ -950,10 +953,7 @@ export function generateShop(state: GameState)
 
   let commonCount = 4;
 
-  if (Math.random() > 0.5) commonCount++;
-  if (Math.random() > 0.5) commonCount++;
-
-  for (var i = 0; i < commonCount; i++)
+  for (var i = 0; i < 6; i++)
   {
     // Pick item using item dropWeight
     const itemWeights = itemsByRarity[1].map((i) => i.dropWeight);
@@ -966,7 +966,7 @@ export function generateShop(state: GameState)
     });
   }
 
-  for (var i = 0; i < 8 - commonCount; i++)
+  for (var i = 0; i < 6; i++)
   {
     // Pick item using item dropWeight
     const itemWeights = itemsByRarity[2].map((i) => i.dropWeight);
@@ -978,16 +978,6 @@ export function generateShop(state: GameState)
       discount: 0,
     });
   }
-
-  // Pick item using item dropWeight
-  const legendaryItemWeights = itemsByRarity[3].map((i) => i.dropWeight);
-  const chosenLegendaryItem = weightedRandom(itemsByRarity[3], legendaryItemWeights);
-
-  state.shop.push({
-    item: itemUtils.createItemInstance(chosenLegendaryItem),
-    price: 6000,
-    discount: 0,
-  });
 
   // Add discounts
   for (var i = 0; i < 4; i++)
@@ -1043,6 +1033,7 @@ export function attendExams(state: GameState, setTopRuns: React.Dispatch<React.S
     icon: Check,
     color: "LawnGreen",
     message: logMessage,
+    type: "normal",
   }];
 
   if (results.filter(r => r).length < 2)
@@ -1085,9 +1076,9 @@ export function startNewBlock(state: GameState): GameState
   newState.block += 1;
 
   let courseCount = 3;
-  if (newState.block > 6) courseCount++;
-  if (newState.block > 12) courseCount++;
-  if (newState.block > 24) courseCount++;
+  if (newState.block >= 3) courseCount++;
+  if (newState.block >= 6) courseCount++;
+  if (newState.block >= 9) courseCount++;
   newState.maxActivatedItems = courseCount;
 
   const hues: number[] = [];
@@ -1102,7 +1093,7 @@ export function startNewBlock(state: GameState): GameState
     }
   }
 
-  // Create 3 new courses
+  // Create new courses
   const newCourses: Course[] = [];
   for (let i = 0; i < courseCount; i++)
   {
@@ -1110,9 +1101,13 @@ export function startNewBlock(state: GameState): GameState
   }
   newState.courses = newCourses;
 
-  let level1EffectCount = Math.floor((newState.block) / 2);
-  let level2EffectCount = Math.floor((newState.block) / 5);
-  let level3EffectCount = Math.floor((newState.block) / 20);
+  let level1EffectCount = Math.floor((newState.block) * 2 - 2);
+  let level2EffectCount = Math.floor((newState.block) - 1);
+  let level3EffectCount = Math.floor((newState.block - 1) / 3);
+
+  level1EffectCount = Math.max(level1EffectCount, 0);
+  level2EffectCount = Math.max(level2EffectCount, 0);
+  level3EffectCount = Math.max(level3EffectCount, 0);
 
   // Add effects to courses
 
@@ -1125,19 +1120,19 @@ export function startNewBlock(state: GameState): GameState
       switch (randomEffect)
       {
         case "Ambiguous":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(Math.random() * 100));
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.min(newState.block * 3 + Math.round(Math.random() * 100), 100));
           break;
         case "Unclear":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(Math.random() * 100));
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.min(newState.block * 3 + Math.round(Math.random() * 100), 100));
           break;
         case "Aftershock":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(25 + Math.random() * 50));
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(25 + newState.block * 5 + Math.random() * 50));
           break;
         case "TravelCost":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(50 + Math.random() * 50) * newState.block);
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(10 + newState.block * 25 + Math.random() * 25) * newState.block);
           break;
         case "TakesP":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(10 + Math.random() * 10) * newState.block);
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(100 + newState.block * 10 + Math.random() * 100) * newState.block);
           break;
       }
     }
@@ -1152,19 +1147,19 @@ export function startNewBlock(state: GameState): GameState
       switch (randomEffect)
       {
         case "Difficult":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(Math.random() * 100));
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(Math.max(Math.random() * 100 - newState.block * 5, 0)));
           break;
         case "Unhelpful":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(Math.random() * 100));
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(Math.min(Math.random() * 100 + newState.block * 5, 100)));
           break;
         case "Exhausting":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(20 + Math.random() * 60));
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(20 + Math.random() * 60 + newState.block * 5));
           break;
         case "Collateral":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(3 + Math.random() * 6));
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(Math.min(newState.block * 10 + Math.random() * 10 * newState.block, 100)));
           break;
         case "Frying":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(5 + Math.random() * 10));
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, 1);
           break;
       }
     }
@@ -1179,20 +1174,20 @@ export function startNewBlock(state: GameState): GameState
       switch (randomEffect)
       {
         case "BadPacing":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(10 + Math.random() * 40));
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(Math.min(newState.block * 10 + Math.random() * 40, 99)));
           break;
         case "Extensive":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(200 + Math.random() * 300));
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(200 * newState.block + Math.random() * 300 * newState.block));
           break;
         case "Mutating":
-          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(10 + Math.random() * 10));
+          effectUtils.addEffectStacksToCourse(newState, randomCourseIndex, randomEffect, Math.round(10 + Math.random() * Math.min(10 * newState.block, 80)));
           break;
       }
     }
   }
 
-  // Block 30 difficulty spike
-  if (newState.block >= 30)
+  // Block 11 difficulty spike
+  if (newState.block >= 11)
   {
     for (let i = 0; i < newState.courses.length; i++)
     {
@@ -1226,6 +1221,7 @@ export function startNewBlock(state: GameState): GameState
     icon: Box,
     color: "cyan",
     message: `Welcome to Block ${newState.block}.`,
+    type: "normal",
   }];
 
   if (newState.block == 1)
@@ -1234,6 +1230,7 @@ export function startNewBlock(state: GameState): GameState
       icon: PenOff,
       color: "white",
       message: "First time playing? Click the ?s to read about the game mechanics.",
+      type: "normal",
     })
   }
 

@@ -72,13 +72,13 @@ import type { GameState } from "./game";
 // The key represents the block number that the story popup appears at
 export const story: Record<string, (game: GameState, setGame: React.Dispatch<React.SetStateAction<GameState>>) => React.ReactNode> = {
 
-  "4": (game, setGame) => (
+  "2": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
-      The first 3 blocks have passed.
+      The first block has passed.
       <br /> <br />
       It was already clear from day one that this place is not what it seems like. On the surface, a professional academic environment, but deep down, it's a trap — a prison that locks you up for eternity with no hope of escape. I haven't found a way out yet, but I know that there must be one, as hopeless as my search may be.
       <br /> <br />
-      Whispers spread of a legendary student who allegedly understood chapter four of our last math course. How they did it is beyond me, but I am glad they are still here. The same can't be said for most of the other students.
+      Whispers spread of a legendary student who allegedly understood chapter four of the math course. How they did it is beyond me, but I am glad they are still here. The same can't be said for most of the other students.
       <br /> <br />
       More than half of us have already failed. The number of people who show up is going down by the day.
       <br /> <br />
@@ -86,23 +86,23 @@ export const story: Record<string, (game: GameState, setGame: React.Dispatch<Rea
     </div>
   ),
 
-  "7": (game, setGame) => (
+  "3": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
-      6 blocks have passed.
+      2 blocks have passed.
       <br /> <br />
       Come to think of it, I can't even remember why I first enrolled here. Or, for that matter, <span className="italic">how</span> I got here in the first place. My memory is blank and I can barely remember my past. All that's been on my mind lately are the courses.
       <br /> <br />
       These trinkets, they are useful. They seem to materialize in my room whenever I get too stressed out. I don't know how they appear, but regardless of that, I am thankful. With them, I can manage my studies better.
       <br /> <br />
-      Many cannot seem to figure it out though, and it shows in the numbers. More than 95% of the students are now gone.
+      Many cannot seem to figure it out though, and it shows in the numbers. More than 75% of the students are now gone.
       <br /> <br />
       My search continues. Yet, as time goes on, it gets harder and harder to keep up with the courses.
     </div>
   ),
 
-  "10": (game, setGame) => (
+  "4": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
-      It's rare for me to see a student in the corridors. Or outside. Or anywhere.
+      It's rare for me to see a student in the corridors now. Or outside. Or anywhere.
       <br /> <br />
       I saw a dream the other day. It was the first one in a long while. I remember seeing a grocery store in there. Food. When was the last time I ate anything? What started as a casual thought eventually spiralled out of control.
       <br /> <br />
@@ -114,7 +114,7 @@ export const story: Record<string, (game: GameState, setGame: React.Dispatch<Rea
     </div>
   ),
 
-  "13": (game, setGame) => (
+  "5": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
       I'm still kicking.
       <br /> <br />
@@ -126,7 +126,7 @@ export const story: Record<string, (game: GameState, setGame: React.Dispatch<Rea
     </div>
   ),
 
-  "16": (game, setGame) => (
+  "6": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
       Update: I got outside onto the roof.
       <br /> <br />
@@ -138,7 +138,7 @@ export const story: Record<string, (game: GameState, setGame: React.Dispatch<Rea
     </div>
   ),
 
-  "19": (game, setGame) => (
+  "7": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
       People really do write books about anything, huh? "10 Illegal Life Skills", the book that teaches you how to pick locks, among other things. I won't complain.
       <br /> <br />
@@ -150,7 +150,7 @@ export const story: Record<string, (game: GameState, setGame: React.Dispatch<Rea
     </div>
   ),
 
-  "22": (game, setGame) => (
+  "8": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
       Do not go outside. Do not leave the building. Do not attempt to escape. Do not quit your studies. Do not get sidetracked. Do not go onto the rooftop. Do not climb down. Do not go into the main building. Do not go into the main building. Do not go into the main building.
       <br /> <br />
@@ -162,21 +162,21 @@ export const story: Record<string, (game: GameState, setGame: React.Dispatch<Rea
     </div>
   ),
 
-  "25": (game, setGame) => (
+  "9": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
       The broken window has been sealed off now.
       <br /> <br />
       After the last exam period, I found something in my mailbox. I haven't been checking it, because it's always empty, but something compelled me to look into it that day, and it had a letter in it.
       <br /> <br />
-      The contents were short: "Final Exams. Block 30. Prepare."
+      The contents were short: "Final Exams. Block 11. Prepare."
       <br /> <br />
       I am skeptic, because it's not unusual for this place to give you false hope, but at the same time, it's the first message of any kind that I have received here. It must mean something.
     </div>
   ),
 
-  "28": (game, setGame) => (
+  "10": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
-      Block 30 is getting closer by the day. At the same time, the building seems to be "deteriorating".
+      Block 11 is getting closer by the day. At the same time, the building seems to be "deteriorating".
       <br /> <br />
       I've noticed that some rooms have just disappeared. Some no longer have doors or windows. Some do still have them, but opening them leads to a dark void. Furthermore, the lighting is getting dimmer. I can barely make out details anymore.
       <br /> <br />
@@ -186,9 +186,9 @@ export const story: Record<string, (game: GameState, setGame: React.Dispatch<Rea
     </div>
   ),
 
-  "30": (game, setGame) => (
+  "11": (game, setGame) => (
     <div className="p-3 rounded bg-neutral-900/80 border border-neutral-700 text-sm text-neutral-200">
-      This is it. Block 30.
+      This is it. Block 11.
       <br /> <br />
       I think I get this place now. It lures in those who intend on cheating or otherwise trying to take advantage of the academic system. Victims are trapped here as punishment. Failing too many exams sends them back to block 1. The only way to get out is to pass the final exams, which I am going to attempt now.
       <br /> <br />
@@ -200,7 +200,7 @@ export const story: Record<string, (game: GameState, setGame: React.Dispatch<Rea
     </div>
   ),
 
-  "31": (game, setGame) => (
+  "12": (game, setGame) => (
     <div
       className="absolute left-0 top-0 z-500 w-screen h-screen bg-black flex flex-col items-center justify-center gap-4 text-xl"
       style={{

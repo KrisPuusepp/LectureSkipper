@@ -24,7 +24,7 @@ export const itemMeta: ItemMeta = {
 export const itemBehavior: ItemBehavior = {
   afterSkipLecture: (params) =>
   {
-    let gainU = Math.round(Math.min(params.item.level * 5, 100) * params.lecture.potentialUnderstandings / 100);
+    let gainU = Math.round(Math.min(40 + params.item.level * 10, 100) * params.lecture.potentialUnderstandings / 100);
 
     params.state.courses[params.lecture.courseIndex].understandings += gainU;
 

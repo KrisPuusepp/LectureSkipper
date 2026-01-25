@@ -13,6 +13,7 @@ import { CoursesCard } from "@/components/CoursesCard";
 import { story } from "@/story";
 import { renderDescription } from "@/stringUtils";
 import { motion, AnimatePresence } from "framer-motion";
+import { Separator } from "@/components/ui/separator";
 
 interface Props
 {
@@ -60,11 +61,7 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
                 </li>
                 <li>
                   <span className="font-bold">Skip</span>: Skipping gives you
-                  Procrastinations (P) and restores energy. Currently, you gain {game.energyPerSkip} energy per skip. {" "}
-                  <span className="italic text-red-500">
-                    You restore energy half as fast if you have less than 50% of your
-                    maximum.
-                  </span>
+                  Procrastinations (P) and restores energy. Currently, you gain {game.energyPerSkip} energy per skip.
                 </li>
               </ul>
             </div>
@@ -90,18 +87,18 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
         {/* --- CASE 1: Lectures still remaining --- */}
         {story[game.story] == null && game.nextLecture && !game.examsAttended ? (
           <div className="flex flex-col items-center gap-2">
-            {/* Determine course color */}
-            {(() =>
-            {
-              const course = game.courses[game.nextLecture.courseIndex];
+            <AnimatePresence mode="popLayout">
+              {/* Determine course color */}
+              {(() =>
+              {
+                const course = game.courses[game.nextLecture.courseIndex];
 
-              const baseColor = course ? course.color : "#4b5563"; // fallback gray
-              const bg = chroma(baseColor).brighten(1.2).hex();
-              const border = chroma(baseColor).brighten(2).hex();
-              const text = chroma.contrast(bg, "white") > 4.5 ? "white" : "black";
+                const baseColor = course ? course.color : "#4b5563"; // fallback gray
+                const bg = chroma(baseColor).brighten(1.2).hex();
+                const border = chroma(baseColor).brighten(2).hex();
+                const text = chroma.contrast(bg, "white") > 4.5 ? "white" : "black";
 
-              return (
-                <AnimatePresence mode="popLayout">
+                return (
                   <motion.div
                     layout
                     layoutId={"lecture-" + game.nextLecture.potentialUnderstandings + game.nextLecture.understandChance + game.nextLecture.energyCost + game.nextLecture.procrastinationValue}
@@ -184,9 +181,9 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
                       </CardContent>
                     </Card>
                   </motion.div>
-                </AnimatePresence>
-              );
-            })()}
+                );
+              })()}
+            </AnimatePresence>
 
             {/* Buttons */}
             <div className="flex gap-2 m-2">
@@ -332,16 +329,37 @@ export default function CalendarView({ game, setGame, setTopRuns }: Props)
           {game.log.slice().map((entry, i) =>
           {
             const Icon = entry.icon;
-            return (
-              <div key={i} className="flex items-center gap-2">
-                {Icon && <Icon
-                  className="w-4 h-4 shrink-0 inline-block"
-                  style={{ color: entry.color }}
-                  strokeWidth={2}
-                />}
-                <span>{renderDescription(entry.message)}</span>
-              </div>
-            );
+            if (entry.type == "result")
+            {
+              // Lecture success or fail log: add separators
+              return (
+                <>
+                  <Separator className="m-2" />
+                  <div key={i} className="flex items-center gap-2">
+                    {Icon && <Icon
+                      className="w-4 h-4 shrink-0 inline-block"
+                      style={{ color: entry.color }}
+                      strokeWidth={2}
+                    />}
+                    <span>{renderDescription(entry.message)}</span>
+                  </div>
+                  <Separator className="m-2" />
+                </>
+              );
+            } else
+            {
+              // Normal log
+              return (
+                <div key={i} className="flex items-center gap-2">
+                  {Icon && <Icon
+                    className="w-4 h-4 shrink-0 inline-block"
+                    style={{ color: entry.color }}
+                    strokeWidth={2}
+                  />}
+                  <span>{renderDescription(entry.message)}</span>
+                </div>
+              );
+            }
           })}
         </div>
       </CustomInfoCard>

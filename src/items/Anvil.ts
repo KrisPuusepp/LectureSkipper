@@ -25,6 +25,7 @@ export const itemBehavior: ItemBehavior = {
   beforeAttendLecture: (params) =>
   {
     let mySlot = itemUtils.itemIDtoSlot(params.item.id, params.state);
+    if (mySlot == null) return;
     if (mySlot % 6 != 5)
     {
       // Not at the end of the row, so we can continue
@@ -35,7 +36,7 @@ export const itemBehavior: ItemBehavior = {
       if (targetItem != null && params.state.selectedItemIDs.indexOf(targetItem.id) == -1 && sourceItem != null && params.state.selectedItemIDs.indexOf(sourceItem.id) == -1)
       {
         // There are items on both sides
-        
+
         // Are they of equal type?
         if (targetItem.name != sourceItem.name) return;
 
@@ -47,7 +48,8 @@ export const itemBehavior: ItemBehavior = {
 
         params.logEntry.message += ` ${targetItem.level}`;
 
-        if(Math.random() < (101 - params.item.level) / 100) {
+        if (Math.random() < (101 - params.item.level) / 100)
+        {
           itemUtils.setItemUsedThisBlock(params.item, params.state);
           params.logEntry.message += " (Broke)";
         }

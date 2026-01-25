@@ -25,6 +25,7 @@ export const itemBehavior: ItemBehavior = {
   beforeAttendLecture: (params) =>
   {
     let mySlot = itemUtils.itemIDtoSlot(params.item.id, params.state);
+    if (mySlot == null) return;
     if (mySlot % 6 != 5)
     {
       // Not at the end of the row, so we can continue

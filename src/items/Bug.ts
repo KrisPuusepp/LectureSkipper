@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: Increases the Potential Understanding by **${item.level * 10}%**, but all gained Understandings instead go to a random course.`,
+    `**On Attend**: Increases the Potential Understanding by **${item.level * 10}%**, but after attending, the amount of gained Understandings is subtracted from the course and added to a random one.`,
   getEnabled: (item, state) => true,
 };
 
@@ -36,9 +36,6 @@ export const itemBehavior: ItemBehavior = {
 
       // Remove the understandings that were gained so that they can be given to another course
       params.state.courses[params.lecture.courseIndex].understandings -= params.result.gainedUnderstandings;
-
-      // Prevent other items from using gainedUnderstandings
-      params.result.gainedUnderstandings = 0;
 
       let randomCourseIndex = Math.floor(Math.random() * params.state.courses.length);
       let randomCourse = params.state.courses[randomCourseIndex];

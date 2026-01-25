@@ -18,7 +18,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Always Active**: If this item is at the top right of the inventory, it will activate and start to move on its own. Every lecture, it will move into a random adjacent (horizontally or vertically) free slot. If it reaches the bottom left corner, it disappears and you gain **${item.level * 500} P** and **$${item.level * 500}**. If you manually move it before it reaches its destination, it becomes deactivated.`,
+    `**Always Active**: If this item is at the top right of the inventory, it will activate and start to move on its own. Every lecture, it will move into a random adjacent (horizontally or vertically) free slot. If it reaches the bottom left corner, it disappears and you gain **${500 + item.level * 150} P** and **$${500 + item.level * 150}**. If you manually move it before it reaches its destination, it becomes deactivated.`,
   getEnabled: (item, state) => true,
 };
 
@@ -26,6 +26,7 @@ export const itemBehavior: ItemBehavior = {
   beforeRound: (params) =>
   {
     let mySlot = itemUtils.itemIDtoSlot(params.item.id, params.state);
+    if (mySlot == null) return;
 
     if (params.item.memory.lastSlot === undefined) params.item.memory.lastSlot = itemUtils.itemToSlot(params.item, params.state);
     if (params.item.memory.moving === undefined) params.item.memory.moving = false;
@@ -107,9 +108,9 @@ export const itemBehavior: ItemBehavior = {
       // Check if we are at the bottom left corner of the inventory
       if (newSlot == 30)
       {
-        params.state.procrastinations += params.item.level * 500;
-        params.state.cash += params.item.level * 500;
-        params.logEntry.message += ` +${params.item.level * 500} P and $${params.item.level * 500}`;
+        params.state.procrastinations += 500 + params.item.level * 150;
+        params.state.cash += 500 + params.item.level * 150;
+        params.logEntry.message += ` +${500 + params.item.level * 150} P and $${500 + params.item.level * 150}`;
 
         // Delete self
         itemUtils.destroyItemWithID(params.item.id, params.state);

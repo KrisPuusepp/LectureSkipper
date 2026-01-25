@@ -6,7 +6,7 @@ export const itemData: ItemData = {
   name: "Sun",
   rarity: 1,
   dropWeight: 100,
-  
+
   // Don't change
   level: 1,
   startingLevel: 1,
@@ -22,9 +22,10 @@ export const itemMeta: ItemMeta = {
 };
 
 export const itemBehavior: ItemBehavior = {
-  afterRound: (params) => {
-    if(params.nextLecture == null) return;
+  afterRound: (params) =>
+  {
+    if (params.nextLecture == null) return;
     params.state.courses[params.nextLecture.courseIndex].understandings += params.item.level * 2 + 3;
-    params.logEntry.message = `+${params.item.level * 2} U in ${params.state.courses[params.nextLecture.courseIndex].title}`;
+    params.logEntry.message = `+${params.item.level * 2 + 3} U in ${params.state.courses[params.nextLecture.courseIndex].title}`;
   },
 };

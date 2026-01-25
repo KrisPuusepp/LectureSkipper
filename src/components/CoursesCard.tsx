@@ -45,8 +45,7 @@ export function CoursesCard({ game }: CoursesCardProps)
             </span>
             <br />
             <br />
-            You can gain more Understanding (U) than the course requires. The chance to pass will be
-            capped at 100%.
+            You can gain more Understanding (U) than the course requires. Going above 100% with the chance to pass does nothing.
           </p>
         </>
       }
@@ -56,7 +55,7 @@ export function CoursesCard({ game }: CoursesCardProps)
           <div className="flex-1 space-y-2">
             {game.courses.map((c, i) =>
             {
-              const progress = Math.min((c.understandings / c.goal) * 100, 100);
+              const progress = (c.understandings / c.goal) * 100;
 
               const bg = chroma(c.color).brighten(1.2).hex();
               const border = chroma(c.color).brighten(2).hex();

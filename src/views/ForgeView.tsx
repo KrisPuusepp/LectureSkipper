@@ -59,7 +59,7 @@ export default function ForgeView({ game, setGame }: Props)
       const upgradedItem = { ...item, level: item.level + upgradeAmount };
 
       const newItems = [...state.items];
-      newItems[itemUtils.itemIDtoSlot(item.id, state)] = upgradedItem;
+      newItems[itemUtils.itemIDtoSlot(item.id, state)!] = upgradedItem;
 
       const newState = {
         ...state,

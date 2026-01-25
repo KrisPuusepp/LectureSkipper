@@ -51,9 +51,19 @@ export type ItemBehavior = Partial<{
 }>;
 
 export const itemUtils = {
-  itemIDtoSlot: (id: string, state: GameState): number => state.items.findIndex((item) => item && item.id === id),
-  itemIDtoItem: (id: string, state: GameState): ItemData | null => state.items[itemUtils.itemIDtoSlot(id, state)],
-  itemToSlot: (item: ItemData, state: GameState): number => itemUtils.itemIDtoSlot(item.id, state),
+  itemIDtoSlot: (id: string, state: GameState): number | null =>
+  {
+    let slot = state.items.findIndex((item) => item && item.id === id);
+    return slot === -1 ? null : slot;
+  },
+  itemIDtoItem: (id: string, state: GameState): ItemData | null =>
+  {
+    let slot = itemUtils.itemIDtoSlot(id, state);
+    if (slot === null) return null;
+    let item = state.items[slot];
+    return item === null ? null : item;
+  },
+  itemToSlot: (item: ItemData, state: GameState): number | null => itemUtils.itemIDtoSlot(item.id, state),
 
   setItemUsedThisBlock: (item: ItemData, state: GameState) =>
   {
@@ -80,14 +90,15 @@ export const itemUtils = {
   destroyItemWithID: (id: string, state: GameState): void =>
   {
     const slot = itemUtils.itemIDtoSlot(id, state);
+    if (slot === null) return;
     itemUtils.destroyItemInSlot(slot, state);
   },
 
   /**
    * Fails if there are no free slots in the inventory.
-   * @returns Whether or not the item was successfully added.
+   * @returns The item if it was added, otherwise returns false.
    */
-  createItemInstanceAndAddToInventory: (data: ItemData, state: GameState): boolean =>
+  createItemInstanceAndAddToInventory: (data: ItemData, state: GameState): false | ItemData =>
   {
     let freeSlot = -1;
     for (let i = 0; i < state.items.length; i++)
@@ -106,7 +117,7 @@ export const itemUtils = {
 
     state.items[freeSlot] = newItem;
 
-    return true;
+    return newItem;
   },
 
   /**

@@ -17,14 +17,14 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: Permanently increases the amount of energy restored when skipping a lecture by **+${item.level} E**.`,
+    `**On Attend**: Permanently increases the amount of energy restored when skipping a lecture by **+${item.level * 3} E**.`,
   getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
   beforeAttendLecture: (params) => {
     let lastEnergyPerSkip = params.state.energyPerSkip;
-    params.state.energyPerSkip += params.item.level;
+    params.state.energyPerSkip += params.item.level * 3;
     params.logEntry.message = `E per skip ${lastEnergyPerSkip} → ${params.state.energyPerSkip}`;
   },
 };

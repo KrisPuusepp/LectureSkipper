@@ -17,12 +17,12 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Skip**: Gain +$1 for every level of the **${item.level}** highest level items you have.`,
+    `**Always Active**: Gain +$1 for every level of the **${item.level}** highest level items you have.`,
   getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
-  beforeSkipLecture: (params) =>
+  beforeRound: (params) =>
   {
     // List item levels (highest → lowest)
     const itemLevels = params.state.items

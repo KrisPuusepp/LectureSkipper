@@ -1,10 +1,10 @@
-import { Leaf as ItemIcon } from "lucide-react";
+import { ChartCandlestick as ItemIcon } from "lucide-react";
 import { type ItemData, type ItemMeta, type ItemBehavior, itemUtils } from "@/item";
 import { effectUtils } from "@/effect";
 
 export const itemData: ItemData = {
-  name: "Grass",
-  rarity: 1,
+  name: "Stock Market",
+  rarity: 2,
   dropWeight: 100,
 
   // Don't change
@@ -17,14 +17,15 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Touch**: Gives **${item.level * 30}** Procrastinations.`,
+    `**After Skip**: For every **$${Math.max(51 - item.level, 5)}** that you have, gain +$1.`,
   getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
-  afterUse: (params) =>
+  afterSkipLecture: (params) =>
   {
-    params.state.procrastinations += params.item.level * 30;
-    params.logEntry.message = `+${params.item.level * 30} P`;
+    let cashToAdd = Math.floor(params.state.cash / (Math.max(51 - params.item.level, 5)));
+    params.state.cash += cashToAdd;
+    params.logEntry.message = `+$${cashToAdd}`;
   },
 };

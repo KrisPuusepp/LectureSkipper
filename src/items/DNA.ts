@@ -18,7 +18,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Consumable**: Turns into a level **${item.level}** copy of the item that is directly to the right of this one.`,
+    `**Consumable**: Turns into a copy of the item that is directly to the right of this one. Also adds the levels from the copied item to this one.`,
   getEnabled: (item, state) => true,
 };
 
@@ -26,6 +26,7 @@ export const itemBehavior: ItemBehavior = {
   afterUse: (params) =>
   {
     let mySlot = itemUtils.itemIDtoSlot(params.item.id, params.state);
+    if (mySlot == null) return;
     if (mySlot % 6 != 5)
     {
       // Not at the end of the row, so we can continue
@@ -40,7 +41,7 @@ export const itemBehavior: ItemBehavior = {
 
         // Turn into the target item
         let newItem = itemUtils.createItemInstance(itemRegistry[targetItem.name]);
-        newItem.level = targetItem.level;
+        newItem.level += targetItem.level;
         newItem.startingLevel = targetItem.startingLevel;
         newItem.memory = structuredClone(targetItem.memory);
         params.state.items[mySlot] = newItem;

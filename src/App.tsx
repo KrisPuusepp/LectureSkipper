@@ -10,10 +10,11 @@ import ForgeView from "@/views/ForgeView";
 import SettingsView from "@/views/SettingsView";
 import { CircleDollarSign, Sparkles, TriangleAlert, Zap } from "lucide-react";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from "@/components/ui/alert-dialog";
+import { MotionGlobalConfig } from "framer-motion"
 
 export function validateGameState(game: any): { valid: boolean, missing: string[] }
 {
-  if(typeof game !== "object")
+  if (typeof game !== "object")
   {
     return { valid: false, missing: ["everything"] };
   }
@@ -98,6 +99,19 @@ export function validateGameState(game: any): { valid: boolean, missing: string[
 
 export default function App()
 {
+  const [animations, setAnimations] = useState(() =>
+  {
+    let val = (typeof window !== 'undefined' && localStorage.getItem('animations-pref')) || 'Full';
+    MotionGlobalConfig.skipAnimations = val === "Reduced";
+    return val;
+  }
+  );
+  // Save animations pref whenever it changes and set config
+  useEffect(() =>
+  {
+    MotionGlobalConfig.skipAnimations = animations === "Reduced";
+    localStorage.setItem('animations-pref', animations);
+  }, [animations]);
   const [saveCorrupted, setSaveCorrupted] = useState(false);
   const [missingFields, setMissingFields] = useState<string[]>([]);
   const [game, setGame] = useState<GameState>(() =>
@@ -137,7 +151,7 @@ export default function App()
   }, []);
 
   // Keyboard buttons to switch between tabs
-  useEffect(() =>
+  useEffect(() => 
   {
     const handleKeyDown = (e: KeyboardEvent) =>
     {
@@ -239,7 +253,7 @@ export default function App()
                 {game.view === "Market" && <MarketView game={game} setGame={setGame} />}
                 {game.view === "Chat" && <ChatView game={game} setGame={setGame} />}
                 {game.view === "Forge" && <ForgeView game={game} setGame={setGame} />}
-                {game.view === "Settings" && <SettingsView game={game} setGame={setGame} topRuns={topRuns} />}
+                {game.view === "Settings" && <SettingsView game={game} setGame={setGame} topRuns={topRuns} animations={animations} setAnimations={setAnimations} />}
               </div>
             </div>
           </main>
