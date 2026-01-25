@@ -785,7 +785,7 @@ export function generateCourse(state: GameState, hue: number): Course
   // Min: y\ =\ \frac{\left(100\left(0.125x+1\right)\ +\ 3^{\frac{x}{3}}\right)}{3}
   let maxUnderstandingsPerLecture =
     Math.round(
-      (100 * ((0.125 + 0.175 * courseDifficulty) * (state.block + 1))
+      (100 * ((0.125 + 0.175 * courseDifficulty) * state.block + 1)
         + (3 + 0.5 * courseDifficulty) ** (state.block / 3)
         + Math.random() * 10)
       / 3

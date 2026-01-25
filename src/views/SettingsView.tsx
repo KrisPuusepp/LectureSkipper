@@ -33,6 +33,17 @@ export default function SettingsView({ game, setGame, topRuns, animations, setAn
 {
   const gameUpdates = [
     {
+      version: "0.5.1",
+      date: "January 25, 2026",
+      title: "Difficulty Hotfix",
+      description: "Due to a typo, the game was 10x harder than it was supposed to be.",
+      majorChanges: [],
+      smallChanges: [
+        "Understandings per Lecture are now calculated correctly.",
+      ],
+      bugFixes: [],
+    },
+    {
       version: "0.5.0",
       date: "January 25, 2026",
       title: "3x Speed Update",
