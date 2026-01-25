@@ -56,6 +56,7 @@ export function CoursesCard({ game }: CoursesCardProps)
             {game.courses.map((c, i) =>
             {
               const progress = (c.understandings / c.goal) * 100;
+              const progressCapped = Math.min(progress, 100);
 
               const bg = chroma(c.color).brighten(1.2).hex();
               const border = chroma(c.color).brighten(2).hex();
@@ -129,7 +130,7 @@ export function CoursesCard({ game }: CoursesCardProps)
                     </CardHeader>
 
                     <CardContent>
-                      <Progress value={progress} className="h-4 rounded" />
+                      <Progress value={progressCapped} className="h-4 rounded" />
                     </CardContent>
                   </Card>
                 </motion.div>

@@ -38,10 +38,11 @@ export default function SettingsView({ game, setGame, topRuns, animations, setAn
       title: "Difficulty Hotfix",
       description: "Due to a typo, the game was 10x harder than it was supposed to be.",
       majorChanges: [],
-      smallChanges: [
+      smallChanges: [],
+      bugFixes: [
         "Understandings per Lecture are now calculated correctly.",
+        "Course progress bars now update correctly.",
       ],
-      bugFixes: [],
     },
     {
       version: "0.5.0",
