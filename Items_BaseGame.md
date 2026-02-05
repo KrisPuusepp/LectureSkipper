@@ -43,11 +43,11 @@ The main components of a good build.
 - [x] Cart - After Attend: Whenever this lecture appears, gain +$x. Can only be used once per block.
 - [x] Video - On Attend: If the Understand Chance is above x%, it becomes 100%.
 - [x] Notes - On Attend: Increases the Potential Understanding by x%, but increases Energy Cost by x%.
-- [x] Snail - On Attend: Increases the Potential Understanding by x %, but it is instead given to you over the course of the next 5 rounds, as long as this item is in your Inventory. Failing to understand any lecture from any course within this period will interrupt the process. 
-- [x] Friend - On Attend: Eats the item in the slot directly to the right of it in the Inventory, if that item is not selected. If it gets to eat an item, gives you x P and $x, multiplied by the eaten item's level. 
+- [x] Snail - On Attend: Increases the Potential Understanding by x %, but it is instead given to you over the course of the next 5 rounds, as long as this item is in your Inventory. Failing to understand any lecture from any course within this period will interrupt the process, even if this item was not selected. 
+- [x] Friend - On Use: Eats the item in the slot directly to the right of it in the Inventory, if that item is not selected. If it gets to eat an item, gives you x P and $x, multiplied by the eaten item's level. 
 - [x] GPS - On Attend: The chance of understanding this lecture is increased by +x%.
 - [x] Course Material - After Attend: Permanently increases the amount of understandings that lectures of this course give by x%, but now they are half as likely to appear. Can be used once per block.
-- [x] Printer - Always Active: Gain +$1 for every level of the x highest level items you have.
+- [x] Printer - Always Active: Gain +$1 for every level of the x highest level items you have, up to +$x per item.
 - [x] Delivery Truck - On Attend: Adds a new item to the Shop. This new item has a x% chance of being common, a x% chance of being rare and a x% chance of being legendary.
 - [x] Bug - On Attend: Increases the Potential Understanding by x%, but after attending, the amount of gained Understandings is subtracted from the course and added to a random one.
 - [x] Flame - On Attend: Increases the Potential Understanding by x%, multiplied by the current streak, then adds +1 to the lecture streak. If you attend a lecture of a different course while this item is active, the streak will be reset.
@@ -56,7 +56,7 @@ The main components of a good build.
 - [x] WiFi - On Skip: Increase the Cash rewards of all chats in the Group Chat by +$x.
 - [x] Stock Market - After Skip: For every $x that you have, gain +$1.
 - [x] Alarm Clock - On Attend: For the next 10 seconds, the Potential Understanding of all lectures is increased by x%. Can only be used once per block
-- [x] Desk Lamp - On Use: If there is an unselected item to the right of this item in the Inventory, turns that item into a level x Consumable.
+- [x] Desk Lamp - On Use: If there is an unselected item to the right of this item in the Inventory, turns that item into a random green level x Consumable.
 - [x] All-Nighter - After Skip: Sets your Energy to 0, but permanently increases the amount of understandings that lectures of this course give by x%.
 
 
@@ -68,7 +68,7 @@ The main components of a good build.
 Very rare items that can turn around an entire run.
 
 - [x] Schedule Editor - On Attend: Guarantees that the next x lectures will be about this course.
-- [x] Clover - After Skip: If the Understand Chance of the next lecture is less than the Understand Chance of this one, carry it over and add x%.
+- [x] Clover - After Use: If the Understand Chance of the next lecture is less than the Understand Chance of this one, carry it over and add x%.
 - [x] Anvil - On Attend: If there are two unselected items of equal type directly to the left and right of this item in the Inventory, destroys the item on the right and transfers all the levels to the item on the left. Has a x% chance of breaking on use, disabling it until next block.
 - [x] Brain - After Attend: If you understood this lecture, gain x times the amount of Understanding you need for this course. Otherwise, lose the same amount of U for this course. Can only be used once per block
 - [x] Time Machine - After Attend: Lectures for all courses now give 75% less understanding, but the current amount of lectures left until exams is increased by x%. Can only be used once per block.

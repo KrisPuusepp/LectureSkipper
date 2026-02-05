@@ -5,7 +5,7 @@ import { effectUtils } from "@/effect";
 export const itemData: ItemData = {
   name: "Coupon",
   rarity: 1,
-  dropWeight: 100,
+  dropWeight: 50,
 
   // Don't change
   level: 1,

@@ -33,7 +33,7 @@ export function CoursesCard({ game }: CoursesCardProps)
           </h2>
 
           <p className="text-sm">
-            Every block, you have 3 (or more) courses and a set amount of lectures before exams. Attend lectures to acquire Understanding (U). Every course is guaranteed to have at least {DEFAULT_MINIMUM_LECTURES_LEFT} lectures.
+            Every block, you have 3 (or more) courses and a set amount of lectures before exams. Attend lectures to acquire Understanding (U). Every course is guaranteed to have at least {DEFAULT_MINIMUM_LECTURES_LEFT} lectures, and lectures for a course will appear less frequently once the goal has been reached.
             <br />
             <br />
             Courses may have special effects. Click on them to learn more.

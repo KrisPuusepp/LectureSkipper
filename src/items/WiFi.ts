@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Skip**: Increase the Cash rewards of all chats in the Group Chat by **+$${item.level * 10}**.`,
+    `**On Skip**: Increase the Cash rewards of all chats in the Group Chat by **+$${item.level * 30}**.`,
   getEnabled: (item, state) => true,
 };
 
@@ -25,7 +25,7 @@ export const itemBehavior: ItemBehavior = {
   beforeSkipLecture: (params) =>
   {
     let increasedCount = 0;
-    let increaseAmount = params.item.level * 10;
+    let increaseAmount = params.item.level * 30;
     for (let i = 0; i < params.state.quests.length; i++)
     {
       let quest = params.state.quests[i];

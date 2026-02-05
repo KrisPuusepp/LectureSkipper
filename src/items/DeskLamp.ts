@@ -18,7 +18,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Before Use**: If there is an unselected item to the right of this item in the Inventory, turns that item into a random level **${item.level * 2}** Consumable.`,
+    `**Before Use**: If there is an unselected item to the right of this item in the Inventory, turns that item into a random green level **${item.level}** Consumable.`,
   getEnabled: (item, state) => true,
 };
 
@@ -50,7 +50,8 @@ export const itemBehavior: ItemBehavior = {
         if (newConsumableData == null) return;
 
         let newConsumable = itemUtils.createItemInstance(newConsumableData);
-        newConsumable.level = params.item.level * 2;
+        newConsumable.level = params.item.level;
+        newConsumable.startingLevel = params.item.level;
 
         params.state.items[targetSlot] = newConsumable;
 

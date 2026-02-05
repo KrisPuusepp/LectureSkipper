@@ -29,7 +29,7 @@ export const itemBehavior: ItemBehavior = {
     for (let i = 0; i < params.state.courses.length; i++)
     {
       let currentUnhelpful = effectUtils.getEffectStacks(params.state, i, "Unhelpful");
-      let toAdd = Math.round((100 - currentUnhelpful) * 0.75);
+      let toAdd = Math.ceil((100 - currentUnhelpful) * 0.75);
       effectUtils.addEffectStacksToCourse(params.state, i, "Unhelpful", toAdd);
     }
 

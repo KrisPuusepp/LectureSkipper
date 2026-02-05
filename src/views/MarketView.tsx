@@ -67,7 +67,11 @@ export default function MarketView({ game, setGame }: Props)
         // Create unique instance
         const newItem = itemUtils.createItemInstance(chosenItem);
 
-        newState.unboxedItems.push(newItem);
+        // Give a random level
+        newItem.level = newState.block + Math.floor(Math.random() * 5);
+        newItem.startingLevel = newItem.level;
+
+        newState.unboxedItems.unshift(newItem);
       }
 
       return newState;
@@ -96,7 +100,7 @@ export default function MarketView({ game, setGame }: Props)
         newState.unboxedItems = [];
       }
 
-      newState.unboxedItems.push(newItem);
+      newState.unboxedItems.unshift(newItem);
       return newState;
     });
   };
@@ -114,8 +118,8 @@ export default function MarketView({ game, setGame }: Props)
 
       if (emptyIndex >= 0 && emptyIndex < newItems.length)
       {
-        newItems[emptyIndex] = newUnboxedItems[0];
-        newUnboxedItems.splice(0, 1);
+        newItems[emptyIndex] = newUnboxedItems[i];
+        newUnboxedItems.splice(i, 1);
       }
 
       const newState = {
@@ -160,7 +164,7 @@ export default function MarketView({ game, setGame }: Props)
         }
       >
         {game.shop.length > 0 ? (
-          <div className="grid grid-cols-3 gap-4 max-h-[700px] overflow-y-auto">
+          <div className="grid grid-cols-4 gap-2 max-h-[700px] overflow-y-auto">
             <CustomAnimatePresence>
               {game.shop.map((entry, i) =>
               {
@@ -171,7 +175,7 @@ export default function MarketView({ game, setGame }: Props)
                   <motion.div
                     key={"entry-" + entry.item.id}
                     layout={settings.animations === "full"}
-                    className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg bg-neutral-800 border-1 border-neutral-700 relative"
+                    className="flex flex-col items-center justify-center gap-2 p-2 rounded-lg bg-neutral-800 border-1 border-neutral-700 relative"
                     initial={settings.animations !== "minimal" ? { opacity: 0, scale: 0.9, y: -50 } : undefined}
                     animate={settings.animations !== "minimal" ? { opacity: 1, scale: 1, y: 0 } : undefined}
                     exit={settings.animations !== "minimal" ? {
@@ -196,7 +200,7 @@ export default function MarketView({ game, setGame }: Props)
                       />
                       {/* Discount badge */}
                       {entry.discount > 0 && (
-                        <div className="absolute -top-3 -left-4 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-md z-10 rotate-[-15deg]">
+                        <div className="absolute -top-1 -left-3 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-md z-10 rotate-[-15deg]">
                           -{Math.round(entry.discount * 100)}%
                         </div>
                       )}
@@ -374,7 +378,7 @@ export default function MarketView({ game, setGame }: Props)
                     {/* Take */}
                     <CustomButton
                       color="MediumSeaGreen"
-                      className="rounded-full aspect-square shrink-0 h-[75%]"
+                      className="rounded-full w-10 h-10"
                       onClick={() => handlePlaceItem(i)}
                       icon={Check}
                     />
@@ -392,7 +396,7 @@ export default function MarketView({ game, setGame }: Props)
                     {/* Trash */}
                     <CustomButton
                       color="FireBrick"
-                      className="rounded-full aspect-square shrink-0 h-[75%]"
+                      className="rounded-full w-10 h-10"
                       onClick={() => handleTrash(i)}
                       icon={Trash2}
                     />

@@ -17,12 +17,12 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: Eats the item in the slot directly to the right of it in the Inventory, if that item is not selected. If it gets to eat an item, gives you **${item.level * 10} P and $${item.level * 10}**, multiplied by the eaten item's level.`,
+    `**On Use**: Eats the item in the slot directly to the right of it in the Inventory, if that item is not selected. If it gets to eat an item, gives you **${item.level * 15} P and $${item.level * 15}**, multiplied by the eaten item's level.`,
   getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
-  beforeAttendLecture: (params) =>
+  beforeUse: (params) =>
   {
     let mySlot = itemUtils.itemIDtoSlot(params.item.id, params.state);
     if (mySlot == null) return;
@@ -35,8 +35,8 @@ export const itemBehavior: ItemBehavior = {
       {
         // There is an item in the next slot, so we can eat it
 
-        let increaseP = params.item.level * 10 * targetItem.level;
-        let increaseCash = params.item.level * 10 * targetItem.level;
+        let increaseP = params.item.level * 15 * targetItem.level;
+        let increaseCash = params.item.level * 15 * targetItem.level;
 
         params.logEntry.message = `Ate ${targetItem.name}, +${increaseP} P and $${increaseCash}`;
 

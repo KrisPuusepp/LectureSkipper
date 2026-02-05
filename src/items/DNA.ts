@@ -6,7 +6,7 @@ import { itemRegistry } from "@/itemRegistry";
 export const itemData: ItemData = {
   name: "DNA",
   rarity: 3,
-  dropWeight: 100,
+  dropWeight: 50,
 
   // Don't change
   level: 1,

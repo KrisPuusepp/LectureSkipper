@@ -5,7 +5,7 @@ import { effectUtils } from "@/effect";
 export const itemData: ItemData = {
   name: "Toolbox",
   rarity: 1,
-  dropWeight: 100,
+  dropWeight: 50,
 
   // Don't change
   level: 1,
@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Consumable**: Increases the starting level of a random item in the shop by 1. Activates **${item.level * 10}** times.`,
+    `**Consumable**: Increases the starting level of a random item in the shop by 1. Activates **${item.level * 5}** times.`,
   getEnabled: (item, state) => true,
 };
 
@@ -27,7 +27,7 @@ export const itemBehavior: ItemBehavior = {
     if (params.state.shop.length == 0) return;
 
     let uniqueItemIDs: string[] = [];
-    for (let i = 0; i < params.item.level * 10; i++)
+    for (let i = 0; i < params.item.level * 5; i++)
     {
       const randomIndex = Math.floor(Math.random() * params.state.shop.length);
       params.state.shop[randomIndex].item.level++;

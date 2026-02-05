@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Always Active**: Whenever a lecture appears, immediately gain **+${item.level * 2 + 3}** Understanding in that course.`,
+    `**Always Active**: Whenever a lecture appears, immediately gain **+${item.level + 4}** Understanding in that course.`,
   getEnabled: (item, state) => true,
 };
 
@@ -25,7 +25,7 @@ export const itemBehavior: ItemBehavior = {
   afterRound: (params) =>
   {
     if (params.nextLecture == null) return;
-    params.state.courses[params.nextLecture.courseIndex].understandings += params.item.level * 2 + 3;
-    params.logEntry.message = `+${params.item.level * 2 + 3} U in ${params.state.courses[params.nextLecture.courseIndex].title}`;
+    params.state.courses[params.nextLecture.courseIndex].understandings += params.item.level + 4;
+    params.logEntry.message = `+${params.item.level + 3} U in ${params.state.courses[params.nextLecture.courseIndex].title}`;
   },
 };

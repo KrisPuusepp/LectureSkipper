@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Always Active**: Gain +$1 for every level of the **${item.level}** highest level items you have.`,
+    `**Always Active**: Gain +$1 for every level of the **${item.level}** highest level items you have, up to **+$${item.level * 10}** per item.`,
   getEnabled: (item, state) => true,
 };
 
@@ -33,7 +33,7 @@ export const itemBehavior: ItemBehavior = {
     let totalLevels = 0;
     for (let i = 0; i < itemLevels.length && i < params.item.level; i++)
     {
-      totalLevels += itemLevels[i];
+      totalLevels += Math.min(itemLevels[i], params.item.level * 10);
     }
 
     params.state.cash += totalLevels;

@@ -18,7 +18,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: Gives you one level **${Math.floor(item.level / 3) + 2}** Master Professor item.`,
+    `**On Attend**: Gives you one level **${Math.floor(item.level)}** Master Professor item.`,
   getEnabled: (item, state) => true,
 };
 
@@ -27,7 +27,7 @@ export const itemBehavior: ItemBehavior = {
   {
     let newItem = itemUtils.createItemInstanceAndAddToInventory(itemRegistry["Master Professor"], params.state);
     if (newItem === false) return;
-    newItem.level = Math.floor(params.item.level / 3) + 2;
+    newItem.level = Math.floor(params.item.level);
     params.logEntry.message = `+1 Master Professor`;
   },
 };

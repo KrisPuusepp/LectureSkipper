@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: reduces the energy cost by **${(itemUtils.geometricSeries(item.level - 1, 0.9, 0.1, 1.0) * 100).toFixed(2)}%**.`,
+    `**On Attend**: reduces the energy cost by **${(itemUtils.geometricSeries(item.level - 1, 0.95, 0.1, 1.0) * 100).toFixed(2)}%**.`,
   getEnabled: (item, state) => true,
 };
 
@@ -25,7 +25,7 @@ export const itemBehavior: ItemBehavior = {
   beforeAttendLecture: (params) =>
   {
     let lastEnergy = params.lecture.energyCost;
-    params.lecture.energyCost = Math.round((1 - itemUtils.geometricSeries(params.item.level - 1, 0.9, 0.1, 1.0)) * params.lecture.energyCost);
+    params.lecture.energyCost = Math.round((1 - itemUtils.geometricSeries(params.item.level - 1, 0.95, 0.1, 1.0)) * params.lecture.energyCost);
     params.logEntry.message = `Energy Cost ${lastEnergy} E → ${params.lecture.energyCost} E`;
   },
 };

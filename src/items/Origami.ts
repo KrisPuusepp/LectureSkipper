@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Consumable**: Increase your current amount of Procrastinations by **${item.level * 10}%**.`,
+    `**Consumable**: Increase your current amount of Procrastinations by **${item.level * 4}%**.`,
   getEnabled: (item, state) => true,
 };
 
@@ -25,7 +25,7 @@ export const itemBehavior: ItemBehavior = {
   beforeUse: (params) =>
   {
     params.logEntry.message = `Procrastinations ${params.state.procrastinations} P →`;
-    params.state.procrastinations += Math.round(params.state.procrastinations * (params.item.level * 0.1));
+    params.state.procrastinations += Math.round(params.state.procrastinations * (params.item.level * 0.04));
     params.logEntry.message += ` ${params.state.procrastinations} P`;
     
     // Delete self
