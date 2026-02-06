@@ -1,0 +1,6 @@
+services:
+  lectureskipper:
+    image: lectureskipper:v1.1.0
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
