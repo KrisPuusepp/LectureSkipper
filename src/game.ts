@@ -215,11 +215,11 @@ export function initGame(settings: UserSettings): GameState
   };
 
   // Debug code for testing
-  let debugItem = itemUtils.createItemInstanceAndAddToInventory(itemRegistry["Time Machine"], game);
-  if (debugItem)
-  {
-    debugItem.level = 1;
-  }
+  //let debugItem = itemUtils.createItemInstanceAndAddToInventory(itemRegistry["Time Machine"], game);
+  //if (debugItem)
+  //{
+  //  debugItem.level = 1;
+  //}
 
   game = startNewBlock(game, settings);
 
