@@ -64,31 +64,52 @@ export default function Inventory({
     {
       const items = [...prev.items];
       let selected = [...prev.selectedItemIDs];
+      let activated = [...prev.calendarActivatedItemIDs];
       const unboxedItems = [...prev.unboxedItems];
 
-      if (selected.length === 1)
+      if (prev.view == "Calendar")
       {
-        const item = items[itemUtils.itemIDtoSlot(selected[0], prev)!];
-        if (item)
+        if (activated.length === 1)
         {
-          const sourceIndex = itemUtils.itemToSlot(item, prev);
-          items[itemSlotID] = item;
-          items[sourceIndex!] = null;
-          selected = [];
+          const item = items[itemUtils.itemIDtoSlot(activated[0], prev)!];
+          if (item)
+          {
+            const sourceIndex = itemUtils.itemToSlot(item, prev);
+            items[itemSlotID] = item;
+            items[sourceIndex!] = null;
+            activated = [];
+          }
+        } else
+        {
+          activated = [];
         }
-      } else if (unboxedItems.length > 0 && prev.view == "Market")
-      {
-        items[itemSlotID] = unboxedItems[0];
-        unboxedItems.splice(0, 1);
       } else
       {
-        selected = [];
+        if (selected.length === 1)
+        {
+          const item = items[itemUtils.itemIDtoSlot(selected[0], prev)!];
+          if (item)
+          {
+            const sourceIndex = itemUtils.itemToSlot(item, prev);
+            items[itemSlotID] = item;
+            items[sourceIndex!] = null;
+            selected = [];
+          }
+        } else if (unboxedItems.length > 0 && prev.view == "Market")
+        {
+          items[itemSlotID] = unboxedItems[0];
+          unboxedItems.splice(0, 1);
+        } else
+        {
+          selected = [];
+        }
       }
 
       const newState = {
         ...prev,
         items,
         selectedItemIDs: selected,
+        calendarActivatedItemIDs: activated,
         unboxedItems,
       };
 
