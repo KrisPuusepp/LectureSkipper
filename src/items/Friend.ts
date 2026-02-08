@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Use**: Eats the item in the slot directly to the right of it in the Inventory, if that item is not selected. If it gets to eat an item, gives you **${item.level * 15} P and $${item.level * 15}**, multiplied by the eaten item's level.`,
+    `**On Use**: Eats the item in the slot directly to the right of it in the Inventory, if that item is not activated. If it gets to eat an item, gives you **${item.level * 15} P and $${item.level * 15}**, multiplied by the eaten item's level.`,
   getEnabled: (item, state) => true,
 };
 
@@ -31,7 +31,7 @@ export const itemBehavior: ItemBehavior = {
       // Not at the end of the row, so we can continue
       let targetSlot = mySlot + 1;
       let targetItem = params.state.items[targetSlot];
-      if (targetItem != null && params.state.selectedItemIDs.indexOf(targetItem.id) == -1)
+      if (targetItem != null && params.state.calendarActivatedItemIDs.indexOf(targetItem.id) == -1)
       {
         // There is an item in the next slot, so we can eat it
 

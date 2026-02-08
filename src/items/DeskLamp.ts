@@ -18,7 +18,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Before Use**: If there is an unselected item to the right of this item in the Inventory, turns that item into a random level **${item.level}** Consumable.`,
+    `**Before Use**: If there is an inactive item to the right of this item in the Inventory, turns that item into a random level **${item.level}** Consumable.`,
   getEnabled: (item, state) => true,
 };
 
@@ -32,7 +32,7 @@ export const itemBehavior: ItemBehavior = {
       // Not at the end of the row, so we can continue
       let targetSlot = mySlot + 1;
       let targetItem = params.state.items[targetSlot];
-      if (targetItem != null && params.state.selectedItemIDs.indexOf(targetItem.id) == -1)
+      if (targetItem != null && params.state.calendarActivatedItemIDs.indexOf(targetItem.id) == -1)
       {
         // There is an item in the next slot, so we can turn it into a consumable
 

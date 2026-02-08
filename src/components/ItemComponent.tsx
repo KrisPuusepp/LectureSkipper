@@ -40,7 +40,8 @@ export default function ItemComponent({
   const Icon = itemMetaRegistry[item.name].icon;
   const isEnabled = itemMetaRegistry[item.name].getEnabled(item, game);
   const selected = game?.selectedItemIDs?.includes(item.id) ?? false;
-  const finalHeight = selected ? threeDHeight * 2 : threeDHeight;
+  const activated = game?.calendarActivatedItemIDs?.includes(item.id) ?? false;
+  const finalHeight = activated ? threeDHeight * 2 : threeDHeight;
 
   // Color Logic
   let bg = "rgb(255, 0, 0)";
@@ -52,9 +53,9 @@ export default function ItemComponent({
     case 3: bg = "rgba(134, 116, 28, 1)"; break;
   }
 
-  if (selected) bg = chroma(bg).brighten(1).hex();
+  if (activated) bg = chroma(bg).brighten(1).hex();
   let outline = chroma(bg).darken(1.5).hex();
-  if (selected) outline = chroma(outline).brighten(0.25).hex();
+  if (activated) outline = chroma(outline).brighten(0.25).hex();
 
   const restingShadow = `0 ${finalHeight}px 0 1px ${outline}`;
   const pressedShadow = `0 0 0 1px ${outline}`;
@@ -63,7 +64,7 @@ export default function ItemComponent({
 
   const itemNode = (
     <div
-      className="inset-0 rounded flex items-center justify-center select-none z-10 cursor-pointer"
+      className={`inset-0 rounded flex items-center justify-center select-none z-10 cursor-pointer ${selected ? "outline outline-3 outline-red-600 outline-offset-[-1.5px]" : ""}`}
       style={{
         width: size,
         height: size,

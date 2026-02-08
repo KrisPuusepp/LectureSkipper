@@ -26,7 +26,7 @@ export const itemBehavior: ItemBehavior = {
   {
     let nonNullItems: ItemData[] = params.state.items.filter((it) => it != null);
     let professors: ItemData[] = nonNullItems.filter((it) => it.name == "Master Professor");
-    let selectedProfessors: ItemData[] = professors.filter((it) => params.state.selectedItemIDs.indexOf(it.id) != -1);
+    let selectedProfessors: ItemData[] = professors.filter((it) => params.state.calendarActivatedItemIDs.indexOf(it.id) != -1);
 
     // Only the first one activates
     if (selectedProfessors[0].id == params.item.id)

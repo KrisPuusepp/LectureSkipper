@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Attend**: If there are two unselected items of equal type directly to the left and right of this item in the Inventory, destroys the item on the right and transfers all the levels to the item on the left. Has a **${Math.max(101 - item.level, 0)}%** chance of breaking on use, disabling it until next block.`,
+    `**On Attend**: If there are two inactive items of equal type directly to the left and right of this item in the Inventory, destroys the item on the right and transfers all the levels to the item on the left. Has a **${Math.max(101 - item.level, 0)}%** chance of breaking on use, disabling it until next block.`,
   getEnabled: (item, state) => !itemUtils.getItemUsedThisBlock(item, state),
 };
 
@@ -33,7 +33,7 @@ export const itemBehavior: ItemBehavior = {
       let sourceSlot = mySlot + 1;
       let targetItem = params.state.items[targetSlot];
       let sourceItem = params.state.items[sourceSlot];
-      if (targetItem != null && params.state.selectedItemIDs.indexOf(targetItem.id) == -1 && sourceItem != null && params.state.selectedItemIDs.indexOf(sourceItem.id) == -1)
+      if (targetItem != null && params.state.calendarActivatedItemIDs.indexOf(targetItem.id) == -1 && sourceItem != null && params.state.calendarActivatedItemIDs.indexOf(sourceItem.id) == -1)
       {
         // There are items on both sides
 

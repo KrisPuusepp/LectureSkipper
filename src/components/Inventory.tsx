@@ -28,28 +28,33 @@ export default function Inventory({
   {
     setGame(prev =>
     {
-      let selected = [...prev.selectedItemIDs];
-      if (selected.includes(itemID))
+      let item = itemUtils.itemIDtoItem(itemID, prev);
+      if (item == null) return prev;
+      if (prev.view === "Calendar")
       {
-        // Remove item selection
-        selected.splice(selected.indexOf(itemID), 1);
+        // Deactivate item
+        if (prev.calendarActivatedItemIDs.includes(itemID))
+        {
+          return { ...prev, calendarActivatedItemIDs: prev.calendarActivatedItemIDs.filter(id => id !== itemID) };
+        }
+
+        // Activate item
+        if (itemMetaRegistry[item.name].getEnabled(item, prev) && prev.calendarActivatedItemIDs.length < prev.maxActivatedItems)
+        {
+          return { ...prev, calendarActivatedItemIDs: [...prev.calendarActivatedItemIDs, itemID] };
+        }
       } else
       {
-        let item = itemUtils.itemIDtoItem(itemID, prev);
-
-        if (game.view === "Calendar")
+        // Deselect item
+        if (prev.selectedItemIDs.includes(itemID))
         {
-          if (item && itemMetaRegistry[item.name].getEnabled(item, prev) && selected.length < prev.maxActivatedItems)
-            selected.push(itemID);
-        } else
-        {
-          selected = [itemID];
+          return { ...prev, selectedItemIDs: prev.selectedItemIDs.filter(id => id !== itemID) };
         }
+
+        // Select item
+        return { ...prev, selectedItemIDs: [itemID] };
       }
-
-      const newState = { ...prev, selectedItemIDs: selected };
-
-      return newState;
+      return prev;
     });
   };
 
@@ -115,12 +120,12 @@ export default function Inventory({
     const handleKeyDown = (e: KeyboardEvent) =>
     {
       const keyToFunction: Record<string, () => void> = {
-        "1": () => handleSelectRow(0),
-        "2": () => handleSelectRow(1),
-        "3": () => handleSelectRow(2),
-        "4": () => handleSelectRow(3),
-        "5": () => handleSelectRow(4),
-        "6": () => handleSelectRow(5),
+        "1": () => handleActivateRow(0),
+        "2": () => handleActivateRow(1),
+        "3": () => handleActivateRow(2),
+        "4": () => handleActivateRow(3),
+        "5": () => handleActivateRow(4),
+        "6": () => handleActivateRow(5),
       };
 
       const func = keyToFunction[e.key];
@@ -140,7 +145,7 @@ export default function Inventory({
     };
   }, []); // empty dependency array ensures this runs only once
 
-  const handleSelectRow = (row: number) =>
+  const handleActivateRow = (row: number) =>
   {
     if (game.view != "Calendar")
       return;
@@ -148,27 +153,27 @@ export default function Inventory({
     setGame(prev =>
     {
       const items = [...prev.items];
-      let selected: string[] = [];
+      let activated: string[] = [];
 
       for (let i = 0; i < numCols; i++)
       {
         const item = items[row * numCols + i];
         if (item && itemMetaRegistry[item.name].getEnabled(item, prev))
         {
-          selected.push(item.id);
+          activated.push(item.id);
 
-          if (selected.length >= game.maxActivatedItems)
+          if (activated.length >= game.maxActivatedItems)
             break;
         }
       }
 
-      // If the selected row is already selected, deselect it
-      if (prev.selectedItemIDs.length == selected.length)
+      // If the selected row is already activated, deselect it
+      if (prev.calendarActivatedItemIDs.length == activated.length)
       {
         let same = true;
-        for (let i = 0; i < prev.selectedItemIDs.length; i++)
+        for (let i = 0; i < prev.calendarActivatedItemIDs.length; i++)
         {
-          if (prev.selectedItemIDs[i] != selected[i])
+          if (prev.calendarActivatedItemIDs[i] != activated[i])
           {
             same = false;
             break;
@@ -176,11 +181,11 @@ export default function Inventory({
         }
         if (same)
         {
-          selected = [];
+          activated = [];
         }
       }
 
-      const newState = { ...prev, selectedItemIDs: selected };
+      const newState = { ...prev, calendarActivatedItemIDs: activated };
 
       return newState;
     });
@@ -251,7 +256,7 @@ export default function Inventory({
 
           {game.view === "Calendar" && (
             <h2 className="font-bold flex items-center gap-2 pb-2">
-              {game.selectedItemIDs.length === game.maxActivatedItems ? (
+              {game.calendarActivatedItemIDs.length === game.maxActivatedItems ? (
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -277,7 +282,7 @@ export default function Inventory({
                 <div className="w-5 h-5" />
               )}
 
-              Activated {game.selectedItemIDs.length} / {game.maxActivatedItems}
+              Activated {game.calendarActivatedItemIDs.length} / {game.maxActivatedItems}
             </h2>
           )}
 
@@ -291,7 +296,7 @@ export default function Inventory({
                     color="#494949ff"
                     outlineColor="rgb(41, 41, 41)"
                     className="w-10 h-10 mt-2 rounded-2xl"
-                    onClick={() => handleSelectRow(rowIndex)}
+                    onClick={() => handleActivateRow(rowIndex)}
                   >
                     <p className="text-xl font-bold">
                       {rowIndex + 1}

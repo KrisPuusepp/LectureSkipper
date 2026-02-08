@@ -108,24 +108,7 @@ export function changeView(game: GameState, view: View): GameState
   const newState: GameState = { ...game };
 
   newState.courseTexts = [];
-
-  if (view === "Calendar")
-  {
-    if (newState.view !== "Calendar")
-    {
-      // Going to Calendar from some other view
-      newState.selectedItemIDs = [...newState.calendarActivatedItemIDs];
-    }
-  } else
-  {
-    if (newState.view === "Calendar")
-    {
-      // Leaving calendar
-      newState.calendarActivatedItemIDs = [...newState.selectedItemIDs];
-    }
-    // Going to other view
-    newState.selectedItemIDs = [];
-  }
+  newState.selectedItemIDs = [];
 
   // Check for selected items that don't exist
   for (let i = newState.selectedItemIDs.length - 1; i >= 0; i--)
@@ -134,6 +117,16 @@ export function changeView(game: GameState, view: View): GameState
     if (itemUtils.itemIDtoItem(itemID, newState) == null)
     {
       newState.selectedItemIDs.splice(i, 1);
+    }
+  }
+
+  // Check for activated items that don't exist
+  for (let i = newState.calendarActivatedItemIDs.length - 1; i >= 0; i--)
+  {
+    const itemID = newState.calendarActivatedItemIDs[i];
+    if (itemUtils.itemIDtoItem(itemID, newState) == null)
+    {
+      newState.calendarActivatedItemIDs.splice(i, 1);
     }
   }
 
@@ -222,11 +215,11 @@ export function initGame(settings: UserSettings): GameState
   };
 
   // Debug code for testing
-  //let debugItem = itemUtils.createItemInstanceAndAddToInventory(itemRegistry["Course Material"], game);
-  //if (debugItem)
-  //{
-  //  debugItem.level = Infinity;
-  //}
+  let debugItem = itemUtils.createItemInstanceAndAddToInventory(itemRegistry["Time Machine"], game);
+  if (debugItem)
+  {
+    debugItem.level = 1;
+  }
 
   game = startNewBlock(game, settings);
 
@@ -542,7 +535,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     // Item may have been deleted
     if (item === null) continue;
 
-    if (newState.selectedItemIDs.includes(item.id) == false) continue;
+    if (newState.calendarActivatedItemIDs.includes(item.id) == false) continue;
 
     if (behaviorRegistry[item.name].beforeUse !== undefined)
     {
@@ -746,7 +739,7 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     // Item may have been deleted
     if (item === null) continue;
 
-    if (newState.selectedItemIDs.includes(item.id) == false) continue;
+    if (newState.calendarActivatedItemIDs.includes(item.id) == false) continue;
 
     if (behaviorRegistry[item.name].afterUse !== undefined)
     {
@@ -816,8 +809,8 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
 
   newState.log.reverse();
 
-  // Deselect items that were disabled or removed during the round
-  newState.selectedItemIDs = newState.selectedItemIDs.filter(itemID =>
+  // Deactivate items that were disabled or removed during the round
+  newState.calendarActivatedItemIDs = newState.calendarActivatedItemIDs.filter(itemID =>
   {
     const item = itemUtils.itemIDtoItem(itemID, newState);
     return item && itemMetaRegistry[item.name].getEnabled(item, newState);
