@@ -99,11 +99,13 @@ export default function ForgeView({ game, setGame }: Props)
                 className={`
                   w-96 p-4 rounded-md 
                   bg-popover shadow-lg z-10 ring-2
-                  ${item.rarity === 1
-                    ? "ring-green-600"
-                    : item.rarity === 2
-                      ? "ring-blue-600"
-                      : "ring-yellow-600"
+                  ${item.rarity === 0 ?
+                    "ring-teal-500"
+                    : item.rarity === 1
+                      ? "ring-green-600"
+                      : item.rarity === 2
+                        ? "ring-blue-600"
+                        : "ring-yellow-600"
                   }
                 `}
               >
@@ -173,11 +175,13 @@ export default function ForgeView({ game, setGame }: Props)
                 className={`
                   w-96 p-4 rounded-md 
                   bg-popover shadow-lg z-10 ring-2
-                  ${upgradedItemData.rarity === 1
-                    ? "ring-green-600"
-                    : upgradedItemData.rarity === 2
-                      ? "ring-blue-600"
-                      : "ring-yellow-600"
+                  ${upgradedItemData.rarity === 0 ?
+                    "ring-teal-500"
+                    : upgradedItemData.rarity === 1
+                      ? "ring-green-600"
+                      : upgradedItemData.rarity === 2
+                        ? "ring-blue-600"
+                        : "ring-yellow-600"
                   }
                 `}
               >
