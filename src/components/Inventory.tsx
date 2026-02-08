@@ -251,8 +251,8 @@ export default function Inventory({
         </>
       }
     >
-      <div className="flex-1 flex items-center justify-center overflow-hidden p-5">
-        <div className="flex flex-col items-center scale-90 md:scale-100 overflow-hidden">
+      <div className="flex-1 flex items-center justify-center p-5">
+        <div className="flex flex-col items-center scale-90 md:scale-100">
 
           {game.view === "Calendar" && (
             <h2 className="font-bold flex items-center gap-2 pb-2">
