@@ -13,7 +13,7 @@ Stat increases and simple boosts. Meant to help in the early game and support so
 - [x] Wallet - On Use: Gain +$x.
 - [x] Soda - After Skip: For the rest of the block, skipping this lecture now gives you +x E.
 - [x] Joystick - On Skip: Increases its own level by 1, and has a x % chance of giving you double the Procrastinations from this lecture.
-- [x] Barcode - On Skip: adds a 1% discount to a random item in the Shop. Activates x times. Discounts can stack, but will not go past 100%.
+- [x] Barcode - On Skip: adds a x% discount to a random item in the Shop. Discounts can stack, but will not go past 100%.
 - [x] Grass - On Touch: Gives x Procrastinations.
 - [x] Sun - Always Active: Whenever a lecture appears, immediately gain +x Understanding in that course.
 
@@ -23,8 +23,8 @@ Stat increases and simple boosts. Meant to help in the early game and support so
 - [x] Sticky Note - Consumable: If skipping, still gain x% of the Potential Understanding.
 - [x] Origami - Consumable: Increase your current amount of Procrastinations by x%.
 - [x] Coupon - Consumable: Add a x% discount to every item in the Shop. Discounts can stack, but will not go past 100%.
-- [x] Wrench - Consumable: Randomly distributes all of its levels across every other item in the inventory.
-- [x] Toolbox - Consumable: Increases the starting level of a random item in the shop by 1. Activates x times.
+- [x] Wrench - Consumable: Evenly distributes all of its levels across every other item in the inventory.
+- [x] Toolbox - Consumable: Increases the starting level of a random item in the shop by x.
 - [x] Coffee - Consumable: Gain Energy equivalent to x% of your maximum. Note that energy cannot go above the maximum.
 
 ###### Miscellanous

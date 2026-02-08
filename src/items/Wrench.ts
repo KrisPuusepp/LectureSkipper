@@ -17,25 +17,47 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Consumable**: Randomly distributes all of its levels across every other item in the inventory.`,
+    `**Consumable**: Evenly distributes all of its levels across every other item in the inventory.`,
   getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
   afterUse: (params) =>
   {
-    // Get a list of all available items
-    let nonNullitems: ItemData[] = params.state.items.filter((it) => it !== null);
-    let items: ItemData[] = nonNullitems.filter((it) => it.id != params.item.id);
-    if(items.length == 0) return;
+    const allItems = params.state.items.filter(
+      (it): it is ItemData => it !== null && it.id !== params.item.id
+    );
 
-    for (let i = 0; i < params.item.level; i++)
+    if (allItems.length === 0) return;
+
+    const totalLevels = params.item.level;
+    const itemCount = allItems.length;
+
+    // Base distribution
+    const base = Math.floor(totalLevels / itemCount);
+    let remainder = totalLevels % itemCount;
+
+    // Give everyone the base amount
+    for (const it of allItems)
     {
-      const randomIndex = Math.floor(Math.random() * items.length);
-      items[randomIndex].level++;;
+      it.level += base;
     }
 
-    params.logEntry.message = `Distributed ${params.item.level} level${params.item.level == 1 ? "" : "s"}`;
+    // Randomly distribute the remainder
+    // Fisher–Yates style shuffle of indices
+    for (let i = allItems.length - 1; i > 0 && remainder > 0; i--)
+    {
+      const j = Math.floor(Math.random() * (i + 1));
+      [allItems[i], allItems[j]] = [allItems[j], allItems[i]];
+    }
+
+    for (let i = 0; i < remainder; i++)
+    {
+      allItems[i].level += 1;
+    }
+
+    params.logEntry.message =
+      `Distributed ${totalLevels} level${totalLevels === 1 ? "" : "s"}`;
 
     // Delete self
     itemUtils.destroyItemWithID(params.item.id, params.state);

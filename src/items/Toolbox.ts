@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Consumable**: Increases the starting level of a random item in the shop by 1. Activates **${item.level * 5}** times.`,
+    `**Consumable**: Increases the starting level of a random item in the shop by **${item.level * 3}**.`,
   getEnabled: (item, state) => true,
 };
 
@@ -26,19 +26,14 @@ export const itemBehavior: ItemBehavior = {
   {
     if (params.state.shop.length == 0) return;
 
-    let uniqueItemIDs: string[] = [];
-    for (let i = 0; i < params.item.level * 5; i++)
-    {
-      const randomIndex = Math.floor(Math.random() * params.state.shop.length);
-      params.state.shop[randomIndex].item.level++;
-      params.state.shop[randomIndex].item.startingLevel++;
-      if (!uniqueItemIDs.includes(params.state.shop[randomIndex].item.id))
-      {
-        uniqueItemIDs.push(params.state.shop[randomIndex].item.id);
-      }
-    }
+    const randomIndex = Math.floor(Math.random() * params.state.shop.length);
 
-    params.logEntry.message = `${uniqueItemIDs.length} Shop item${uniqueItemIDs.length == 1 ? "" : "s"} gained levels`;
+    params.logEntry.message = `${params.state.shop[randomIndex].item.name}: Level ${params.state.shop[randomIndex].item.level} →`;
+
+    params.state.shop[randomIndex].item.level += params.item.level * 3;
+    params.state.shop[randomIndex].item.startingLevel += params.item.level * 3;
+
+    params.logEntry.message += ` Level ${params.state.shop[randomIndex].item.level}`;
 
     // Delete self
     itemUtils.destroyItemWithID(params.item.id, params.state);

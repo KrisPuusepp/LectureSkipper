@@ -17,25 +17,40 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**On Skip**: adds a 1% discount to a random item in the Shop. Activates **${item.level * 5}** times. Discounts can stack, but will not go past 100%`,
+    `**On Skip**: adds a **${item.level * 5}%** discount to a random item in the Shop. Discounts can stack, but will not go past 100%.`,
   getEnabled: (item, state) => true,
 };
 
 export const itemBehavior: ItemBehavior = {
   afterSkipLecture: (params) =>
   {
-    if (params.state.shop.length == 0) return;
+    const shop = params.state.shop;
 
-    let addedDiscounts = 0;
-    for (let i = 0; i < params.item.level * 5; i++)
+    if (shop.length === 0)
     {
-      const randomIndex = Math.floor(Math.random() * params.state.shop.length);
-      if (params.state.shop[randomIndex].discount < 1)
-      {
-        params.state.shop[randomIndex].discount = Math.min(params.state.shop[randomIndex].discount + 0.01, 1);
-        addedDiscounts++;
-      }
+      params.logEntry.message = "No items available for a discount";
+      return;
     }
-    params.logEntry.message = `Added ${addedDiscounts} discount${addedDiscounts == 1 ? "" : "s"}`;
+
+    // Only items that can still receive a discount
+    const eligible = shop.filter(it => it.discount < 1);
+
+    if (eligible.length === 0)
+    {
+      params.logEntry.message = "No item could receive a discount";
+      return;
+    }
+
+    const chosen = eligible[Math.floor(Math.random() * eligible.length)];
+
+    const discountToAdd = 0.05 * params.item.level;
+    const before = chosen.discount;
+
+    chosen.discount = Math.min(chosen.discount + discountToAdd, 1);
+
+    const added = chosen.discount - before;
+
+    params.logEntry.message =
+      `+${(added * 100).toFixed(0)}% discount to ${chosen.item.name}`;
   },
 };

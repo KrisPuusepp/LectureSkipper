@@ -41,6 +41,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       majorChanges: [],
       smallChanges: [
         "Rewrote the descriptions of Travel Cost and Takes P to be more clear.",
+        "Wrench Rework: now evenly distributes levels.",
+        "Toolbox Rework: now gives all levels to one item.",
+        "Barcode Rework: now gives all discount % to one item.",
       ],
       bugFixes: [],
     },
