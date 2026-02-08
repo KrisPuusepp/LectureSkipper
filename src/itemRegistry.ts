@@ -5,7 +5,7 @@ const modules = import.meta.glob("@/items/*.ts", { eager: true });
 export const itemRegistry: Record<string, ItemData> = {};
 export const itemMetaRegistry: Record<string, ItemMeta> = {};
 export const behaviorRegistry: Record<string, ItemBehavior> = {};
-export const itemsByRarity: Record<number, ItemData[]> = { 1: [], 2: [], 3: [] };
+export const itemsByRarity: Record<number, ItemData[]> = { 0: [], 1: [], 2: [], 3: [] };
 
 for (const path in modules) {
   const mod = modules[path] as any;
@@ -20,7 +20,7 @@ for (const path in modules) {
   behaviorRegistry[data.name] = behavior;
 
   // Categorize by rarity
-  if (data.rarity >= 1 && data.rarity <= 3) {
+  if (data.rarity >= 0 && data.rarity <= 3) {
     itemsByRarity[data.rarity].push(data);
   }
 }

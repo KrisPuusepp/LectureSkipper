@@ -18,7 +18,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Consumable**: Turns into a copy of the item that is directly to the right of this one. Also adds the levels from the copied item to this one.`,
+    `**After Use**: Turns into a copy of the item that is directly to the right of this one. Also adds the levels from the copied item to this one.`,
   getEnabled: (item, state) => true,
 };
 

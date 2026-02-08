@@ -1,7 +1,7 @@
 import { LampDesk as ItemIcon } from "lucide-react";
 import { type ItemData, type ItemMeta, type ItemBehavior, itemUtils } from "@/item";
 import { effectUtils } from "@/effect";
-import { itemRegistry } from "@/itemRegistry";
+import { itemRegistry, itemsByRarity } from "@/itemRegistry";
 
 export const itemData: ItemData = {
   name: "Desk Lamp",
@@ -18,7 +18,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Before Use**: If there is an unselected item to the right of this item in the Inventory, turns that item into a random green level **${item.level}** Consumable.`,
+    `**Before Use**: If there is an unselected item to the right of this item in the Inventory, turns that item into a random level **${item.level}** Consumable.`,
   getEnabled: (item, state) => true,
 };
 
@@ -36,17 +36,7 @@ export const itemBehavior: ItemBehavior = {
       {
         // There is an item in the next slot, so we can turn it into a consumable
 
-        const consumables = [
-          "Paper",
-          "Sticky Note",
-          "Origami",
-          "Coupon",
-          "Wrench",
-          "Toolbox",
-          "Coffee",
-        ];
-
-        let newConsumableData = itemRegistry[consumables[Math.floor(Math.random() * consumables.length)]];
+        let newConsumableData = itemsByRarity[0][Math.floor(Math.random() * itemsByRarity[0].length)];
         if (newConsumableData == null) return;
 
         let newConsumable = itemUtils.createItemInstance(newConsumableData);

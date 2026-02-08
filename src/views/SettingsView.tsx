@@ -44,6 +44,8 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
         "Wrench Rework: now evenly distributes levels.",
         "Toolbox Rework: now gives all levels to one item.",
         "Barcode Rework: now gives all discount % to one item.",
+        "Moved all common consumables into a new rarity. Two consumables appear in the shop every block and boxes no longer drop consumables.",
+        "Rewrote the descriptions of DNA and Desk Lamp to be more clear regarding what is or is not a consumable.",
       ],
       bugFixes: [],
     },
@@ -534,7 +536,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
         title={`All Items (${Object.keys(itemRegistry).length})`}
       >
         <div className="flex flex-wrap gap-2">
-          {[1, 2, 3].flatMap(rarity =>
+          {[0, 1, 2, 3].flatMap(rarity =>
             itemsByRarity[rarity].map(item => (
               <ItemSlot
                 key={`preview-${item.name}`}

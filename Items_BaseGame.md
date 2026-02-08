@@ -1,9 +1,20 @@
 
+## CONSUMABLES
+
+Cheap single-use items.
+
+- [x] Paper - Consumable: If attending, increases the Understand Chance by x%.
+- [x] Sticky Note - Consumable: If skipping, still gain x% of the Potential Understanding.
+- [x] Origami - Consumable: Increase your current amount of Procrastinations by x%.
+- [x] Coupon - Consumable: Add a x% discount to every item in the Shop. Discounts can stack, but will not go past 100%.
+- [x] Wrench - Consumable: Evenly distributes all of its levels across every other item in the inventory.
+- [x] Toolbox - Consumable: Increases the starting level of a random item in the shop by x.
+- [x] Coffee - Consumable: Gain Energy equivalent to x% of your maximum. Note that energy cannot go above the maximum.
+
+
 ## COMMON
 
 Stat increases and simple boosts. Meant to help in the early game and support some builds later on.
-
-###### Stat Increases
 
 - [x] Apple - On Attend: Increase your max energy by x E.
 - [x] Cake - On Attend: Increase your current energy by x E.
@@ -16,19 +27,6 @@ Stat increases and simple boosts. Meant to help in the early game and support so
 - [x] Barcode - On Skip: adds a x% discount to a random item in the Shop. Discounts can stack, but will not go past 100%.
 - [x] Grass - On Touch: Gives x Procrastinations.
 - [x] Sun - Always Active: Whenever a lecture appears, immediately gain +x Understanding in that course.
-
-###### Consumables
-
-- [x] Paper - Consumable: If attending, increases the Understand Chance by x%.
-- [x] Sticky Note - Consumable: If skipping, still gain x% of the Potential Understanding.
-- [x] Origami - Consumable: Increase your current amount of Procrastinations by x%.
-- [x] Coupon - Consumable: Add a x% discount to every item in the Shop. Discounts can stack, but will not go past 100%.
-- [x] Wrench - Consumable: Evenly distributes all of its levels across every other item in the inventory.
-- [x] Toolbox - Consumable: Increases the starting level of a random item in the shop by x.
-- [x] Coffee - Consumable: Gain Energy equivalent to x% of your maximum. Note that energy cannot go above the maximum.
-
-###### Miscellanous
-
 - [x] Cookie - On Use: Has a x% chance of giving you a cookie. Going over 100% can give you more cookies per use.
 - [x] Cat - Always Active: If this item is at the top right of the inventory, it will activate and start to move on its own. Every lecture, it will move into a random adjacent (horizontally or vertically) free slot. If it reaches the bottom left corner, it disappears and you gain $x and x P. If you manually move it before it reaches its destination, it becomes deactivated.
 
@@ -56,7 +54,7 @@ The main components of a good build.
 - [x] WiFi - On Skip: Increase the Cash rewards of all chats in the Group Chat by +$x.
 - [x] Stock Market - After Skip: For every $x that you have, gain +$1.
 - [x] Alarm Clock - On Attend: For the next 10 seconds, the Potential Understanding of all lectures is increased by x%. Can only be used once per block
-- [x] Desk Lamp - On Use: If there is an unselected item to the right of this item in the Inventory, turns that item into a random green level x Consumable.
+- [x] Desk Lamp - On Use: If there is an unselected item to the right of this item in the Inventory, turns that item into a random level x Consumable.
 - [x] All-Nighter - After Skip: Sets your Energy to 0, but permanently increases the amount of understandings that lectures of this course give by x%.
 
 
@@ -75,7 +73,7 @@ Very rare items that can turn around an entire run.
 - [x] Mythical Croissant - On Attend: Permanently increases the amount of energy restored when skipping a lecture by x E.
 - [x] Gem - Always Active: After a lecture, gain +$x.
 - [x] Superintelligence - After Attend: All other courses also gain x% of the gained Understandings from this lecture.
-- [x] DNA - Consumable: Turns into a copy of the item that is directly to the right of this one. Also adds the levels from the copied item to this one.
+- [x] DNA - After Use: Turns into a copy of the item that is directly to the right of this one. Also adds the levels from the copied item to this one.
 - [x] Super Soup – Always Active: If a course reaches 200% completion, all other items in your inventory gain +x levels.
 - [x] Epic Beer - On Attend: Gives you one level x Master Professor item.
 

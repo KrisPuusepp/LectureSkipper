@@ -43,9 +43,10 @@ export default function ItemComponent({
   const finalHeight = selected ? threeDHeight * 2 : threeDHeight;
 
   // Color Logic
-  let bg = "rgba(40, 93, 40, 1)";
+  let bg = "rgb(255, 0, 0)";
   switch (item.rarity)
   {
+    case 0: bg = "rgb(35, 139, 120)"; break;
     case 1: bg = "rgba(40, 93, 40, 1)"; break;
     case 2: bg = "rgba(40, 77, 132, 1)"; break;
     case 3: bg = "rgba(134, 116, 28, 1)"; break;
@@ -138,7 +139,9 @@ export default function ItemComponent({
         sideOffset={75}
         onOpenAutoFocus={(e) => e.preventDefault()}
         onCloseAutoFocus={(e) => e.preventDefault()}
-        className={`w-96 p-4 rounded-md bg-popover shadow-lg z-50 ring-2 ${item.rarity === 1
+        className={`w-96 p-4 rounded-md bg-popover shadow-lg z-50 ring-2 ${item.rarity === 0 ?
+          "ring-teal-500"
+          : item.rarity === 1
             ? "ring-green-600"
             : item.rarity === 2
               ? "ring-blue-600"

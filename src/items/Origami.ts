@@ -4,7 +4,7 @@ import { effectUtils } from "@/effect";
 
 export const itemData: ItemData = {
   name: "Origami",
-  rarity: 1,
+  rarity: 0,
   dropWeight: 100,
 
   // Don't change

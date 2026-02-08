@@ -317,6 +317,26 @@ export function loadGame(): GameState | "GameDoesNotExist" | "ParsingFailed"
       type: "normal",
     }];
 
+    // make sure that all items have the correct rarities
+    // (throughout the game's updates, some items have
+    // changed rarities)
+    for (let i = 0; i < parsed.items.length; i++)
+    {
+      let item = parsed.items[i];
+      if (item == null) continue;
+      item.rarity = itemRegistry[item.name].rarity;
+    }
+    for (let i = 0; i < parsed.unboxedItems.length; i++)
+    {
+      let item = parsed.unboxedItems[i];
+      item.rarity = itemRegistry[item.name].rarity;
+    }
+    for (let i = 0; i < parsed.shop.length; i++)
+    {
+      let entry = parsed.shop[i];
+      entry.item.rarity = itemRegistry[entry.item.name].rarity;
+    }
+
     return parsed;
   } catch (err)
   {
@@ -377,6 +397,17 @@ export function loadRuns(): Run[] | "RunsDoNotExist" | "ParsingFailed"
 
         // new dateCreated. 0s because we do not know the run time
         parsed[i].dateCreated = parsed[i].dateEnded;
+      }
+    }
+
+    // make sure that all items have the correct rarities
+    // (throughout the game's updates, some items have
+    // changed rarities)
+    for (let i = 0; i < parsed.length; i++)
+    {
+      for (let j = 0; j < parsed[i].items.length; j++)
+      {
+        parsed[i].items[j].rarity = itemRegistry[parsed[i].items[j].name].rarity;
       }
     }
 
@@ -1156,7 +1187,25 @@ export function generateShop(state: GameState)
 {
   state.shop = [];
 
-  for (var i = 0; i < 8; i++)
+  // CONSUMABLES
+  for (var i = 0; i < 2; i++)
+  {
+    // Pick item using item dropWeight
+    const itemWeights = itemsByRarity[0].map((i) => i.dropWeight);
+    const chosenItem = weightedRandom(itemsByRarity[0], itemWeights);
+    const entry: ShopEntry = {
+      item: itemUtils.createItemInstance(chosenItem),
+      price: 100,
+      discount: 0,
+    }
+    entry.item.level = Math.round(state.block + Math.random() * 5);
+    entry.item.startingLevel = entry.item.level;
+
+    state.shop.push(entry);
+  }
+
+  // COMMON ITEMS
+  for (var i = 0; i < 6; i++)
   {
     // Pick item using item dropWeight
     const itemWeights = itemsByRarity[1].map((i) => i.dropWeight);
@@ -1172,6 +1221,7 @@ export function generateShop(state: GameState)
     state.shop.push(entry);
   }
 
+  // RARE ITEMS
   for (var i = 0; i < 8; i++)
   {
     // Pick item using item dropWeight
