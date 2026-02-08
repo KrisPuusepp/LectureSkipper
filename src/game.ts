@@ -1030,7 +1030,7 @@ export function generateCourse(state: GameState, hue: number): Course
     lecturesAppeared: 0,
     lectureAppearWeight: 100,
     maxUnderstandingsPerLecture: maxUnderstandingsPerLecture,
-    maxProcrastinationsPerLecture: 150,
+    maxProcrastinationsPerLecture: 200,
     maxEnergyCostPerLecture: 10
   };
 }
@@ -1163,7 +1163,7 @@ export function generateLecture(state: GameState): Lecture
     potentialUnderstandings: Math.ceil((0.2 + Math.random() * 0.8) * state.courses[courseIndex].maxUnderstandingsPerLecture),
     understandChance: understandChance,
     energyCost: Math.ceil(Math.random() * state.courses[courseIndex].maxEnergyCostPerLecture),
-    procrastinationValue: 50 + Math.ceil(Math.random() * state.courses[courseIndex].maxProcrastinationsPerLecture),
+    procrastinationValue: 50 + Math.ceil(Math.random() * (state.courses[courseIndex].maxProcrastinationsPerLecture - 50)),
 
     // Effects
     PUVisible: Math.random() > effectUtils.getEffectStacks(state, courseIndex, "Ambiguous") / 100,
