@@ -11,8 +11,8 @@ Level 1 effects are given the most, while Level 3 effects only start appearing v
 - [x] Unclear - Lectures have a x% chance of not showing their understand chance.
 - [x] Aftershock - After attending attending a lecture about this course, the next lecture (from any course) will take x% more energy.
 - [x] Shocked - Attending this lecture takes x% more energy. One time only.
-- [x] Travel Cost - Attending this lecture costs $x.
-- [x] Takes P - Attending this lecture costs x P.
+- [x] Travel Cost - On Attend, lose $x. Does not stop you from attending, as long as you still have Energy. Your balance cannot go into the negatives.
+- [x] Takes P - On Attend, lose x P. Does not stop you from attending, as long as you still have Energy. Your balance cannot go into the negatives.
 
 ## Level 2
 

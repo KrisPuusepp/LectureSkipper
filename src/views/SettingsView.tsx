@@ -34,6 +34,17 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
 
   const gameUpdates = [
     {
+      version: "1.1.1",
+      date: "February ..........., 2026",
+      title: "New Player's Update",
+      description: "Clarified various parts of the game to make the new player's experience better.",
+      majorChanges: [],
+      smallChanges: [
+        "Rewrote the descriptions of Travel Cost and Takes P to be more clear.",
+      ],
+      bugFixes: [],
+    },
+    {
       version: "1.1.0",
       date: "February 5, 2026",
       title: "Speedrun and RNG Reduction Update",

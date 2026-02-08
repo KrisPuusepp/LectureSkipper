@@ -13,5 +13,5 @@ export const effectMeta: EffectMeta = {
   icon: EffectIcon,
   backgroundColor: "#2d790aff",
   getBadgeText: (effect, state) => `Travel Cost: $${effect.value}`,
-  getDescription: (effect, state) => `Attending this lecture costs **$${effect.value}**.`,
+  getDescription: (effect, state) => `On Attend, lose **$${effect.value}**. Does not stop you from attending, as long as you still have Energy. Your balance cannot go into the negatives.`,
 };
