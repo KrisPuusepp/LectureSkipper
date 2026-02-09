@@ -34,7 +34,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
 
   const gameUpdates = [
     {
-      version: "1.1.1",
+      version: "1.2.0",
       date: "February ..........., 2026",
       title: "New Player's Update",
       description: "Clarified various parts of the game to make the new player's experience better.",
@@ -46,6 +46,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
         "Barcode Rework: now gives all discount % to one item.",
         "Moved all common consumables into a new rarity. Two consumables appear in the shop every block and boxes no longer drop consumables.",
         "Rewrote the descriptions of DNA, Master Professor and Desk Lamp to be more clear regarding what is or is not a consumable.",
+        "Clarified and separated the terms \"selecting\" and \"activating\", as well as made separate visuals for them.",
       ],
       bugFixes: [],
     },
@@ -344,7 +345,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
         icon={PenOff}
         title="Lecture Skipper"
       >
-        <div className="text-sm">A 75% vibe-coded game made in 4 days while skipping lectures. Made by Kris Puusepp.</div>
+        <div className="text-sm">A 75% vibe-coded game made in a few weeks while skipping lectures. Made by Kris Puusepp.</div>
         <div className="text-sm">On a real note, unless you have good reasons, don't skip lectures. It doesn't give you bragging rights, you are just refraining from going to lectures which you paid for.</div>
         <div className="text-sm">AI was not used in the writing of the story.</div>
         <CustomButton
