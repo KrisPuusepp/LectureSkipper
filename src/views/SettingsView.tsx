@@ -35,9 +35,9 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
   const gameUpdates = [
     {
       version: "1.2.0",
-      date: "February ..........., 2026",
+      date: "February 9, 2026",
       title: "New Player's Update",
-      description: "Clarified various parts of the game to make the new player's experience better.",
+      description: "Clarified various parts of the game and tweaked the difficulty scaling to make the new player's experience better.",
       majorChanges: [
         "Rewrote course Understanding goal formula: reduced difficulty in the early game and massively ramped up difficulty in the late game.",
         "Moved all common consumables into a new rarity. Two consumables appear in the shop every block and boxes no longer drop consumables.",
