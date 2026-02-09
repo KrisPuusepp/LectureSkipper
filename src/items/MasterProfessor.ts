@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `Cannot appear in shops or boxes.\n**Consumable**: Gives you **${item.level}**^n Understandings for this course, where n is the amount of currently activated Master Professors.`,
+    `Can only be acquired by using an Epic Beer.\n**Consumable**: Gives you **${item.level}**^n Understandings for this course, where n is the amount of currently activated Master Professors.`,
   getEnabled: (item, state) => true,
 };
 

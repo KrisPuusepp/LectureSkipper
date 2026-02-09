@@ -79,7 +79,7 @@ Very rare items that can turn around an entire run.
 
 ###### Miscellanous
 
-- [x] Master Professor - Cannot appear in shops or boxes. Consumable: Gives you x^n Understandings for this course, where n is the amount of currently active Master Professors.
+- [x] Master Professor - Can only be acquired by using an Epic Beer. Consumable: Gives you x^n Understandings for this course, where n is the amount of currently active Master Professors.
 
 
 

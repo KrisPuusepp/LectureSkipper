@@ -45,7 +45,7 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
         "Toolbox Rework: now gives all levels to one item.",
         "Barcode Rework: now gives all discount % to one item.",
         "Moved all common consumables into a new rarity. Two consumables appear in the shop every block and boxes no longer drop consumables.",
-        "Rewrote the descriptions of DNA and Desk Lamp to be more clear regarding what is or is not a consumable.",
+        "Rewrote the descriptions of DNA, Master Professor and Desk Lamp to be more clear regarding what is or is not a consumable.",
       ],
       bugFixes: [],
     },
