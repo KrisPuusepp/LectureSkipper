@@ -1000,12 +1000,14 @@ export function generateCourse(state: GameState, hue: number): Course
   let courseDifficulty = Math.random();
 
   // For online graphing calculators:
-  // Max: y\ =\ 100\left(2x+-1.5\right)\ +\ 5.25^{\frac{x}{1}}
-  // Min: y\ =\ 100\left(1x+-0.5\right)\ +\ 4^{\frac{x}{2}}
+  // Max: y\ =\ 75\left(2x+-0.75\right)\ +\ 4.25^{\frac{0.05xxx}{2}}
+  // Min: y\ =\ 75\left(1x+-0.5\right)\ +\ 3^{\frac{0.05xxx}{2}}
+  // Adjustable: y\ =\ 75\left(\left(1+d\right)x+-0.5-0.25d\right)\ +\ \left(3+1.25d\right)^{\frac{0.05xxx}{2}}
   let goal =
     Math.round(
-      (100 * ((1 + 1 * courseDifficulty) * state.block + (-0.5 + -1 * courseDifficulty))
-        + (4 + 1.25 * courseDifficulty) ** (state.block / (2 - courseDifficulty))
+      (75 * ((1 + 1 * courseDifficulty) * state.block + (-0.5 + -0.25 * courseDifficulty))
+        + (3 + 1.25 * courseDifficulty) ** ((state.block ** 3) * 0.05 / 2)
+        /* Random noise to make it vary a bit more */
         + Math.random() * 10)
     )
   // For online graphing calculators:
@@ -1435,7 +1437,7 @@ export function startNewBlock(state: GameState, settings: UserSettings): GameSta
   {
     for (let i = 0; i < newState.courses.length; i++)
     {
-      effectUtils.addEffectStacksToCourse(newState, i, "Extensive", Math.round(2000 + Math.random() * 2000));
+      effectUtils.addEffectStacksToCourse(newState, i, "Extensive", Math.round(1000000 + Math.random() * 1000000));
     }
   }
 

@@ -38,13 +38,15 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
       date: "February ..........., 2026",
       title: "New Player's Update",
       description: "Clarified various parts of the game to make the new player's experience better.",
-      majorChanges: [],
+      majorChanges: [
+        "Rewrote course Understanding goal formula: reduced difficulty in the early game and massively ramped up difficulty in the late game.",
+        "Moved all common consumables into a new rarity. Two consumables appear in the shop every block and boxes no longer drop consumables.",
+      ],
       smallChanges: [
         "Rewrote the descriptions of Travel Cost and Takes P to be more clear.",
         "Wrench Rework: now evenly distributes levels.",
         "Toolbox Rework: now gives all levels to one item.",
         "Barcode Rework: now gives all discount % to one item.",
-        "Moved all common consumables into a new rarity. Two consumables appear in the shop every block and boxes no longer drop consumables.",
         "Rewrote the descriptions of DNA, Master Professor and Desk Lamp to be more clear regarding what is or is not a consumable.",
         "Clarified and separated the terms \"selecting\" and \"activating\", as well as made separate visuals for them.",
       ],
