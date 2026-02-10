@@ -33,6 +33,17 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
   let { settings, setSettings } = useContext(SettingsContext)!;
 
   const gameUpdates = [
+        {
+      version: "1.2.1",
+      date: "February 10, 2026",
+      title: "SoUpdate",
+      description: "Soup is now harder to activate.",
+      majorChanges: [],
+      smallChanges: [
+        "Super Soup now no longer increases the level of other Super Soups.",
+      ],
+      bugFixes: [],
+    },
     {
       version: "1.2.0",
       date: "February 9, 2026",

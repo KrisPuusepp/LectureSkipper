@@ -74,7 +74,7 @@ Very rare items that can turn around an entire run.
 - [x] Gem - Always Active: After a lecture, gain +$x.
 - [x] Superintelligence - After Attend: All other courses also gain x% of the gained Understandings from this lecture.
 - [x] DNA - After Use: Turns into a copy of the item that is directly to the right of this one. Also adds the levels from the copied item to this one.
-- [x] Super Soup – Always Active: If a course reaches 200% completion, all other items in your inventory gain +x levels.
+- [x] Super Soup – Always Active: If a course reaches 500% completion, all other items in your inventory (except for other Super Soups) gain +x levels.
 - [x] Epic Beer - On Attend: Gives you one level x Master Professor item.
 
 ###### Miscellanous

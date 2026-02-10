@@ -17,7 +17,7 @@ export const itemData: ItemData = {
 export const itemMeta: ItemMeta = {
   icon: ItemIcon,
   getDescription: (item) =>
-    `**Always Active**: If a course reaches 500% completion, all other items in your inventory gain **+${item.level}** levels.`,
+    `**Always Active**: If a course reaches 500% completion, all other items in your inventory (except for other Super Soups) gain **+${item.level}** levels.`,
   getEnabled: (item, state) => true,
 };
 
@@ -43,7 +43,7 @@ export const itemBehavior: ItemBehavior = {
         for (let j = 0; j < params.state.items.length; j++)
         {
           const otherItem = params.state.items[j];
-          if (otherItem !== null && otherItem !== params.item)
+          if (otherItem !== null && otherItem !== params.item && otherItem.name !== "Super Soup")
           {
             otherItem.level += params.item.level;
           }
