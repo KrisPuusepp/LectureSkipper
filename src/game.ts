@@ -687,6 +687,10 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
   {
     newState.procrastinations = Infinity;
   }
+  if (isNaN(newState.cash))
+  {
+    newState.cash = Infinity;
+  }
   newState.lecturesLeft -= 1;
   if (isNaN(lectureResult.gainedUnderstandings))
   {

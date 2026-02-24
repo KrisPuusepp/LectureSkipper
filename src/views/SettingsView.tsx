@@ -33,7 +33,16 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
   let { settings, setSettings } = useContext(SettingsContext)!;
 
   const gameUpdates = [
-        {
+    {
+      version: "1.2.2",
+      date: "February 24, 2026",
+      title: "Cash Fix",
+      description: "Infinity cash is now supported.",
+      majorChanges: [],
+      smallChanges: [],
+      bugFixes: ["Cash no longer shows up as NaN and now properly shows up as Infinity."],
+    },
+    {
       version: "1.2.1",
       date: "February 10, 2026",
       title: "SoUpdate",
