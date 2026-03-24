@@ -6,7 +6,7 @@ import { itemUtils, type ItemData } from "@/item";
 import { effectUtils, type EffectData } from "@/effect";
 import { story } from "@/story";
 import { effectMetaRegistry } from "./effectRegistry";
-import { parseWithInfinity, stringifyWithInfinity, weightedRandom } from "./lib/utils";
+import { ensureValidNumber, parseWithInfinity, stringifyWithInfinity, weightedRandom } from "./lib/utils";
 import { compressToUTF16, decompressFromUTF16 } from "lz-string";
 import type { UserSettings } from "./App";
 
@@ -19,6 +19,135 @@ export function generateUUID(): string
     const v = c === 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
+}
+
+/**
+ * Sanitizes a GameState object to ensure all numeric fields are valid.
+ * If any numeric field is NaN, null, or undefined, it is set to Infinity.
+ * Modifies the object in-place.
+ */
+export function sanitizeGameState(state: GameState): GameState
+{
+  const s = state;
+
+  s.saveVersion = ensureValidNumber(s.saveVersion);
+  s.dateCreated = ensureValidNumber(s.dateCreated);
+  if (s.dateEnded !== undefined) s.dateEnded = ensureValidNumber(s.dateEnded);
+  if (s.dateEndingReached !== undefined) s.dateEndingReached = ensureValidNumber(s.dateEndingReached);
+  if (s.dateInfinityReached !== undefined) s.dateInfinityReached = ensureValidNumber(s.dateInfinityReached);
+
+  s.block = ensureValidNumber(s.block);
+  s.lecturesLeft = ensureValidNumber(s.lecturesLeft);
+  s.score = ensureValidNumber(s.score);
+  s.story = ensureValidNumber(s.story);
+  s.energy = ensureValidNumber(s.energy);
+  s.maxEnergy = ensureValidNumber(s.maxEnergy);
+  s.energyPerSkip = ensureValidNumber(s.energyPerSkip);
+  s.cash = ensureValidNumber(s.cash);
+  s.procrastinations = ensureValidNumber(s.procrastinations);
+  s.maxActivatedItems = ensureValidNumber(s.maxActivatedItems);
+
+  const sanitizeCurrency = (c: Currency) =>
+  {
+    c.amount = ensureValidNumber(c.amount);
+    if ("courseIndex" in c) c.courseIndex = ensureValidNumber(c.courseIndex);
+  };
+
+  const sanitizeEffect = (e: EffectData) =>
+  {
+    e.value = ensureValidNumber(e.value);
+  };
+
+  const sanitizeItem = (i: ItemData) =>
+  {
+    i.rarity = ensureValidNumber(i.rarity);
+    i.dropWeight = ensureValidNumber(i.dropWeight);
+    i.level = ensureValidNumber(i.level);
+    i.startingLevel = ensureValidNumber(i.startingLevel);
+  };
+
+  const sanitizeLecture = (l: Lecture) =>
+  {
+    l.courseIndex = ensureValidNumber(l.courseIndex);
+    l.potentialUnderstandings = ensureValidNumber(l.potentialUnderstandings);
+    l.understandChance = ensureValidNumber(l.understandChance);
+    l.energyCost = ensureValidNumber(l.energyCost);
+    l.procrastinationValue = ensureValidNumber(l.procrastinationValue);
+  };
+
+  s.courses.forEach(c =>
+  {
+    c.understandings = ensureValidNumber(c.understandings);
+    c.originalGoal = ensureValidNumber(c.originalGoal);
+    c.goal = ensureValidNumber(c.goal);
+    c.effects.forEach(sanitizeEffect);
+    c.minimumLecturesLeft = ensureValidNumber(c.minimumLecturesLeft);
+    c.lecturesAppeared = ensureValidNumber(c.lecturesAppeared);
+    c.lectureAppearWeight = ensureValidNumber(c.lectureAppearWeight);
+    c.maxUnderstandingsPerLecture = ensureValidNumber(c.maxUnderstandingsPerLecture);
+    c.maxProcrastinationsPerLecture = ensureValidNumber(c.maxProcrastinationsPerLecture);
+    c.maxEnergyCostPerLecture = ensureValidNumber(c.maxEnergyCostPerLecture);
+  });
+
+  if (s.lastLecture) sanitizeLecture(s.lastLecture);
+  if (s.nextLecture) sanitizeLecture(s.nextLecture);
+
+  if (s.lastLectureResult)
+  {
+    s.lastLectureResult.courseIndex = ensureValidNumber(s.lastLectureResult.courseIndex);
+    s.lastLectureResult.gainedUnderstandings = ensureValidNumber(s.lastLectureResult.gainedUnderstandings);
+    s.lastLectureResult.gainedProcrastinations = ensureValidNumber(s.lastLectureResult.gainedProcrastinations);
+    s.lastLectureResult.energyChange = ensureValidNumber(s.lastLectureResult.energyChange);
+  }
+
+  s.quests.forEach(q =>
+  {
+    q.costs.forEach(sanitizeCurrency);
+    q.rewards.forEach(sanitizeCurrency);
+  });
+
+  s.unboxedItems.forEach(sanitizeItem);
+  s.items.forEach(i => i && sanitizeItem(i));
+
+  s.shop.forEach(entry =>
+  {
+    sanitizeItem(entry.item);
+    entry.price = ensureValidNumber(entry.price);
+    entry.discount = ensureValidNumber(entry.discount);
+  });
+
+  return s;
+}
+
+/**
+ * Sanitizes a Run object to ensure all numeric fields are valid.
+ * If any numeric field is NaN, null, or undefined, it is set to Infinity.
+ * Modifies the object in-place.
+ */
+export function sanitizeRun(run: Run): Run
+{
+  run.dateCreated = ensureValidNumber(run.dateCreated);
+  run.dateEnded = ensureValidNumber(run.dateEnded);
+  if (run.dateEndingReached !== undefined) run.dateEndingReached = ensureValidNumber(run.dateEndingReached);
+  if (run.dateInfinityReached !== undefined) run.dateInfinityReached = ensureValidNumber(run.dateInfinityReached);
+  run.score = ensureValidNumber(run.score);
+  run.block = ensureValidNumber(run.block);
+  run.energy = ensureValidNumber(run.energy);
+  run.maxEnergy = ensureValidNumber(run.maxEnergy);
+  run.energyPerSkip = ensureValidNumber(run.energyPerSkip);
+  run.cash = ensureValidNumber(run.cash);
+  run.procrastinations = ensureValidNumber(run.procrastinations);
+  run.maxActivatedItems = ensureValidNumber(run.maxActivatedItems);
+
+  run.items.forEach(i =>
+  {
+    i.rarity = ensureValidNumber(i.rarity);
+    i.dropWeight = ensureValidNumber(i.dropWeight);
+    i.level = ensureValidNumber(i.level);
+    i.startingLevel = ensureValidNumber(i.startingLevel);
+  });
+
+  return run;
 }
 
 export const DEFAULT_MINIMUM_LECTURES_LEFT = 3;
@@ -235,6 +364,7 @@ export function saveGame(game: GameState)
   {
     // Create a copy of game with an empty log and no texts
     const toSave: GameState = { ...game, log: [], courseTexts: [] };
+    sanitizeGameState(toSave);
     localStorage.setItem(LOCAL_STORAGE_KEY, compressToUTF16(stringifyWithInfinity(toSave)));
   } catch (err)
   {
@@ -330,7 +460,7 @@ export function loadGame(): GameState | "GameDoesNotExist" | "ParsingFailed"
       entry.item.rarity = itemRegistry[entry.item.name].rarity;
     }
 
-    return parsed;
+    return sanitizeGameState(parsed);
   } catch (err)
   {
     console.error("Failed to load game from localStorage:", err);
@@ -398,6 +528,7 @@ export function loadRuns(): Run[] | "RunsDoNotExist" | "ParsingFailed"
     // changed rarities)
     for (let i = 0; i < parsed.length; i++)
     {
+      sanitizeRun(parsed[i]);
       for (let j = 0; j < parsed[i].items.length; j++)
       {
         parsed[i].items[j].rarity = itemRegistry[parsed[i].items[j].name].rarity;
@@ -434,6 +565,8 @@ function recordRun(game: GameState, setTopRuns: React.Dispatch<React.SetStateAct
     procrastinations: game.procrastinations,
     maxActivatedItems: game.maxActivatedItems,
   };
+
+  sanitizeRun(newRun);
 
   setTopRuns(prev =>
   {
@@ -820,36 +953,12 @@ export function startRound(state: GameState, action: "attend" | "skip"): GameSta
     return item && itemMetaRegistry[item.name].getEnabled(item, newState);
   });
 
-  // Fix any potential NaN in the score
-  if (isNaN(newState.score))
-  {
-    newState.score = Infinity;
-  }
+  sanitizeGameState(newState);
 
   // Check for Infinity score
   if (newState.score === Infinity && !newState.dateInfinityReached)
   {
     newState.dateInfinityReached = Date.now();
-  }
-
-  // Fix any potential NaNs in the courses
-  for (let i = 0; i < newState.courses.length; i++)
-  {
-    if (isNaN(newState.courses[i].understandings))
-    {
-      newState.courses[i].understandings = Infinity;
-    }
-  }
-
-  // Fix any potential NaNs in the items
-  for (let i = 0; i < newState.items.length; i++)
-  {
-    let item = newState.items[i];
-    if (item === null) continue;
-    if (isNaN(item.level))
-    {
-      item.level = 1;
-    }
   }
 
   // Show U differences for this round

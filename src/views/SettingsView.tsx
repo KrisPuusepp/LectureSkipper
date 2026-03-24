@@ -34,6 +34,15 @@ export default function SettingsView({ game, setGame, topRuns }: Props)
 
   const gameUpdates = [
     {
+      version: "1.2.3",
+      date: "March 24, 2026",
+      title: "NaN Fix",
+      description: "The game should now correctly handle NaNs. This should be the final, definitive fix for this problem.",
+      majorChanges: [],
+      smallChanges: [],
+      bugFixes: ["All invalid numbers should now get replaced with Infinity, no matter where they appear in the game."],
+    },
+    {
       version: "1.2.2",
       date: "February 24, 2026",
       title: "Cash Fix",

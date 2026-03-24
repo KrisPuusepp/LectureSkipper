@@ -40,6 +40,16 @@ export function weightedRandom<T>(items: T[], weights: number[]): T
   return items[items.length - 1];
 }
 
+/**
+ * Ensures that a value is a valid number.
+ * If it is NaN, null, or undefined, it returns Infinity.
+ */
+export function ensureValidNumber(v: any): number
+{
+  if (v === null || v === undefined || Number.isNaN(v)) return Infinity;
+  return v;
+}
+
 export function stringifyWithInfinity(value: unknown)
 {
   return JSON.stringify(value, (_, v) =>
